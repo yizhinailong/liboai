@@ -2,6 +2,12 @@
   <img src="/images/_logo.png">
 </p>
 
+<br>
+<h1>DISCLAIMER</h1>
+<p>
+	This repository is no longer actively maintained. Please refer to maintained forks of this repository such as <a href="https://github.com/jasonduncan/liboai">this</a> one.
+</p>
+
 <hr>
 <h1>Introduction</h1>
 <p><code>liboai</code> is a simple, <b>unofficial</b> C++17 library for the OpenAI API. It allows developers to access OpenAI endpoints through a simple collection of methods and classes. The library can most effectively be thought of as a <b>spiritual port</b> of OpenAI's Python library, simply called <code>openai</code>, due to its similar structure - with few exceptions.
