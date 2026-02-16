@@ -1,7 +1,7 @@
 # PROJECT KNOWLEDGE BASE
 
 **Generated:** 2026-02-16
-**Commit:** b692b33
+**Commit:** e582105
 **Branch:** main
 
 ## OVERVIEW
@@ -14,38 +14,64 @@ Unofficial C++17 library for OpenAI API. Spiritual port of Python's `openai` lib
 include/liboai/
 ├── liboai.hpp              # Main entry - include only this
 ├── components/             # API endpoint wrappers (audio, chat, images, etc.)
-└── core/                   # Infrastructure (auth, network, response, exception)
+│   ├── audio.hpp
+│   ├── azure.hpp
+│   ├── chat.hpp            # Largest component (~40k lines)
+│   ├── completions.hpp
+│   ├── edits.hpp
+│   ├── embeddings.hpp
+│   ├── files.hpp
+│   ├── fine_tunes.hpp
+│   ├── images.hpp          # DALL-E generation
+│   ├── models.hpp
+│   └── moderations.hpp
+└── core/                   # Infrastructure
+    ├── authorization.hpp   # Singleton auth manager
+    ├── exception.hpp       # OpenAIException, OpenAIRateLimited
+    ├── network.hpp         # HTTP request interface
+    ├── netimpl.hpp         # cURL wrapper (~47k lines)
+    └── response.hpp        # Response, JsonConstructor
+
 src/
 ├── components/             # Component implementations (.cpp)
 └── core/                   # Core implementations (.cpp)
+
 documentation/              # Examples per API feature
+├── audio/
+├── authorization/
+├── chat/                   # Conversation helper class
+├── embeddings/
+├── images/
+└── ...
 ```
 
 ## WHERE TO LOOK
 
 | Task | Location | Notes |
 |------|----------|-------|
-| Add new API endpoint | `include/liboai/components/` + `src/components/` | Create .hpp/.cpp pair, add to CMakeLists.txt, include in liboai.hpp |
-| Modify auth behavior | `include/liboai/core/authorization.hpp` | Singleton pattern |
-| Change network layer | `include/liboai/core/netimpl.hpp` | cURL wrapper, 47k lines |
+| Add new API endpoint | `include/liboai/components/` + `src/components/` | Create .hpp/.cpp pair, add to xmake.lua, include in liboai.hpp |
+| Modify auth behavior | `include/liboai/core/authorization.hpp` | Singleton pattern via `Authorization::Authorizer()` |
+| Change network layer | `include/liboai/core/netimpl.hpp` | cURL wrapper, ~47k lines |
 | Response handling | `include/liboai/core/response.hpp` | JSON via nlohmann::json |
 | Usage examples | `documentation/{feature}/examples/` | Sync + async variants |
-| Build configuration | `CMakeLists.txt` | |
+| Build configuration | `xmake.lua` | Primary build system (xmake) |
 
 ## CODE MAP
 
 | Symbol | Type | Location | Role |
 |--------|------|----------|------|
-| `OpenAI` | Class | `include/liboai/liboai.hpp` | Facade - owns all component pointers |
-| `Authorization` | Class | `include/liboai/core/authorization.hpp` | Singleton for API keys/proxies |
-| `Response` | Class | `include/liboai/core/response.hpp` | JSON response wrapper |
+| `OpenAI` | Class | `include/liboai/liboai.hpp` | Facade - owns all component unique_ptrs |
+| `Authorization` | Class | `include/liboai/core/authorization.hpp` | Singleton for API keys/proxies/timeout |
+| `Response` | Class | `include/liboai/core/response.hpp` | JSON response wrapper (operator[] access) |
 | `FutureResponse` | Type | `include/liboai/core/response.hpp` | `std::future<liboai::Response>` |
-| `JsonConstructor` | Class | `include/liboai/core/response.hpp` | Build JSON payloads |
+| `JsonConstructor` | Class | `include/liboai/core/response.hpp` | Build JSON payloads via `json.insert()` |
 | `Audio` | Component | `include/liboai/components/audio.hpp` | Speech/transcription/translation |
-| `ChatCompletion` | Component | `include/liboai/components/chat.hpp` | ChatGPT API (largest, 40k lines) |
+| `ChatCompletion` | Component | `include/liboai/components/chat.hpp` | ChatGPT API, includes `Conversation` helper |
 | `Azure` | Component | `include/liboai/components/azure.hpp` | Azure OpenAI endpoints |
 | `Images` | Component | `include/liboai/components/images.hpp` | DALL-E generation |
 | `Models` | Component | `include/liboai/components/models.hpp` | Model listing/retrieval |
+| `OpenAIException` | Exception | `include/liboai/core/exception.hpp` | Base exception class |
+| `OpenAIRateLimited` | Exception | `include/liboai/core/exception.hpp` | Rate limit specific exception |
 
 ## CONVENTIONS
 
@@ -57,12 +83,15 @@ documentation/              # Examples per API feature
 - **Return type**: `Response` for sync, `FutureResponse` for async
 - **Component pattern**: Each API area = component class with `create()`, `create_async()` methods
 - **Error handling**: Throws `liboai::exception::OpenAIException`
+- **LIBOAI_EXPORT**: Visibility macro for exported symbols
 
 ## ANTI-PATTERNS
 
 - **DO NOT** include individual component headers - use `liboai/liboai.hpp`
 - **DO NOT** copy/move `OpenAI`, `Authorization`, `Response` instances (deleted ops)
 - **DO NOT** access `raw_json` directly before checking `status_code`
+- **DO NOT** modify component classes directly - always use `OpenAI` facade
+- **NEVER** call component methods before setting auth key
 
 ## DEPENDENCIES
 
@@ -73,20 +102,24 @@ documentation/              # Examples per API feature
 ## COMMANDS
 
 ```bash
-# Build library only
+# Build library only (xmake)
+xmake
+
+# Build with examples (xmake)
+xmake -DBUILD_EXAMPLES=ON
+
+# Legacy CMake (if using)
 cmake -B build && cmake --build build
 
-# Build with examples
-cmake -B build -DBUILD_EXAMPLES=ON && cmake --build build
-
 # Windows (vcpkg)
-set VCPKG_ROOT=<path> && cmake -B build
+set VCPKG_ROOT=<path> && xmake
 ```
 
 ## NOTES
 
-- Repository no longer actively maintained - refer to forks
+- Repository no longer actively maintained - refer to forks (e.g., jasonduncan/liboai)
 - Azure OpenAI supported via separate `Azure` component
-- Chat component includes `Conversation` helper class for multi-turn
+- Chat component includes `Conversation` helper class for multi-turn context management
 - All async methods: `{method}_async()` suffix, returns `FutureResponse`
 - Default timeout: 30000ms (set via `auth.SetMaxTimeout()`)
+- All component pointers accessed via `OpenAI` facade: `oai.ChatCompletion->create(...)`
