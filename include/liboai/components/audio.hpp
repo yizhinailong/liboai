@@ -195,6 +195,6 @@ namespace liboai {
         ) const& noexcept(false) -> liboai::FutureResponse;
 
     private:
-        Authorization& auth_ = Authorization::Authorizer();
+        Authorization& m_auth = Authorization::Authorizer();
     };
 } // namespace liboai

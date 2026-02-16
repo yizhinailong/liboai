@@ -48,23 +48,23 @@ namespace liboai {
     public:
         JsonConstructor() {}
 
-        JsonConstructor(const JsonConstructor& other) noexcept : _json(other._json) {}
+        JsonConstructor(const JsonConstructor& other) noexcept : m_json(other.m_json) {}
 
-        JsonConstructor(JsonConstructor&& old) noexcept : _json(std::move(old._json)) {}
+        JsonConstructor(JsonConstructor&& old) noexcept : m_json(std::move(old.m_json)) {}
 
         template <class _Ty> void push_back(std::string_view key, const _Ty& value) {
             if constexpr (std::is_same_v<
                               _Ty,
                               std::optional<std::function<bool(std::string, intptr_t)>>>) {
                 if (value) {
-                    this->_json[key.data()] = true;
+                    this->m_json[key.data()] = true;
                 }
             } else if constexpr (std::is_same_v<_Ty, std::function<bool(std::string, intptr_t)>>) {
                 if (value) {
-                    this->_json[key.data()] = true;
+                    this->m_json[key.data()] = true;
                 }
             } else {
-                this->_json[key.data()] = value;
+                this->m_json[key.data()] = value;
             }
         }
 
@@ -77,14 +77,14 @@ namespace liboai {
                 int> = 0>
         void push_back(std::string_view key, _Ty&& value) {
             if (value) {
-                this->_json[key.data()] = std::forward<typename _Ty::value_type>(value.value());
+                this->m_json[key.data()] = std::forward<typename _Ty::value_type>(value.value());
             }
         }
 
-        std::string dump() const { return this->_json.dump(4); }
+        std::string dump() const { return this->m_json.dump(4); }
 
     private:
-        nlohmann::json _json;
+        nlohmann::json m_json;
     };
 
     class Response final {

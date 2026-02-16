@@ -27,7 +27,7 @@ namespace liboai {
 
             @param root     The URL to direct API calls to.
         */
-        Network(const std::string& root) noexcept : openai_root_(root) {}
+        Network(const std::string& root) noexcept : m_openai_root(root) {}
         NON_COPYABLE(Network)
         NON_MOVABLE(Network)
 
@@ -250,8 +250,8 @@ namespace liboai {
             return false;
         }
 
-        const std::string openai_root_;
-        const std::string azure_root_ = ".openai.azure.com/openai";
+        const std::string m_openai_root;
+        const std::string m_azure_root = ".openai.azure.com/openai";
 
     private:
         template <class... T> struct MethodSchema {

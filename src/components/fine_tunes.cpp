@@ -33,14 +33,14 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->openai_root_,
+            this->m_openai_root,
             "/fine-tunes",
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
+            this->m_auth.GetAuthorizationHeaders(),
             netimpl::components::Body{ jcon.dump() },
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -83,13 +83,13 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->openai_root_,
+            this->m_openai_root,
             "/fine-tunes",
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -103,13 +103,13 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->openai_root_,
+            this->m_openai_root,
             "/fine-tunes/" + fine_tune_id,
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -124,13 +124,13 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->openai_root_,
+            this->m_openai_root,
             "/fine-tunes/" + fine_tune_id + "/cancel",
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -151,16 +151,16 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->openai_root_,
+            this->m_openai_root,
             "/fine-tunes/" + fine_tune_id + "/events",
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
+            this->m_auth.GetAuthorizationHeaders(),
             std::move(params),
             stream ? netimpl::components::WriteCallback{ std::move(stream.value()) } :
                      netimpl::components::WriteCallback{},
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -183,13 +183,13 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_DELETE,
-            this->openai_root_,
+            this->m_openai_root,
             "/models/" + model,
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;

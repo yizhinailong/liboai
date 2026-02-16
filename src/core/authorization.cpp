@@ -3,16 +3,16 @@
 namespace liboai {
 
     Authorization::~Authorization() {
-        netimpl::components::EncodedAuthentication().SecureStringClear(this->key_);
+        netimpl::components::EncodedAuthentication().SecureStringClear(this->m_key);
     }
 
     auto Authorization::SetKey(std::string_view key) noexcept -> bool {
         if (!key.empty()) {
-            this->key_ = key;
-            if (this->openai_auth_headers_.count("Authorization") > 0) {
-                this->openai_auth_headers_.erase("Authorization");
+            this->m_key = key;
+            if (this->m_openai_auth_headers.count("Authorization") > 0) {
+                this->m_openai_auth_headers.erase("Authorization");
             }
-            this->openai_auth_headers_["Authorization"] = ("Bearer " + this->key_);
+            this->m_openai_auth_headers["Authorization"] = ("Bearer " + this->m_key);
             return true;
         }
         return false;
@@ -20,11 +20,11 @@ namespace liboai {
 
     auto Authorization::SetAzureKey(std::string_view key) noexcept -> bool {
         if (!key.empty()) {
-            this->key_ = key;
-            if (this->azure_auth_headers_.size() > 0) {
-                this->azure_auth_headers_.clear();
+            this->m_key = key;
+            if (this->m_azure_auth_headers.size() > 0) {
+                this->m_azure_auth_headers.clear();
             }
-            this->azure_auth_headers_["api-key"] = this->key_;
+            this->m_azure_auth_headers["api-key"] = this->m_key;
             return true;
         }
         return false;
@@ -32,11 +32,11 @@ namespace liboai {
 
     auto Authorization::SetAzureKeyAD(std::string_view key) noexcept -> bool {
         if (!key.empty()) {
-            this->key_ = key;
-            if (this->azure_auth_headers_.size() > 0) {
-                this->azure_auth_headers_.clear();
+            this->m_key = key;
+            if (this->m_azure_auth_headers.size() > 0) {
+                this->m_azure_auth_headers.clear();
             }
-            this->azure_auth_headers_["Authorization"] = ("Bearer " + this->key_);
+            this->m_azure_auth_headers["Authorization"] = ("Bearer " + this->m_key);
             return true;
         }
         return false;
@@ -47,11 +47,11 @@ namespace liboai {
             std::filesystem::file_size(path) > 0) {
             std::ifstream file(path);
             if (file.is_open()) {
-                std::getline(file, this->key_);
-                if (this->openai_auth_headers_.count("Authorization") > 0) {
-                    this->openai_auth_headers_.erase("Authorization");
+                std::getline(file, this->m_key);
+                if (this->m_openai_auth_headers.count("Authorization") > 0) {
+                    this->m_openai_auth_headers.erase("Authorization");
                 }
-                this->openai_auth_headers_["Authorization"] = ("Bearer " + this->key_);
+                this->m_openai_auth_headers["Authorization"] = ("Bearer " + this->m_key);
                 return true;
             }
         }
@@ -63,11 +63,11 @@ namespace liboai {
             std::filesystem::file_size(path) > 0) {
             std::ifstream file(path);
             if (file.is_open()) {
-                std::getline(file, this->key_);
-                if (this->azure_auth_headers_.size() > 0) {
-                    this->azure_auth_headers_.clear();
+                std::getline(file, this->m_key);
+                if (this->m_azure_auth_headers.size() > 0) {
+                    this->m_azure_auth_headers.clear();
                 }
-                this->azure_auth_headers_["api-key"] = this->key_;
+                this->m_azure_auth_headers["api-key"] = this->m_key;
                 return true;
             }
         }
@@ -79,11 +79,11 @@ namespace liboai {
             std::filesystem::file_size(path) > 0) {
             std::ifstream file(path);
             if (file.is_open()) {
-                std::getline(file, this->key_);
-                if (this->azure_auth_headers_.size() > 0) {
-                    this->azure_auth_headers_.clear();
+                std::getline(file, this->m_key);
+                if (this->m_azure_auth_headers.size() > 0) {
+                    this->m_azure_auth_headers.clear();
                 }
-                this->azure_auth_headers_["Authorization"] = ("Bearer " + this->key_);
+                this->m_azure_auth_headers["Authorization"] = ("Bearer " + this->m_key);
                 return true;
             }
         }
@@ -94,11 +94,11 @@ namespace liboai {
         if (!var.empty()) {
             const char* key = std::getenv(var.data());
             if (key != nullptr) {
-                this->key_ = key;
-                if (this->openai_auth_headers_.count("Authorization") > 0) {
-                    this->openai_auth_headers_.erase("Authorization");
+                this->m_key = key;
+                if (this->m_openai_auth_headers.count("Authorization") > 0) {
+                    this->m_openai_auth_headers.erase("Authorization");
                 }
-                this->openai_auth_headers_["Authorization"] = ("Bearer " + this->key_);
+                this->m_openai_auth_headers["Authorization"] = ("Bearer " + this->m_key);
                 return true;
             }
             return false;
@@ -110,11 +110,11 @@ namespace liboai {
         if (!var.empty()) {
             const char* key = std::getenv(var.data());
             if (key != nullptr) {
-                this->key_ = key;
-                if (this->azure_auth_headers_.size() > 0) {
-                    this->azure_auth_headers_.clear();
+                this->m_key = key;
+                if (this->m_azure_auth_headers.size() > 0) {
+                    this->m_azure_auth_headers.clear();
                 }
-                this->azure_auth_headers_["api-key"] = this->key_;
+                this->m_azure_auth_headers["api-key"] = this->m_key;
                 return true;
             }
             return false;
@@ -126,11 +126,11 @@ namespace liboai {
         if (!var.empty()) {
             const char* key = std::getenv(var.data());
             if (key != nullptr) {
-                this->key_ = key;
-                if (this->azure_auth_headers_.size() > 0) {
-                    this->azure_auth_headers_.clear();
+                this->m_key = key;
+                if (this->m_azure_auth_headers.size() > 0) {
+                    this->m_azure_auth_headers.clear();
                 }
-                this->azure_auth_headers_["Authorization"] = ("Bearer " + this->key_);
+                this->m_azure_auth_headers["Authorization"] = ("Bearer " + this->m_key);
                 return true;
             }
             return false;
@@ -140,11 +140,11 @@ namespace liboai {
 
     auto Authorization::SetOrganization(std::string_view org) noexcept -> bool {
         if (!org.empty()) {
-            this->org_ = std::move(org);
-            if (this->openai_auth_headers_.count("OpenAI-Organization") > 0) {
-                this->openai_auth_headers_.erase("OpenAI-Organization");
+            this->m_org = std::move(org);
+            if (this->m_openai_auth_headers.count("OpenAI-Organization") > 0) {
+                this->m_openai_auth_headers.erase("OpenAI-Organization");
             }
-            this->openai_auth_headers_["OpenAI-Organization"] = this->org_;
+            this->m_openai_auth_headers["OpenAI-Organization"] = this->m_org;
             return true;
         }
         return false;
@@ -155,11 +155,11 @@ namespace liboai {
             std::filesystem::file_size(path) > 0) {
             std::ifstream file(path);
             if (file.is_open()) {
-                std::getline(file, this->key_);
-                if (this->openai_auth_headers_.count("OpenAI-Organization") > 0) {
-                    this->openai_auth_headers_.erase("OpenAI-Organization");
+                std::getline(file, this->m_key);
+                if (this->m_openai_auth_headers.count("OpenAI-Organization") > 0) {
+                    this->m_openai_auth_headers.erase("OpenAI-Organization");
                 }
-                this->openai_auth_headers_["OpenAI-Organization"] = this->org_;
+                this->m_openai_auth_headers["OpenAI-Organization"] = this->m_org;
                 return true;
             }
         }
@@ -170,11 +170,11 @@ namespace liboai {
         if (!var.empty()) {
             const char* org = std::getenv(var.data());
             if (org != nullptr) {
-                this->org_ = org;
-                if (this->openai_auth_headers_.count("OpenAI-Organization") > 0) {
-                    this->openai_auth_headers_.erase("OpenAI-Organization");
+                this->m_org = org;
+                if (this->m_openai_auth_headers.count("OpenAI-Organization") > 0) {
+                    this->m_openai_auth_headers.erase("OpenAI-Organization");
                 }
-                this->openai_auth_headers_["OpenAI-Organization"] = this->org_;
+                this->m_openai_auth_headers["OpenAI-Organization"] = this->m_org;
                 return true;
             }
             return false;
@@ -185,28 +185,28 @@ namespace liboai {
     auto Authorization::SetProxies(
         const std::initializer_list<std::pair<const std::string, std::string>>& hosts
     ) noexcept -> void {
-        this->proxies_ = netimpl::components::Proxies(hosts);
+        this->m_proxies = netimpl::components::Proxies(hosts);
     }
 
     auto Authorization::SetProxies(
         std::initializer_list<std::pair<const std::string, std::string>>&& hosts
     ) noexcept -> void {
-        this->proxies_ = netimpl::components::Proxies(std::move(hosts));
+        this->m_proxies = netimpl::components::Proxies(std::move(hosts));
     }
 
     auto Authorization::SetProxies(const std::map<std::string, std::string>& hosts) noexcept
         -> void {
-        this->proxies_ = netimpl::components::Proxies(hosts);
+        this->m_proxies = netimpl::components::Proxies(hosts);
     }
 
     auto Authorization::SetProxies(std::map<std::string, std::string>&& hosts) noexcept -> void {
-        this->proxies_ = netimpl::components::Proxies(std::move(hosts));
+        this->m_proxies = netimpl::components::Proxies(std::move(hosts));
     }
 
     auto Authorization::SetProxyAuth(
         const std::map<std::string, netimpl::components::EncodedAuthentication>& proto_up
     ) noexcept -> void {
-        this->proxyAuth_ = netimpl::components::ProxyAuthentication(proto_up);
+        this->m_proxyAuth = netimpl::components::ProxyAuthentication(proto_up);
     }
 
 } // namespace liboai

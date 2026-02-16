@@ -6,13 +6,13 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->openai_root_,
+            this->m_openai_root,
             "/models",
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -26,13 +26,13 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->openai_root_,
+            this->m_openai_root,
             "/models/" + model,
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;

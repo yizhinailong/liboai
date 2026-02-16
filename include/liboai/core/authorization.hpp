@@ -204,36 +204,36 @@ namespace liboai {
             @brief Sets the timeout for component calls in milliseconds.
         */
         LIBOAI_EXPORT auto SetMaxTimeout(int32_t ms) noexcept -> void {
-            this->timeout_ = netimpl::components::Timeout(ms);
+            this->m_timeout = netimpl::components::Timeout(ms);
         }
 
         /*
             @brief Returns currently the set authorization key.
         */
-        constexpr auto GetKey() const noexcept -> const std::string& { return this->key_; }
+        constexpr auto GetKey() const noexcept -> const std::string& { return this->m_key; }
 
         /*
             @brief Returns the currently set organization identifier.
         */
-        constexpr auto GetOrganization() const noexcept -> const std::string& { return this->org_; }
+        constexpr auto GetOrganization() const noexcept -> const std::string& { return this->m_org; }
 
         /*
             @returns The currently set proxies.
         */
-        auto GetProxies() const noexcept -> netimpl::components::Proxies { return this->proxies_; }
+        auto GetProxies() const noexcept -> netimpl::components::Proxies { return this->m_proxies; }
 
         /*
             @returns The currently set proxy authentication information.
         */
         auto GetProxyAuth() const noexcept -> netimpl::components::ProxyAuthentication {
-            return this->proxyAuth_;
+            return this->m_proxyAuth;
         }
 
         /*
             @returns The currently set timeout.
         */
         auto GetMaxTimeout() const noexcept -> netimpl::components::Timeout {
-            return this->timeout_;
+            return this->m_timeout;
         }
 
         /*
@@ -243,7 +243,7 @@ namespace liboai {
         */
         constexpr auto GetAuthorizationHeaders() const noexcept
             -> const netimpl::components::Header& {
-            return this->openai_auth_headers_;
+            return this->m_openai_auth_headers;
         }
 
         /*
@@ -253,14 +253,14 @@ namespace liboai {
         */
         constexpr auto GetAzureAuthorizationHeaders() const noexcept
             -> const netimpl::components::Header& {
-            return this->azure_auth_headers_;
+            return this->m_azure_auth_headers;
         }
 
     private: // member variables
-        std::string key_, org_;
-        netimpl::components::Header openai_auth_headers_, azure_auth_headers_;
-        netimpl::components::Proxies proxies_;
-        netimpl::components::ProxyAuthentication proxyAuth_;
-        netimpl::components::Timeout timeout_ = { 30000 };
+        std::string m_key, m_org;
+        netimpl::components::Header m_openai_auth_headers, m_azure_auth_headers;
+        netimpl::components::Proxies m_proxies;
+        netimpl::components::ProxyAuthentication m_proxyAuth;
+        netimpl::components::Timeout m_timeout = { 30000 };
     };
 } // namespace liboai

@@ -3,31 +3,31 @@
 namespace liboai {
 
     Conversation::Conversation() {
-        this->_conversation["messages"] = nlohmann::json::array();
+        this->m_conversation["messages"] = nlohmann::json::array();
     }
 
     Conversation::Conversation(const Conversation& other) {
-        this->_conversation = other._conversation;
-        this->_functions = other._functions;
-        this->_last_resp_is_fc = other._last_resp_is_fc;
+        this->m_conversation = other.m_conversation;
+        this->m_functions = other.m_functions;
+        this->m_last_resp_is_fc = other.m_last_resp_is_fc;
     }
 
     Conversation::Conversation(Conversation&& old) noexcept {
-        this->_conversation = std::move(old._conversation);
-        this->_functions = std::move(old._functions);
-        this->_last_resp_is_fc = old._last_resp_is_fc;
+        this->m_conversation = std::move(old.m_conversation);
+        this->m_functions = std::move(old.m_functions);
+        this->m_last_resp_is_fc = old.m_last_resp_is_fc;
 
-        old._conversation = nlohmann::json::object();
-        old._functions = nlohmann::json::object();
+        old.m_conversation = nlohmann::json::object();
+        old.m_functions = nlohmann::json::object();
     }
 
     Conversation::Conversation(std::string_view system_data) {
-        this->_conversation["messages"] = nlohmann::json::array();
+        this->m_conversation["messages"] = nlohmann::json::array();
         auto result = this->SetSystemData(system_data);
     }
 
     Conversation::Conversation(std::string_view system_data, std::string_view user_data) {
-        this->_conversation["messages"] = nlohmann::json::array();
+        this->m_conversation["messages"] = nlohmann::json::array();
         auto result = this->SetSystemData(system_data);
         result = this->AddUserData(user_data);
     }
@@ -36,7 +36,7 @@ namespace liboai {
         std::string_view system_data,
         std::initializer_list<std::string_view> user_data
     ) {
-        this->_conversation["messages"] = nlohmann::json::array();
+        this->m_conversation["messages"] = nlohmann::json::array();
         auto result = this->SetSystemData(system_data);
 
         for (auto& data : user_data) {
@@ -45,7 +45,7 @@ namespace liboai {
     }
 
     Conversation::Conversation(std::initializer_list<std::string_view> user_data) {
-        this->_conversation["messages"] = nlohmann::json::array();
+        this->m_conversation["messages"] = nlohmann::json::array();
 
         for (auto& data : user_data) {
             auto result = this->AddUserData(data);
@@ -53,7 +53,7 @@ namespace liboai {
     }
 
     Conversation::Conversation(const std::vector<std::string>& user_data) {
-        this->_conversation["messages"] = nlohmann::json::array();
+        this->m_conversation["messages"] = nlohmann::json::array();
 
         for (auto& data : user_data) {
             auto result = this->AddUserData(data);
@@ -61,28 +61,28 @@ namespace liboai {
     }
 
     auto Conversation::operator=(const Conversation& other) -> Conversation& {
-        this->_conversation = other._conversation;
-        this->_functions = other._functions;
-        this->_last_resp_is_fc = other._last_resp_is_fc;
+        this->m_conversation = other.m_conversation;
+        this->m_functions = other.m_functions;
+        this->m_last_resp_is_fc = other.m_last_resp_is_fc;
         return *this;
     }
 
     auto Conversation::operator=(Conversation&& old) noexcept -> Conversation& {
-        this->_conversation = std::move(old._conversation);
-        this->_functions = std::move(old._functions);
-        this->_last_resp_is_fc = old._last_resp_is_fc;
+        this->m_conversation = std::move(old.m_conversation);
+        this->m_functions = std::move(old.m_functions);
+        this->m_last_resp_is_fc = old.m_last_resp_is_fc;
 
-        old._conversation = nlohmann::json::object();
-        old._functions = nlohmann::json::object();
+        old.m_conversation = nlohmann::json::object();
+        old.m_functions = nlohmann::json::object();
 
         return *this;
     }
 
     auto Conversation::ChangeFirstSystemMessage(std::string_view new_data) & noexcept(false)
         -> bool {
-        if (!new_data.empty() && !this->_conversation["messages"].empty()) {
-            if (this->_conversation["messages"][0]["role"].get<std::string>() == "system") {
-                this->_conversation["messages"][0]["content"] = new_data;
+        if (!new_data.empty() && !this->m_conversation["messages"].empty()) {
+            if (this->m_conversation["messages"][0]["role"].get<std::string>() == "system") {
+                this->m_conversation["messages"][0]["content"] = new_data;
                 return true; // System message changed successfuly
             }
             return false;    // First message is not a system message
@@ -95,12 +95,12 @@ namespace liboai {
         if (!data.empty()) {
             // if system is not set already - only one system message shall exist in any
             // conversation
-            for (auto& message : this->_conversation["messages"].items()) {
+            for (auto& message : this->m_conversation["messages"].items()) {
                 if (message.value()["role"].get<std::string>() == "system") {
                     return false; // system already set
                 }
             }
-            this->_conversation["messages"].push_back(
+            this->m_conversation["messages"].push_back(
                 {
                     {    "role", "system" },
                     { "content",     data }
@@ -113,10 +113,10 @@ namespace liboai {
 
     auto Conversation::PopSystemData() & noexcept(false) -> bool {
         // if conversation is non-empty
-        if (!this->_conversation["messages"].empty()) {
+        if (!this->m_conversation["messages"].empty()) {
             // if first message is system
-            if (this->_conversation["messages"][0]["role"].get<std::string>() == "system") {
-                this->_conversation["messages"].erase(0);
+            if (this->m_conversation["messages"][0]["role"].get<std::string>() == "system") {
+                this->m_conversation["messages"].erase(0);
                 return true; // system message popped successfully
             }
             return false;    // first message is not system
@@ -125,14 +125,14 @@ namespace liboai {
     }
 
     auto Conversation::EraseExtra() -> void {
-        if (_conversation["messages"].size() > _max_history_size) {
+        if (m_conversation["messages"].size() > m_max_history_size) {
             // Ensure the system message is preserved
-            auto first_msg = _conversation["messages"].begin();
-            if (first_msg != _conversation["messages"].end() &&
+            auto first_msg = m_conversation["messages"].begin();
+            if (first_msg != m_conversation["messages"].end() &&
                 (*first_msg)["role"].get<std::string>() == "system") {
-                _conversation["messages"].erase(first_msg + 1);
+                m_conversation["messages"].erase(first_msg + 1);
             } else {
-                _conversation["messages"].erase(first_msg);
+                m_conversation["messages"].erase(first_msg);
             }
         }
     }
@@ -141,7 +141,7 @@ namespace liboai {
         // if data provided is non-empty
         if (!data.empty()) {
             EraseExtra();
-            this->_conversation["messages"].push_back(
+            this->m_conversation["messages"].push_back(
                 {
                     {    "role", "user" },
                     { "content",   data }
@@ -157,7 +157,7 @@ namespace liboai {
         // if data provided is non-empty
         if (!data.empty()) {
             EraseExtra();
-            this->_conversation["messages"].push_back(
+            this->m_conversation["messages"].push_back(
                 {
                     {    "role", "user" },
                     { "content",   data },
@@ -171,10 +171,10 @@ namespace liboai {
 
     auto Conversation::PopUserData() & noexcept(false) -> bool {
         // if conversation is not empty
-        if (!this->_conversation["messages"].empty()) {
+        if (!this->m_conversation["messages"].empty()) {
             // if last message is user message
-            if (this->_conversation["messages"].back()["role"].get<std::string>() == "user") {
-                this->_conversation["messages"].erase(this->_conversation["messages"].end() - 1);
+            if (this->m_conversation["messages"].back()["role"].get<std::string>() == "user") {
+                this->m_conversation["messages"].erase(this->m_conversation["messages"].end() - 1);
                 return true; // user data popped successfully
             }
             return false;    // last message is not user message
@@ -184,23 +184,23 @@ namespace liboai {
 
     auto Conversation::GetLastResponse() const& noexcept -> std::string {
         // if conversation is not empty
-        if (!this->_conversation["messages"].empty()) {
+        if (!this->m_conversation["messages"].empty()) {
             // if last message is from assistant
-            if (this->_conversation["messages"].back()["role"].get<std::string>() == "assistant") {
-                return this->_conversation["messages"].back()["content"].get<std::string>();
+            if (this->m_conversation["messages"].back()["role"].get<std::string>() == "assistant") {
+                return this->m_conversation["messages"].back()["content"].get<std::string>();
             }
         }
         return ""; // no response found
     }
 
     auto Conversation::LastResponseIsFunctionCall() const& noexcept -> bool {
-        return this->_last_resp_is_fc;
+        return this->m_last_resp_is_fc;
     }
 
     auto Conversation::GetLastFunctionCallName() const& noexcept(false) -> std::string {
-        if (this->_conversation.contains("function_call")) {
-            if (this->_conversation["function_call"].contains("name")) {
-                return this->_conversation["function_call"]["name"].get<std::string>();
+        if (this->m_conversation.contains("function_call")) {
+            if (this->m_conversation["function_call"].contains("name")) {
+                return this->m_conversation["function_call"]["name"].get<std::string>();
             }
         }
 
@@ -208,9 +208,9 @@ namespace liboai {
     }
 
     auto Conversation::GetLastFunctionCallArguments() const& noexcept(false) -> std::string {
-        if (this->_conversation.contains("function_call")) {
-            if (this->_conversation["function_call"].contains("arguments")) {
-                return this->_conversation["function_call"]["arguments"].get<std::string>();
+        if (this->m_conversation.contains("function_call")) {
+            if (this->m_conversation["function_call"].contains("arguments")) {
+                return this->m_conversation["function_call"]["arguments"].get<std::string>();
             }
         }
 
@@ -219,10 +219,10 @@ namespace liboai {
 
     auto Conversation::PopLastResponse() & noexcept(false) -> bool {
         // if conversation is not empty
-        if (!this->_conversation["messages"].empty()) {
+        if (!this->m_conversation["messages"].empty()) {
             // if last message is assistant message
-            if (this->_conversation["messages"].back()["role"].get<std::string>() == "assistant") {
-                this->_conversation["messages"].erase(this->_conversation["messages"].end() - 1);
+            if (this->m_conversation["messages"].back()["role"].get<std::string>() == "assistant") {
+                this->m_conversation["messages"].erase(this->m_conversation["messages"].end() - 1);
                 return true; // assistant data popped successfully
             }
             return false;    // last message is not assistant message
@@ -232,11 +232,11 @@ namespace liboai {
 
     auto Conversation::Update(std::string_view response) & noexcept(false) -> bool {
         // reset "last response is function call" flag
-        if (this->_last_resp_is_fc) {
-            if (this->_conversation.contains("function_call")) {
-                this->_conversation.erase("function_call");
+        if (this->m_last_resp_is_fc) {
+            if (this->m_conversation.contains("function_call")) {
+                this->m_conversation.erase("function_call");
             }
-            this->_last_resp_is_fc = false;
+            this->m_last_resp_is_fc = false;
         }
 
         // if response is non-empty
@@ -249,7 +249,7 @@ namespace liboai {
                             choice.value()["message"].contains("content")) {
                             if (!choice.value()["message"]["content"].is_null()) {
                                 EraseExtra();
-                                this->_conversation["messages"].push_back(
+                                this->m_conversation["messages"].push_back(
                                     {
                                         {    "role",    choice.value()["message"]["role"] },
                                         { "content", choice.value()["message"]["content"] }
@@ -257,7 +257,7 @@ namespace liboai {
                                 );
                             } else {
                                 EraseExtra();
-                                this->_conversation["messages"].push_back(
+                                this->m_conversation["messages"].push_back(
                                     {
                                         {    "role", choice.value()["message"]["role"] },
                                         { "content",                                "" }
@@ -271,19 +271,19 @@ namespace liboai {
                                 // response to be added. However, we do add the function
                                 // information
 
-                                this->_conversation["function_call"] = nlohmann::json::object();
+                                this->m_conversation["function_call"] = nlohmann::json::object();
                                 if (choice.value()["message"]["function_call"].contains("name")) {
-                                    this->_conversation["function_call"]["name"] =
+                                    this->m_conversation["function_call"]["name"] =
                                         choice.value()["message"]["function_call"]["name"];
                                 }
                                 if (choice.value()["message"]["function_call"].contains(
                                         "arguments"
                                     )) {
-                                    this->_conversation["function_call"]["arguments"] =
+                                    this->m_conversation["function_call"]["arguments"] =
                                         choice.value()["message"]["function_call"]["arguments"];
                                 }
 
-                                this->_last_resp_is_fc = true;
+                                this->m_last_resp_is_fc = true;
                             }
 
                             return true;  // conversation updated successfully
@@ -298,7 +298,7 @@ namespace liboai {
                 if (j["message"].contains("role") && j["message"].contains("content")) {
                     if (j["message"]["content"].is_null()) {
                         EraseExtra();
-                        this->_conversation["messages"].push_back(
+                        this->m_conversation["messages"].push_back(
                             {
                                 {    "role",    j["message"]["role"] },
                                 { "content", j["message"]["content"] }
@@ -306,7 +306,7 @@ namespace liboai {
                         );
                     } else {
                         EraseExtra();
-                        this->_conversation["messages"].push_back(
+                        this->m_conversation["messages"].push_back(
                             {
                                 {    "role", j["message"]["role"] },
                                 { "content",                   "" }
@@ -320,17 +320,17 @@ namespace liboai {
                         // response to be added. However, we do add the function
                         // information
 
-                        this->_conversation["function_call"] = nlohmann::json::object();
+                        this->m_conversation["function_call"] = nlohmann::json::object();
                         if (j["message"]["function_call"].contains("name")) {
-                            this->_conversation["function_call"]["name"] =
+                            this->m_conversation["function_call"]["name"] =
                                 j["message"]["function_call"]["name"];
                         }
                         if (j["message"]["function_call"].contains("arguments")) {
-                            this->_conversation["function_call"]["arguments"] =
+                            this->m_conversation["function_call"]["arguments"] =
                                 j["message"]["function_call"]["arguments"];
                         }
 
-                        this->_last_resp_is_fc = true;
+                        this->m_last_resp_is_fc = true;
                     }
 
                     return true;  // conversation updated successfully
@@ -340,7 +340,7 @@ namespace liboai {
             } else if (j.contains("role") && j.contains("content")) { // low level, single message
                 if (j["message"]["content"].is_null()) {
                     EraseExtra();
-                    this->_conversation["messages"].push_back(
+                    this->m_conversation["messages"].push_back(
                         {
                             {    "role",    j["message"]["role"] },
                             { "content", j["message"]["content"] }
@@ -348,7 +348,7 @@ namespace liboai {
                     );
                 } else {
                     EraseExtra();
-                    this->_conversation["messages"].push_back(
+                    this->m_conversation["messages"].push_back(
                         {
                             {    "role", j["message"]["role"] },
                             { "content",                   "" }
@@ -361,17 +361,17 @@ namespace liboai {
                     // conversation is not updated as there is no assistant
                     // response to be added. However, we do add the function
                     // information
-                    this->_conversation["function_call"] = nlohmann::json::object();
+                    this->m_conversation["function_call"] = nlohmann::json::object();
                     if (j["message"]["function_call"].contains("name")) {
-                        this->_conversation["function_call"]["name"] =
+                        this->m_conversation["function_call"]["name"] =
                             j["message"]["function_call"]["name"];
                     }
                     if (j["message"]["function_call"].contains("arguments")) {
-                        this->_conversation["function_call"]["arguments"] =
+                        this->m_conversation["function_call"]["arguments"] =
                             j["message"]["function_call"]["arguments"];
                     }
 
-                    this->_last_resp_is_fc = true;
+                    this->m_last_resp_is_fc = true;
                 }
 
                 return true;  // conversation updated successfully
@@ -389,11 +389,11 @@ namespace liboai {
     auto Conversation::Export() const& noexcept(false) -> std::string {
         nlohmann::json j;
 
-        if (!this->_conversation.empty()) {
-            j["messages"] = this->_conversation["messages"];
+        if (!this->m_conversation.empty()) {
+            j["messages"] = this->m_conversation["messages"];
 
-            if (this->_functions) {
-                j["functions"] = this->_functions.value()["functions"];
+            if (this->m_functions) {
+                j["functions"] = this->m_functions.value()["functions"];
             }
 
             return j.dump(4); // conversation exported successfully
@@ -407,11 +407,11 @@ namespace liboai {
             nlohmann::json j = nlohmann::json::parse(json);
 
             if (j.contains("messages")) {
-                this->_conversation["messages"] = j["messages"];
+                this->m_conversation["messages"] = j["messages"];
 
                 if (j.contains("functions")) {
-                    this->_functions = nlohmann::json();
-                    this->_functions.value()["functions"] = j["functions"];
+                    this->m_functions = nlohmann::json();
+                    this->m_functions.value()["functions"] = j["functions"];
                 }
 
                 return true; // conversation imported successfully
@@ -449,7 +449,7 @@ namespace liboai {
         nlohmann::json j = functions.GetJSON();
 
         if (!j.empty() && j.contains("functions") && j["functions"].size() > 0) {
-            this->_functions = std::move(j);
+            this->m_functions = std::move(j);
             return true; // functions set successfully
         }
 
@@ -457,23 +457,23 @@ namespace liboai {
     }
 
     auto Conversation::PopFunctions() & noexcept(false) -> void {
-        this->_functions = std::nullopt;
+        this->m_functions = std::nullopt;
     }
 
     auto Conversation::GetRawConversation() const& noexcept -> std::string {
-        return this->_conversation.dump(4);
+        return this->m_conversation.dump(4);
     }
 
     auto Conversation::GetJSON() const& noexcept -> const nlohmann::json& {
-        return this->_conversation;
+        return this->m_conversation;
     }
 
     auto Conversation::GetRawFunctions() const& noexcept -> std::string {
-        return this->HasFunctions() ? this->_functions.value().dump(4) : "";
+        return this->HasFunctions() ? this->m_functions.value().dump(4) : "";
     }
 
     auto Conversation::GetFunctionsJSON() const& noexcept -> const nlohmann::json& {
-        return this->_functions.value();
+        return this->m_functions.value();
     }
 
     auto Conversation::SplitStreamedData(std::string data) const noexcept(false)
@@ -560,9 +560,9 @@ namespace liboai {
     auto
     Conversation::ParseStreamData(std::string data, std::string& delta_content, bool& completed)
         -> bool {
-        if (!_last_incomplete_buffer.empty()) {
-            data = _last_incomplete_buffer + data;
-            _last_incomplete_buffer.clear();
+        if (!m_last_incomplete_buffer.empty()) {
+            data = m_last_incomplete_buffer + data;
+            m_last_incomplete_buffer.clear();
         }
 
         std::vector<std::string> data_lines = SplitFullStreamedData(data);
@@ -576,9 +576,9 @@ namespace liboai {
         // still being processed. This flag will be removed once
         // the response is processed. If the marking already
         // exists, keep appending to the same message.
-        if (this->_conversation["messages"].empty() ||
-            !this->_conversation["messages"].back().contains("pending")) {
-            this->_conversation["messages"].push_back(
+        if (this->m_conversation["messages"].empty() ||
+            !this->m_conversation["messages"].back().contains("pending")) {
+            this->m_conversation["messages"].push_back(
                 {
                     {    "role",   "" },
                     { "content",   "" },
@@ -600,7 +600,7 @@ namespace liboai {
                 try {
                     j = nlohmann::json::parse(line);
                 } catch (const std::exception& e) {
-                    _last_incomplete_buffer = line;
+                    m_last_incomplete_buffer = line;
                     continue;
                 }
 
@@ -609,7 +609,7 @@ namespace liboai {
                         if (!j["choices"][0]["delta"].empty() &&
                             !j["choices"][0]["delta"].is_null()) {
                             if (j["choices"][0]["delta"].contains("role")) {
-                                this->_conversation["messages"].back()["role"] =
+                                this->m_conversation["messages"].back()["role"] =
                                     j["choices"][0]["delta"]["role"];
                             }
 
@@ -618,8 +618,8 @@ namespace liboai {
                                     !j["choices"][0]["delta"]["content"].is_null()) {
                                     std::string stream_content =
                                         j["choices"][0]["delta"]["content"].get<std::string>();
-                                    this->_conversation["messages"].back()["content"] =
-                                        this->_conversation["messages"]
+                                    this->m_conversation["messages"].back()["content"] =
+                                        this->m_conversation["messages"]
                                             .back()["content"]
                                             .get<std::string>() +
                                         stream_content;
@@ -627,14 +627,14 @@ namespace liboai {
                                 }
 
                                 // function calls do not have a content field,
-                                // set _last_resp_is_fc to false and remove any
+                                // set m_last_resp_is_fc to false and remove any
                                 // previously set function_call field in the
                                 // conversation
-                                if (this->_last_resp_is_fc) {
-                                    if (this->_conversation.contains("function_call")) {
-                                        this->_conversation.erase("function_call");
+                                if (this->m_last_resp_is_fc) {
+                                    if (this->m_conversation.contains("function_call")) {
+                                        this->m_conversation.erase("function_call");
                                     }
-                                    this->_last_resp_is_fc = false;
+                                    this->m_last_resp_is_fc = false;
                                 }
                             }
 
@@ -648,15 +648,15 @@ namespace liboai {
                                                  .empty() &&
                                             !j["choices"][0]["delta"]["function_call"]["name"]
                                                  .is_null()) {
-                                            if (!this->_conversation["messages"].back().contains(
+                                            if (!this->m_conversation["messages"].back().contains(
                                                     "function_call"
                                                 )) {
-                                                this->_conversation["function_call"] = {
+                                                this->m_conversation["function_call"] = {
                                                     { "name",
                                                      j["choices"][0]["delta"]["function_call"]
                                                        ["name"] }
                                                 };
-                                                this->_last_resp_is_fc = true;
+                                                this->m_last_resp_is_fc = true;
                                             }
                                         }
                                     } else if (j["choices"][0]["delta"]["function_call"].contains(
@@ -666,19 +666,19 @@ namespace liboai {
                                                  .empty() &&
                                             !j["choices"][0]["delta"]["function_call"]["arguments"]
                                                  .is_null()) {
-                                            if (!this->_conversation["function_call"].contains(
+                                            if (!this->m_conversation["function_call"].contains(
                                                     "arguments"
                                                 )) {
-                                                this->_conversation["function_call"].push_back(
+                                                this->m_conversation["function_call"].push_back(
                                                     { "arguments",
                                                       j["choices"][0]["delta"]["function_call"]
                                                        ["arguments"] }
                                                 );
                                             } else {
-                                                this->_conversation["function_call"]["arguments"] =
-                                                    this->_conversation["function_call"]
-                                                                       ["arguments"]
-                                                                           .get<std::string>() +
+                                                this->m_conversation["function_call"]["arguments"] =
+                                                    this->m_conversation["function_call"]
+                                                                        ["arguments"]
+                                                                            .get<std::string>() +
                                                     j["choices"][0]["delta"]["function_call"]
                                                      ["arguments"]
                                                          .get<std::string>();
@@ -694,7 +694,7 @@ namespace liboai {
                 }
             } else {
                 // the response is complete, erase the "pending" flag
-                this->_conversation["messages"].back().erase("pending");
+                this->m_conversation["messages"].back().erase("pending");
                 completed = true;
             }
         }
@@ -764,16 +764,16 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->openai_root_,
+            this->m_openai_root,
             "/chat/completions",
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
+            this->m_auth.GetAuthorizationHeaders(),
             netimpl::components::Body{ jcon.dump() },
             _sscb ? netimpl::components::WriteCallback{ std::move(_sscb) } :
                     netimpl::components::WriteCallback{},
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -822,32 +822,32 @@ namespace liboai {
     }
 
     Functions::Functions() {
-        this->_functions["functions"] = nlohmann::json::array();
+        this->m_functions["functions"] = nlohmann::json::array();
     }
 
     Functions::Functions(const Functions& other) {
-        this->_functions = other._functions;
+        this->m_functions = other.m_functions;
     }
 
     Functions::Functions(Functions&& old) noexcept {
-        this->_functions = std::move(old._functions);
-        old._functions = nlohmann::json::object();
+        this->m_functions = std::move(old.m_functions);
+        old.m_functions = nlohmann::json::object();
     }
 
     auto Functions::operator=(const Functions& other) -> Functions& {
-        this->_functions = other._functions;
+        this->m_functions = other.m_functions;
         return *this;
     }
 
     auto Functions::operator=(Functions&& old) noexcept -> Functions& {
-        this->_functions = std::move(old._functions);
-        old._functions = nlohmann::json::object();
+        this->m_functions = std::move(old.m_functions);
+        old.m_functions = nlohmann::json::object();
         return *this;
     }
 
     auto Functions::AddFunction(std::string_view function_name) & noexcept(false) -> bool {
         if (this->GetFunctionIndex(function_name) == -1) {
-            this->_functions["functions"].push_back(
+            this->m_functions["functions"].push_back(
                 {
                     { "name", function_name }
             }
@@ -863,7 +863,7 @@ namespace liboai {
         if (function_names.size() > 0) {
             for (auto& function_name : function_names) {
                 if (this->GetFunctionIndex(function_name) == -1) {
-                    this->_functions["functions"].push_back(
+                    this->m_functions["functions"].push_back(
                         {
                             { "name", function_name }
                     }
@@ -880,7 +880,7 @@ namespace liboai {
         if (function_names.size() > 0) {
             for (auto& function_name : function_names) {
                 if (this->GetFunctionIndex(function_name) == -1) {
-                    this->_functions["functions"].push_back(
+                    this->m_functions["functions"].push_back(
                         {
                             { "name", std::move(function_name) }
                     }
@@ -896,7 +896,7 @@ namespace liboai {
         auto index = this->GetFunctionIndex(function_name);
 
         if (index != -1) {
-            this->_functions["functions"].erase(this->_functions["functions"].begin() + index);
+            this->m_functions["functions"].erase(this->m_functions["functions"].begin() + index);
             return true; // function removed
         }
 
@@ -911,8 +911,8 @@ namespace liboai {
                 auto index = this->GetFunctionIndex(function_name);
 
                 if (index != -1) {
-                    this->_functions["functions"].erase(
-                        this->_functions["functions"].begin() + index
+                    this->m_functions["functions"].erase(
+                        this->m_functions["functions"].begin() + index
                     );
                 }
             }
@@ -930,8 +930,8 @@ namespace liboai {
                 auto index = this->GetFunctionIndex(function_name);
 
                 if (index != -1) {
-                    this->_functions["functions"].erase(
-                        this->_functions["functions"].begin() + index
+                    this->m_functions["functions"].erase(
+                        this->m_functions["functions"].begin() + index
                     );
                 }
             }
@@ -948,8 +948,8 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (!this->_functions["functions"][i].contains("description")) {
-                this->_functions["functions"][i]["description"] = description;
+            if (!this->m_functions["functions"][i].contains("description")) {
+                this->m_functions["functions"][i]["description"] = description;
                 return true; // description set successfully
             }
             return false;    // already has a description
@@ -962,8 +962,8 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (this->_functions["functions"][i].contains("description")) {
-                this->_functions["functions"][i].erase("description");
+            if (this->m_functions["functions"][i].contains("description")) {
+                this->m_functions["functions"][i].erase("description");
                 return true; // description removed successfully
             }
             return false;    // does not have a description
@@ -979,9 +979,9 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1 && params.size() > 0) {
-            if (this->_functions["functions"][i].contains("parameters")) {
+            if (this->m_functions["functions"][i].contains("parameters")) {
                 for (auto& parameter : params) {
-                    this->_functions["functions"][i]["parameters"]["required"] = std::move(params);
+                    this->m_functions["functions"][i]["parameters"]["required"] = std::move(params);
                     return true; // required parameters set successfully
                 }
             }
@@ -997,9 +997,9 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1 && params.size() > 0) {
-            if (this->_functions["functions"][i].contains("parameters")) {
+            if (this->m_functions["functions"][i].contains("parameters")) {
                 for (auto& parameter : params) {
-                    this->_functions["functions"][i]["parameters"]["required"] = std::move(params);
+                    this->m_functions["functions"][i]["parameters"]["required"] = std::move(params);
                     return true; // required parameters set successfully
                 }
             }
@@ -1012,9 +1012,9 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (this->_functions["functions"][i].contains("parameters")) {
-                if (this->_functions["functions"][i]["parameters"].contains("required")) {
-                    this->_functions["functions"][i]["parameters"].erase("required");
+            if (this->m_functions["functions"][i].contains("parameters")) {
+                if (this->m_functions["functions"][i]["parameters"].contains("required")) {
+                    this->m_functions["functions"][i]["parameters"].erase("required");
                     return true; // required parameters removed successfully
                 }
             }
@@ -1029,9 +1029,9 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (this->_functions["functions"][i].contains("parameters")) {
-                if (this->_functions["functions"][i]["parameters"].contains("required")) {
-                    this->_functions["functions"][i]["parameters"]["required"].push_back(param);
+            if (this->m_functions["functions"][i].contains("parameters")) {
+                if (this->m_functions["functions"][i]["parameters"].contains("required")) {
+                    this->m_functions["functions"][i]["parameters"]["required"].push_back(param);
                     return true; // required parameter appended successfully
                 }
             }
@@ -1047,10 +1047,12 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1 && params.size() > 0) {
-            if (this->_functions["functions"][i].contains("parameters")) {
-                if (this->_functions["functions"][i]["parameters"].contains("required")) {
+            if (this->m_functions["functions"][i].contains("parameters")) {
+                if (this->m_functions["functions"][i]["parameters"].contains("required")) {
                     for (auto& param : params) {
-                        this->_functions["functions"][i]["parameters"]["required"].push_back(param);
+                        this->m_functions["functions"][i]["parameters"]["required"].push_back(
+                            param
+                        );
                     }
 
                     return true; // required parameters appended successfully
@@ -1068,10 +1070,10 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1 && params.size() > 0) {
-            if (this->_functions["functions"][i].contains("parameters")) {
-                if (this->_functions["functions"][i]["parameters"].contains("required")) {
+            if (this->m_functions["functions"][i].contains("parameters")) {
+                if (this->m_functions["functions"][i]["parameters"].contains("required")) {
                     for (auto& param : params) {
-                        this->_functions["functions"][i]["parameters"]["required"].push_back(
+                        this->m_functions["functions"][i]["parameters"]["required"].push_back(
                             std::move(param)
                         );
                     }
@@ -1090,13 +1092,13 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (!this->_functions["functions"][i].contains("parameters")) {
-                this->_functions["functions"][i]["parameters"] = nlohmann::json::object();
-                this->_functions["functions"][i]["parameters"]["properties"] =
+            if (!this->m_functions["functions"][i].contains("parameters")) {
+                this->m_functions["functions"][i]["parameters"] = nlohmann::json::object();
+                this->m_functions["functions"][i]["parameters"]["properties"] =
                     nlohmann::json::object();
-                this->_functions["functions"][i]["parameters"]["type"] = "object";
+                this->m_functions["functions"][i]["parameters"]["type"] = "object";
 
-                this->_functions["functions"][i]["parameters"]["properties"].push_back(
+                this->m_functions["functions"][i]["parameters"]["properties"].push_back(
                     {
                         parameter.name,
                         { { "type", std::move(parameter.type) },
@@ -1105,8 +1107,8 @@ namespace liboai {
                 );
 
                 if (parameter.enumeration) {
-                    this->_functions["functions"][i]["parameters"]["properties"][parameter.name]
-                                    ["enum"] = std::move(parameter.enumeration.value());
+                    this->m_functions["functions"][i]["parameters"]["properties"][parameter.name]
+                                     ["enum"] = std::move(parameter.enumeration.value());
                 }
 
                 return true; // parameter set successfully
@@ -1123,17 +1125,18 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (!this->_functions["functions"][i].contains("parameters") && parameters.size() > 0) {
-                this->_functions["functions"][i]["parameters"] = nlohmann::json::object();
-                this->_functions["functions"][i]["parameters"]["properties"] =
+            if (!this->m_functions["functions"][i].contains("parameters") &&
+                parameters.size() > 0) {
+                this->m_functions["functions"][i]["parameters"] = nlohmann::json::object();
+                this->m_functions["functions"][i]["parameters"]["properties"] =
                     nlohmann::json::object();
-                this->_functions["functions"][i]["parameters"]["type"] = "object";
+                this->m_functions["functions"][i]["parameters"]["type"] = "object";
 
                 for (auto& parameter : parameters) {
-                    if (!this->_functions["functions"][i]["parameters"]["properties"].contains(
+                    if (!this->m_functions["functions"][i]["parameters"]["properties"].contains(
                             parameter.name
                         )) {
-                        this->_functions["functions"][i]["parameters"]["properties"].push_back(
+                        this->m_functions["functions"][i]["parameters"]["properties"].push_back(
                             {
                                 parameter.name,
                                 { { "type", parameter.type },
@@ -1142,8 +1145,8 @@ namespace liboai {
                         );
 
                         if (parameter.enumeration) {
-                            this->_functions["functions"][i]["parameters"]["properties"]
-                                            [parameter.name]["enum"] =
+                            this->m_functions["functions"][i]["parameters"]["properties"]
+                                             [parameter.name]["enum"] =
                                 parameter.enumeration.value();
                         }
                     }
@@ -1163,17 +1166,18 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (!this->_functions["functions"][i].contains("parameters") && parameters.size() > 0) {
-                this->_functions["functions"][i]["parameters"] = nlohmann::json::object();
-                this->_functions["functions"][i]["parameters"]["properties"] =
+            if (!this->m_functions["functions"][i].contains("parameters") &&
+                parameters.size() > 0) {
+                this->m_functions["functions"][i]["parameters"] = nlohmann::json::object();
+                this->m_functions["functions"][i]["parameters"]["properties"] =
                     nlohmann::json::object();
-                this->_functions["functions"][i]["parameters"]["type"] = "object";
+                this->m_functions["functions"][i]["parameters"]["type"] = "object";
 
                 for (auto& parameter : parameters) {
-                    if (!this->_functions["functions"][i]["parameters"]["properties"].contains(
+                    if (!this->m_functions["functions"][i]["parameters"]["properties"].contains(
                             parameter.name
                         )) {
-                        this->_functions["functions"][i]["parameters"]["properties"].push_back(
+                        this->m_functions["functions"][i]["parameters"]["properties"].push_back(
                             {
                                 parameter.name,
                                 { { "type", std::move(parameter.type) },
@@ -1182,8 +1186,8 @@ namespace liboai {
                         );
 
                         if (parameter.enumeration) {
-                            this->_functions["functions"][i]["parameters"]["properties"]
-                                            [parameter.name]["enum"] =
+                            this->m_functions["functions"][i]["parameters"]["properties"]
+                                             [parameter.name]["enum"] =
                                 std::move(parameter.enumeration.value());
                         }
                     }
@@ -1200,8 +1204,8 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (this->_functions["functions"][i].contains("parameters")) {
-                this->_functions["functions"][i].erase("parameters");
+            if (this->m_functions["functions"][i].contains("parameters")) {
+                this->m_functions["functions"][i].erase("parameters");
                 return true; // parameters removed successfully
             }
         }
@@ -1216,12 +1220,12 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (this->_functions["functions"][i].contains("parameters")) {
+            if (this->m_functions["functions"][i].contains("parameters")) {
                 for (auto& param_name : param_names) {
-                    if (this->_functions["functions"][i]["parameters"]["properties"].contains(
+                    if (this->m_functions["functions"][i]["parameters"]["properties"].contains(
                             param_name
                         )) {
-                        this->_functions["functions"][i]["parameters"]["properties"].erase(
+                        this->m_functions["functions"][i]["parameters"]["properties"].erase(
                             param_name
                         );
                     }
@@ -1241,12 +1245,12 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (this->_functions["functions"][i].contains("parameters")) {
+            if (this->m_functions["functions"][i].contains("parameters")) {
                 for (auto& param_name : param_names) {
-                    if (this->_functions["functions"][i]["parameters"]["properties"].contains(
+                    if (this->m_functions["functions"][i]["parameters"]["properties"].contains(
                             param_name
                         )) {
-                        this->_functions["functions"][i]["parameters"]["properties"].erase(
+                        this->m_functions["functions"][i]["parameters"]["properties"].erase(
                             param_name
                         );
                     }
@@ -1266,11 +1270,11 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (this->_functions["functions"][i].contains("parameters")) {
-                if (!this->_functions["functions"][i]["parameters"]["properties"].contains(
+            if (this->m_functions["functions"][i].contains("parameters")) {
+                if (!this->m_functions["functions"][i]["parameters"]["properties"].contains(
                         parameter.name
                     )) {
-                    this->_functions["functions"][i]["parameters"]["properties"].push_back(
+                    this->m_functions["functions"][i]["parameters"]["properties"].push_back(
                         {
                             parameter.name,
                             { { "type", std::move(parameter.type) },
@@ -1279,8 +1283,9 @@ namespace liboai {
                     );
 
                     if (parameter.enumeration) {
-                        this->_functions["functions"][i]["parameters"]["properties"][parameter.name]
-                                        ["enum"] = std::move(parameter.enumeration.value());
+                        this->m_functions["functions"][i]["parameters"]["properties"]
+                                         [parameter.name]["enum"] =
+                            std::move(parameter.enumeration.value());
                     }
 
                     return true; // parameter appended successfully
@@ -1298,12 +1303,12 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (this->_functions["functions"][i].contains("parameters")) {
+            if (this->m_functions["functions"][i].contains("parameters")) {
                 for (auto& parameter : parameters) {
-                    if (!this->_functions["functions"][i]["parameters"]["properties"].contains(
+                    if (!this->m_functions["functions"][i]["parameters"]["properties"].contains(
                             parameter.name
                         )) {
-                        this->_functions["functions"][i]["parameters"]["properties"].push_back(
+                        this->m_functions["functions"][i]["parameters"]["properties"].push_back(
                             {
                                 parameter.name,
                                 { { "type", parameter.type },
@@ -1312,8 +1317,8 @@ namespace liboai {
                         );
 
                         if (parameter.enumeration) {
-                            this->_functions["functions"][i]["parameters"]["properties"]
-                                            [parameter.name]["enum"] =
+                            this->m_functions["functions"][i]["parameters"]["properties"]
+                                             [parameter.name]["enum"] =
                                 parameter.enumeration.value();
                         }
                     }
@@ -1333,12 +1338,12 @@ namespace liboai {
         index i = this->GetFunctionIndex(target);
 
         if (i != -1) {
-            if (this->_functions["functions"][i].contains("parameters")) {
+            if (this->m_functions["functions"][i].contains("parameters")) {
                 for (auto& parameter : parameters) {
-                    if (!this->_functions["functions"][i]["parameters"]["properties"].contains(
+                    if (!this->m_functions["functions"][i]["parameters"]["properties"].contains(
                             parameter.name
                         )) {
-                        this->_functions["functions"][i]["parameters"]["properties"].push_back(
+                        this->m_functions["functions"][i]["parameters"]["properties"].push_back(
                             {
                                 parameter.name,
                                 { { "type", std::move(parameter.type) },
@@ -1347,8 +1352,8 @@ namespace liboai {
                         );
 
                         if (parameter.enumeration) {
-                            this->_functions["functions"][i]["parameters"]["properties"]
-                                            [parameter.name]["enum"] =
+                            this->m_functions["functions"][i]["parameters"]["properties"]
+                                             [parameter.name]["enum"] =
                                 std::move(parameter.enumeration.value());
                         }
                     }
@@ -1362,15 +1367,15 @@ namespace liboai {
     }
 
     auto Functions::GetJSON() const& noexcept -> const nlohmann::json& {
-        return this->_functions;
+        return this->m_functions;
     }
 
     auto Functions::GetFunctionIndex(std::string_view function_name) const& noexcept(false)
         -> Functions::index {
         index i = 0;
 
-        if (!this->_functions.empty()) {
-            for (auto& [key, value] : this->_functions["functions"].items()) {
+        if (!this->m_functions.empty()) {
+            for (auto& [key, value] : this->m_functions["functions"].items()) {
                 if (value.contains("name")) {
                     if (value["name"].get<std::string>() == function_name) {
                         return i;

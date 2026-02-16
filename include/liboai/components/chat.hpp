@@ -543,13 +543,14 @@ namespace liboai {
         [[nodiscard]] auto GetFunctionIndex(std::string_view function_name) const& noexcept(false)
             -> index;
 
-        nlohmann::json _functions;
+        nlohmann::json m_functions;
     };
 
     /*
         @brief Class containing, and used for keeping track of, the chat history.
-            An object of this class should be created, set with system and user data,
-            and provided to ChatCompletion::create (system is optional).
+ An object
+       of this class should be created, set with system and user data, and provided to
+       ChatCompletion::create (system is optional).
 
             The general usage of this class is as follows:
                 1. Create a ChatCompletion::Conversation object.
@@ -886,7 +887,7 @@ namespace liboai {
          * call from ChatComplete
 			*/
         [[nodiscard]] constexpr auto HasFunctions() const& noexcept -> bool {
-            return this->_functions ? true : false;
+            return this->m_functions ? true : false;
         }
 
         /**
@@ -897,7 +898,7 @@ namespace liboai {
 
          * *             Older messages will be removed when the limit is exceeded.
 			 */
-        auto SetMaxHistorySize(size_t size) noexcept -> void { _max_history_size = size; }
+        auto SetMaxHistorySize(size_t size) noexcept -> void { m_max_history_size = size; }
 
     private:
         friend class ChatCompletion;
@@ -916,11 +917,11 @@ namespace liboai {
             -> std::vector<std::string>;
         auto ParseStreamData(std::string data, std::string& delta, bool& completed) -> bool;
 
-        nlohmann::json _conversation;
-        std::optional<nlohmann::json> _functions = std::nullopt;
-        bool _last_resp_is_fc = false;
-        std::string _last_incomplete_buffer;
-        size_t _max_history_size = std::numeric_limits<size_t>::max();
+        nlohmann::json m_conversation;
+        std::optional<nlohmann::json> m_functions = std::nullopt;
+        bool m_last_resp_is_fc = false;
+        std::string m_last_incomplete_buffer;
+        size_t m_max_history_size = std::numeric_limits<size_t>::max();
     };
 
     class ChatCompletion final : private Network {
@@ -1057,7 +1058,7 @@ namespace liboai {
         ) const& noexcept(false) -> liboai::FutureResponse;
 
     private:
-        Authorization& auth_ = Authorization::Authorizer();
+        Authorization& m_auth = Authorization::Authorizer();
         using StrippedStreamCallback = std::function<bool(std::string, intptr_t)>;
     };
 } // namespace liboai

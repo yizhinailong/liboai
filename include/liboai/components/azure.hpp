@@ -315,7 +315,7 @@ namespace liboai {
         ) const& noexcept(false) -> liboai::FutureResponse;
 
     private:
-        Authorization& auth_ = Authorization::Authorizer();
+        Authorization& m_auth = Authorization::Authorizer();
         using StrippedStreamCallback = std::function<bool(std::string, intptr_t)>;
     };
 } // namespace liboai

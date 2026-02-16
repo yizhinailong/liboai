@@ -19,14 +19,14 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->openai_root_,
+            this->m_openai_root,
             "/images/generations",
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
+            this->m_auth.GetAuthorizationHeaders(),
             netimpl::components::Body{ jcon.dump() },
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -102,14 +102,14 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->openai_root_,
+            this->m_openai_root,
             "/images/edits",
             "multipart/form-data",
-            this->auth_.GetAuthorizationHeaders(),
+            this->m_auth.GetAuthorizationHeaders(),
             std::move(form),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -173,14 +173,14 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->openai_root_,
+            this->m_openai_root,
             "/images/variations",
             "multipart/form-data",
-            this->auth_.GetAuthorizationHeaders(),
+            this->m_auth.GetAuthorizationHeaders(),
             std::move(form),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;

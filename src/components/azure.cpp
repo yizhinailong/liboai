@@ -45,17 +45,17 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            ("https://" + resource_name + this->azure_root_ + "/deployments/" + deployment_id),
+            ("https://" + resource_name + this->m_azure_root + "/deployments/" + deployment_id),
             "/completions",
             "application/json",
-            this->auth_.GetAzureAuthorizationHeaders(),
+            this->m_auth.GetAzureAuthorizationHeaders(),
             netimpl::components::Body{ jcon.dump() },
             std::move(params),
             stream ? netimpl::components::WriteCallback{ std::move(stream.value()) } :
                      netimpl::components::WriteCallback{},
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -123,15 +123,15 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            ("https://" + resource_name + this->azure_root_ + "/deployments/" + deployment_id),
+            ("https://" + resource_name + this->m_azure_root + "/deployments/" + deployment_id),
             "/embeddings",
             "application/json",
-            this->auth_.GetAzureAuthorizationHeaders(),
+            this->m_auth.GetAzureAuthorizationHeaders(),
             netimpl::components::Body{ jcon.dump() },
             std::move(params),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -220,17 +220,17 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            ("https://" + resource_name + this->azure_root_ + "/deployments/" + deployment_id),
+            ("https://" + resource_name + this->m_azure_root + "/deployments/" + deployment_id),
             "/chat/completions",
             "application/json",
-            this->auth_.GetAzureAuthorizationHeaders(),
+            this->m_auth.GetAzureAuthorizationHeaders(),
             netimpl::components::Body{ jcon.dump() },
             std::move(params),
             _sscb ? netimpl::components::WriteCallback{ std::move(_sscb) } :
                     netimpl::components::WriteCallback{},
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -291,15 +291,15 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            ("https://" + resource_name + this->azure_root_),
+            ("https://" + resource_name + this->m_azure_root),
             "/images/generations:submit",
             "application/json",
-            this->auth_.GetAzureAuthorizationHeaders(),
+            this->m_auth.GetAzureAuthorizationHeaders(),
             netimpl::components::Body{ jcon.dump() },
             std::move(params),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -335,14 +335,14 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            ("https://" + resource_name + this->azure_root_),
+            ("https://" + resource_name + this->m_azure_root),
             "/operations/images/" + operation_id,
             "application/json",
-            this->auth_.GetAzureAuthorizationHeaders(),
+            this->m_auth.GetAzureAuthorizationHeaders(),
             std::move(params),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -374,14 +374,14 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_DELETE,
-            ("https://" + resource_name + this->azure_root_),
+            ("https://" + resource_name + this->m_azure_root),
             "/operations/images/" + operation_id,
             "application/json",
-            this->auth_.GetAzureAuthorizationHeaders(),
+            this->m_auth.GetAzureAuthorizationHeaders(),
             std::move(params),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;

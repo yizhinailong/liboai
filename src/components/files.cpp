@@ -6,13 +6,13 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->openai_root_,
+            this->m_openai_root,
             "/files",
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -42,14 +42,14 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->openai_root_,
+            this->m_openai_root,
             "/files",
             "multipart/form-data",
-            this->auth_.GetAuthorizationHeaders(),
+            this->m_auth.GetAuthorizationHeaders(),
             std::move(form),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -66,13 +66,13 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_DELETE,
-            this->openai_root_,
+            this->m_openai_root,
             "/files/" + file_id,
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -86,13 +86,13 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->openai_root_,
+            this->m_openai_root,
             "/files/" + file_id,
             "application/json",
-            this->auth_.GetAuthorizationHeaders(),
-            this->auth_.GetProxies(),
-            this->auth_.GetProxyAuth(),
-            this->auth_.GetMaxTimeout()
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
         );
 
         return res;
@@ -109,7 +109,7 @@ namespace liboai {
         return Network::Download(
             save_to,
             ("https://api.openai.com/v1/files/" + file_id + "/content"),
-            this->auth_.GetAuthorizationHeaders()
+            this->m_auth.GetAuthorizationHeaders()
         );
     }
 
