@@ -32,11 +32,11 @@ namespace liboai {
 				@return A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response create(
+		LIBOAI_EXPORT auto create(
 				const std::string& model_id,
 				std::optional<std::string> input = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously creates an embedding vector representing the input text.
@@ -48,11 +48,11 @@ namespace liboai {
 				@return A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse create_async(
+		LIBOAI_EXPORT auto create_async(
 				const std::string& model_id,
 				std::optional<std::string> input = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 		private:
 			Authorization& auth_ = Authorization::Authorizer();

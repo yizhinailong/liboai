@@ -28,7 +28,7 @@ namespace liboai {
 				@return A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response list() const & noexcept(false);
+			LIBOAI_EXPORT auto list() const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously returns a list of files that belong to the
@@ -37,7 +37,7 @@ namespace liboai {
 				@return A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse list_async() const & noexcept(false);
+			LIBOAI_EXPORT auto list_async() const & noexcept(false) -> liboai::FutureResponse;
 
 			/*
 				@brief Upload a file that contains document(s) to be
@@ -51,10 +51,10 @@ namespace liboai {
 				@return A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response create(
+			LIBOAI_EXPORT auto create(
 				const std::filesystem::path& file,
 				const std::string& purpose
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously upload a file that contains document(s)
@@ -68,10 +68,10 @@ namespace liboai {
 				@return A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse create_async(
+			LIBOAI_EXPORT auto create_async(
 				const std::filesystem::path& file,
 				const std::string& purpose
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 			/*
 				@brief Delete [remove] a file.
@@ -81,9 +81,9 @@ namespace liboai {
 				@return A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/			
-			LIBOAI_EXPORT liboai::Response remove(
+			LIBOAI_EXPORT auto remove(
 				const std::string& file_id
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously delete [remove] a file.
@@ -93,9 +93,9 @@ namespace liboai {
 				@return A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/			
-			LIBOAI_EXPORT liboai::FutureResponse remove_async(
+			LIBOAI_EXPORT auto remove_async(
 				const std::string& file_id
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 			/*
 				@brief Returns information about a specific file.
@@ -105,9 +105,9 @@ namespace liboai {
 				@return A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response retrieve(
+			LIBOAI_EXPORT auto retrieve(
 				const std::string& file_id
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously returns information about a specific file.
@@ -117,9 +117,9 @@ namespace liboai {
 				@return A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse retrieve_async(
+			LIBOAI_EXPORT auto retrieve_async(
 				const std::string& file_id
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 			/*
 				@brief Downloads the contents of the specified file
@@ -131,10 +131,10 @@ namespace liboai {
 				@return a boolean value indicating whether the file was
 					successfully downloaded or not.
 			*/
-			LIBOAI_EXPORT bool download(
+			LIBOAI_EXPORT auto download(
 				const std::string& file_id,
 				const std::string& save_to
-			) const & noexcept(false);
+			) const & noexcept(false) -> bool;
 
 			/*
 				@brief Asynchronously downloads the contents of the specified file
@@ -146,10 +146,10 @@ namespace liboai {
 				@return a boolean future indicating whether the file was
 					successfully downloaded or not.
 			*/
-			LIBOAI_EXPORT std::future<bool> download_async(
+			LIBOAI_EXPORT auto download_async(
 				const std::string& file_id,
 				const std::string& save_to
-			) const & noexcept(false);
+			) const & noexcept(false) -> std::future<bool>;
 			
 		private:
 			Authorization& auth_ = Authorization::Authorizer();

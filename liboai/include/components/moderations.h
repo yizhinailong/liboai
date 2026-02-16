@@ -32,10 +32,10 @@ namespace liboai {
 				@return A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response create(
+			LIBOAI_EXPORT auto create(
 				const std::string& input,
 				std::optional<std::string> model = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously creates a new moderation and classifies
@@ -47,10 +47,10 @@ namespace liboai {
 				@return A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse create_async(
+			LIBOAI_EXPORT auto create_async(
 				const std::string& input,
 				std::optional<std::string> model = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 		private:
 			Authorization& auth_ = Authorization::Authorizer();

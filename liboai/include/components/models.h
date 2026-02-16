@@ -28,7 +28,7 @@ namespace liboai {
 				@returns A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response list() const & noexcept(false);
+			LIBOAI_EXPORT auto list() const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously list all available models.
@@ -36,7 +36,7 @@ namespace liboai {
 				@returns A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse list_async() const & noexcept(false);
+			LIBOAI_EXPORT auto list_async() const & noexcept(false) -> liboai::FutureResponse;
 			
 			/*
 				@brief Retrieve a specific model's information.
@@ -46,9 +46,9 @@ namespace liboai {
 				@returns A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response retrieve(
+LIBOAI_EXPORT auto retrieve(
 				const std::string& model
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously retrieve a specific model's information.
@@ -58,9 +58,9 @@ namespace liboai {
 				@returns A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse retrieve_async(
+LIBOAI_EXPORT auto retrieve_async(
 				const std::string& model
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 		private:
 			Authorization& auth_ = Authorization::Authorizer();

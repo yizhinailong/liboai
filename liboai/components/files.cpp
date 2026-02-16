@@ -1,6 +1,6 @@
 #include "../include/components/files.h"
 
-liboai::Response liboai::Files::list() const & noexcept(false) {
+auto liboai::Files::list() const & noexcept(false) -> liboai::Response {
 	Response res;
 	res = this->Request(
 		Method::HTTP_GET, this->openai_root_, "/files", "application/json",
@@ -13,11 +13,11 @@ liboai::Response liboai::Files::list() const & noexcept(false) {
 	return res;
 }
 
-liboai::FutureResponse liboai::Files::list_async() const & noexcept(false) {
+auto liboai::Files::list_async() const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Files::list, this);
 }
 
-liboai::Response liboai::Files::create(const std::filesystem::path& file, const std::string& purpose) const & noexcept(false) {
+auto liboai::Files::create(const std::filesystem::path& file, const std::string& purpose) const & noexcept(false) -> liboai::Response {
 	if (!this->Validate(file)) {
 		throw liboai::exception::OpenAIException(
 			"File path provided is non-existent, is not a file, or is empty.",
@@ -44,11 +44,11 @@ liboai::Response liboai::Files::create(const std::filesystem::path& file, const 
 	return res;
 }
 
-liboai::FutureResponse liboai::Files::create_async(const std::filesystem::path& file, const std::string& purpose) const & noexcept(false) {
+auto liboai::Files::create_async(const std::filesystem::path& file, const std::string& purpose) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Files::create, this, file, purpose);
 }
 
-liboai::Response liboai::Files::remove(const std::string& file_id) const & noexcept(false) {
+auto liboai::Files::remove(const std::string& file_id) const & noexcept(false) -> liboai::Response {
 	Response res;
 	res = this->Request(
 		Method::HTTP_DELETE, this->openai_root_, "/files/" + file_id, "application/json",
@@ -61,11 +61,11 @@ liboai::Response liboai::Files::remove(const std::string& file_id) const & noexc
 	return res;
 }
 
-liboai::FutureResponse liboai::Files::remove_async(const std::string& file_id) const & noexcept(false) {
+auto liboai::Files::remove_async(const std::string& file_id) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Files::remove, this, file_id);
 }
 
-liboai::Response liboai::Files::retrieve(const std::string& file_id) const & {
+auto liboai::Files::retrieve(const std::string& file_id) const & -> liboai::Response {
 	Response res;
 	res = this->Request(
 		Method::HTTP_GET, this->openai_root_, "/files/" + file_id, "application/json",
@@ -78,11 +78,11 @@ liboai::Response liboai::Files::retrieve(const std::string& file_id) const & {
 	return res;
 }
 
-liboai::FutureResponse liboai::Files::retrieve_async(const std::string& file_id) const & noexcept(false) {
+auto liboai::Files::retrieve_async(const std::string& file_id) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Files::retrieve, this, file_id);
 }
 
-bool liboai::Files::download(const std::string& file_id, const std::string& save_to) const & noexcept(false) {
+auto liboai::Files::download(const std::string& file_id, const std::string& save_to) const & noexcept(false) -> bool {
 	return Network::Download(
 		save_to,
 		("https://api.openai.com/v1/files/" + file_id + "/content"),
@@ -90,6 +90,6 @@ bool liboai::Files::download(const std::string& file_id, const std::string& save
 	);
 }
 
-std::future<bool> liboai::Files::download_async(const std::string& file_id, const std::string& save_to) const & noexcept(false) {
+auto liboai::Files::download_async(const std::string& file_id, const std::string& save_to) const & noexcept(false) -> std::future<bool> {
 	return std::async(std::launch::async, &liboai::Files::download, this, file_id, save_to);
 }

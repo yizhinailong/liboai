@@ -1,6 +1,6 @@
 #include "../include/components/embeddings.h"
 
-liboai::Response liboai::Embeddings::create(const std::string& model_id, std::optional<std::string> input, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Embeddings::create(const std::string& model_id, std::optional<std::string> input, std::optional<std::string> user) const & noexcept(false) -> liboai::Response {
 	liboai::JsonConstructor jcon;
 	jcon.push_back("model", model_id);
 	jcon.push_back("input", std::move(input));
@@ -21,6 +21,6 @@ liboai::Response liboai::Embeddings::create(const std::string& model_id, std::op
 	return res;
 }
 
-liboai::FutureResponse liboai::Embeddings::create_async(const std::string& model_id, std::optional<std::string> input, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Embeddings::create_async(const std::string& model_id, std::optional<std::string> input, std::optional<std::string> user) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Embeddings::create, this, model_id, input, user);
 }

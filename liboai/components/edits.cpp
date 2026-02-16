@@ -1,6 +1,6 @@
 #include "../include/components/edits.h"
 
-liboai::Response liboai::Edits::create(const std::string& model_id, std::optional<std::string> input, std::optional<std::string> instruction, std::optional<uint16_t> n, std::optional<float> temperature, std::optional<float> top_p) const & noexcept(false) {
+auto liboai::Edits::create(const std::string& model_id, std::optional<std::string> input, std::optional<std::string> instruction, std::optional<uint16_t> n, std::optional<float> temperature, std::optional<float> top_p) const & noexcept(false) -> liboai::Response {
 	liboai::JsonConstructor jcon;
 	jcon.push_back("model", model_id);
 	jcon.push_back("input", std::move(input));
@@ -24,6 +24,6 @@ liboai::Response liboai::Edits::create(const std::string& model_id, std::optiona
 	return res;
 }
 
-liboai::FutureResponse liboai::Edits::create_async(const std::string& model_id, std::optional<std::string> input, std::optional<std::string> instruction, std::optional<uint16_t> n, std::optional<float> temperature, std::optional<float> top_p) const & noexcept(false) {
+auto liboai::Edits::create_async(const std::string& model_id, std::optional<std::string> input, std::optional<std::string> instruction, std::optional<uint16_t> n, std::optional<float> temperature, std::optional<float> top_p) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Edits::create, this, model_id, input, instruction, n, temperature, top_p);
 }

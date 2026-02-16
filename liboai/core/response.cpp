@@ -63,14 +63,14 @@ liboai::Response& liboai::Response::operator=(liboai::Response&& other) noexcept
 
 namespace liboai {
 
-std::ostream& operator<<(std::ostream& os, const Response& r) {
+auto operator<<(std::ostream& os, const Response& r) -> std::ostream& {
 	!r.raw_json.empty() ? os << r.raw_json.dump(4) : os << "null";
 	return os;
 }
 
 }
 
-void liboai::Response::CheckResponse() const noexcept(false) {
+auto liboai::Response::CheckResponse() const noexcept(false) -> void {
 	if (this->status_code == 429) {
 		throw liboai::exception::OpenAIRateLimited(
 			!this->reason.empty() ? this->reason : "Rate limited",

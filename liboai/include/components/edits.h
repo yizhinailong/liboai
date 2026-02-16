@@ -44,14 +44,14 @@ namespace liboai {
 				@return A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response create(
+			LIBOAI_EXPORT auto create(
 				const std::string& model_id,
 				std::optional<std::string> input = std::nullopt,
 				std::optional<std::string> instruction = std::nullopt,
 				std::optional<uint16_t> n = std::nullopt,
 				std::optional<float> temperature = std::nullopt,
 				std::optional<float> top_p = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 			
 			/*
 				@brief Asynchronously creates a new edit for the
@@ -75,14 +75,14 @@ namespace liboai {
 				@return A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse create_async(
+			LIBOAI_EXPORT auto create_async(
 				const std::string& model_id,
 				std::optional<std::string> input = std::nullopt,
 				std::optional<std::string> instruction = std::nullopt,
 				std::optional<uint16_t> n = std::nullopt,
 				std::optional<float> temperature = std::nullopt,
 				std::optional<float> top_p = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 		private:
 			Authorization& auth_ = Authorization::Authorizer();

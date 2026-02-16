@@ -47,14 +47,14 @@ namespace liboai {
 				@returns A liboai::Response object containing the
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response transcribe(
+			LIBOAI_EXPORT auto transcribe(
 				const std::filesystem::path& file,
 				const std::string& model,
 				std::optional<std::string> prompt = std::nullopt,
 				std::optional<std::string> response_format = std::nullopt,
 				std::optional<float> temperature = std::nullopt,
 				std::optional<std::string> language = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously transcribes audio into the input language.
@@ -78,14 +78,14 @@ namespace liboai {
 				@returns A liboai::Response future containing the
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse transcribe_async(
+			LIBOAI_EXPORT auto transcribe_async(
 				const std::filesystem::path& file,
 				const std::string& model,
 				std::optional<std::string> prompt = std::nullopt,
 				std::optional<std::string> response_format = std::nullopt,
 				std::optional<float> temperature = std::nullopt,
 				std::optional<std::string> language = std::nullopt
-			) const& noexcept(false);
+			) const& noexcept(false) -> liboai::FutureResponse;
 
 			/*
 				@brief Translates audio into English.
@@ -107,13 +107,13 @@ namespace liboai {
 				@returns A liboai::Response object containing the
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response translate(
+			LIBOAI_EXPORT auto translate(
 				const std::filesystem::path& file,
 				const std::string& model,
 				std::optional<std::string> prompt = std::nullopt,
 				std::optional<std::string> response_format = std::nullopt,
 				std::optional<float> temperature = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously translates audio into English.
@@ -135,13 +135,13 @@ namespace liboai {
 				@returns A liboai::Response future containing the
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse translate_async(
+			LIBOAI_EXPORT auto translate_async(
 				const std::filesystem::path& file,
 				const std::string& model,
 				std::optional<std::string> prompt = std::nullopt,
 				std::optional<std::string> response_format = std::nullopt,
 				std::optional<float> temperature = std::nullopt
-			) const& noexcept(false);
+			) const& noexcept(false) -> liboai::FutureResponse;
 
 			/*
 				@brief Turn text into lifelike spoken audio.
@@ -160,13 +160,13 @@ namespace liboai {
 				@returns A liboai::Response object containing the
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response speech(
+			LIBOAI_EXPORT auto speech(
 				const std::string& model,
 				const std::string& voice,
 				const std::string& input,
 				std::optional<std::string> response_format = std::nullopt,
 				std::optional<float> speed = std::nullopt
-			) const& noexcept(false);
+			) const& noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously turn text into lifelike spoken audio.
@@ -185,13 +185,13 @@ namespace liboai {
 				@returns A liboai::Response object containing the
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse speech_async(
+			LIBOAI_EXPORT auto speech_async(
 				const std::string& model,
 				const std::string& voice,
 				const std::string& input,
 				std::optional<std::string> response_format = std::nullopt,
 				std::optional<float> speed = std::nullopt
-			) const& noexcept(false);
+			) const& noexcept(false) -> liboai::FutureResponse;
 
 		private:
 			Authorization& auth_ = Authorization::Authorizer();

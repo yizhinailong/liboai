@@ -55,14 +55,14 @@ liboai::Conversation::Conversation(const std::vector<std::string>& user_data) {
 	}
 }
 
-liboai::Conversation& liboai::Conversation::operator=(const Conversation& other) {
+auto liboai::Conversation::operator=(const Conversation& other) -> Conversation& {
 	this->_conversation = other._conversation;
 	this->_functions = other._functions;
 	this->_last_resp_is_fc = other._last_resp_is_fc;
 	return *this;
 }
 
-liboai::Conversation& liboai::Conversation::operator=(Conversation&& old) noexcept {
+auto liboai::Conversation::operator=(Conversation&& old) noexcept -> Conversation& {
 	this->_conversation = std::move(old._conversation);
 	this->_functions = std::move(old._functions);
 	this->_last_resp_is_fc = old._last_resp_is_fc;
@@ -73,7 +73,7 @@ liboai::Conversation& liboai::Conversation::operator=(Conversation&& old) noexce
 	return *this;
 }
 
-bool liboai::Conversation::ChangeFirstSystemMessage(std::string_view new_data) & noexcept(false) {
+auto liboai::Conversation::ChangeFirstSystemMessage(std::string_view new_data) & noexcept(false) -> bool {
 	if (!new_data.empty() && !this->_conversation["messages"].empty()) {
 		if (this->_conversation["messages"][0]["role"].get<std::string>() == "system") {
 			this->_conversation["messages"][0]["content"] = new_data;
@@ -84,7 +84,7 @@ bool liboai::Conversation::ChangeFirstSystemMessage(std::string_view new_data) &
 	return false; // New data is empty or conversation is empty
 }
 
-bool liboai::Conversation::SetSystemData(std::string_view data) & noexcept(false) {
+auto liboai::Conversation::SetSystemData(std::string_view data) & noexcept(false) -> bool {
 	// if data provided is non-empty
 	if (!data.empty()) {
 		// if system is not set already - only one system message shall exist in any
@@ -100,7 +100,7 @@ bool liboai::Conversation::SetSystemData(std::string_view data) & noexcept(false
 	return false; // data is empty
 }
 
-bool liboai::Conversation::PopSystemData() & noexcept(false) {
+auto liboai::Conversation::PopSystemData() & noexcept(false) -> bool {
 	// if conversation is non-empty
 	if (!this->_conversation["messages"].empty()) {
 		// if first message is system
@@ -113,7 +113,7 @@ bool liboai::Conversation::PopSystemData() & noexcept(false) {
 	return false; // conversation is empty
 }
 
-void liboai::Conversation::EraseExtra() {
+auto liboai::Conversation::EraseExtra() -> void {
 	if (_conversation["messages"].size() > _max_history_size) {
 		// Ensure the system message is preserved
 		auto first_msg = _conversation["messages"].begin();
@@ -125,7 +125,7 @@ void liboai::Conversation::EraseExtra() {
 	}
 }
 
-bool liboai::Conversation::AddUserData(std::string_view data) & noexcept(false) {
+auto liboai::Conversation::AddUserData(std::string_view data) & noexcept(false) -> bool {
 	// if data provided is non-empty
 	if (!data.empty()) {
 		EraseExtra();
@@ -135,7 +135,7 @@ bool liboai::Conversation::AddUserData(std::string_view data) & noexcept(false) 
 	return false; // data is empty
 }
 
-bool liboai::Conversation::AddUserData(std::string_view data, std::string_view name) & noexcept(false) {
+auto liboai::Conversation::AddUserData(std::string_view data, std::string_view name) & noexcept(false) -> bool {
 	// if data provided is non-empty
 	if (!data.empty()) {
 		EraseExtra();
@@ -151,7 +151,7 @@ bool liboai::Conversation::AddUserData(std::string_view data, std::string_view n
 	return false; // data is empty
 }
 
-bool liboai::Conversation::PopUserData() & noexcept(false) {
+auto liboai::Conversation::PopUserData() & noexcept(false) -> bool {
 	// if conversation is not empty
 	if (!this->_conversation["messages"].empty()) {
 		// if last message is user message
@@ -164,7 +164,7 @@ bool liboai::Conversation::PopUserData() & noexcept(false) {
 	return false; // conversation is empty
 }
 
-std::string liboai::Conversation::GetLastResponse() const & noexcept {
+auto liboai::Conversation::GetLastResponse() const & noexcept -> std::string {
 	// if conversation is not empty
 	if (!this->_conversation["messages"].empty()) {
 		// if last message is from assistant
@@ -175,11 +175,11 @@ std::string liboai::Conversation::GetLastResponse() const & noexcept {
 	return ""; // no response found
 }
 
-bool liboai::Conversation::LastResponseIsFunctionCall() const & noexcept {
+auto liboai::Conversation::LastResponseIsFunctionCall() const & noexcept -> bool {
 	return this->_last_resp_is_fc;
 }
 
-std::string liboai::Conversation::GetLastFunctionCallName() const & noexcept(false) {
+auto liboai::Conversation::GetLastFunctionCallName() const & noexcept(false) -> std::string {
 	if (this->_conversation.contains("function_call")) {
 		if (this->_conversation["function_call"].contains("name")) {
 			return this->_conversation["function_call"]["name"].get<std::string>();
@@ -189,7 +189,7 @@ std::string liboai::Conversation::GetLastFunctionCallName() const & noexcept(fal
 	return "";
 }
 
-std::string liboai::Conversation::GetLastFunctionCallArguments() const & noexcept(false) {
+auto liboai::Conversation::GetLastFunctionCallArguments() const & noexcept(false) -> std::string {
 	if (this->_conversation.contains("function_call")) {
 		if (this->_conversation["function_call"].contains("arguments")) {
 			return this->_conversation["function_call"]["arguments"].get<std::string>();
@@ -199,7 +199,7 @@ std::string liboai::Conversation::GetLastFunctionCallArguments() const & noexcep
 	return "";
 }
 
-bool liboai::Conversation::PopLastResponse() & noexcept(false) {
+auto liboai::Conversation::PopLastResponse() & noexcept(false) -> bool {
 	// if conversation is not empty
 	if (!this->_conversation["messages"].empty()) {
 		// if last message is assistant message
@@ -212,7 +212,7 @@ bool liboai::Conversation::PopLastResponse() & noexcept(false) {
 	return false; // conversation is empty
 }
 
-bool liboai::Conversation::Update(std::string_view response) & noexcept(false) {
+auto liboai::Conversation::Update(std::string_view response) & noexcept(false) -> bool {
 	// reset "last response is function call" flag
 	if (this->_last_resp_is_fc) {
 		if (this->_conversation.contains("function_call")) {
@@ -364,11 +364,11 @@ bool liboai::Conversation::Update(std::string_view response) & noexcept(false) {
 	return false; // response is empty
 }
 
-bool liboai::Conversation::Update(const Response& response) & noexcept(false) {
+auto liboai::Conversation::Update(const Response& response) & noexcept(false) -> bool {
 	return this->Update(response.content);
 }
 
-std::string liboai::Conversation::Export() const & noexcept(false) {
+auto liboai::Conversation::Export() const & noexcept(false) -> std::string {
 	nlohmann::json j;
 	
 	if (!this->_conversation.empty()) {
@@ -384,7 +384,7 @@ std::string liboai::Conversation::Export() const & noexcept(false) {
 	return ""; // conversation is empty
 }
 
-bool liboai::Conversation::Import(std::string_view json) & noexcept(false) {
+auto liboai::Conversation::Import(std::string_view json) & noexcept(false) -> bool {
 	if (!json.empty()) {
 		nlohmann::json j = nlohmann::json::parse(json);
 
@@ -405,7 +405,7 @@ bool liboai::Conversation::Import(std::string_view json) & noexcept(false) {
 	return false; // json is empty
 }
 
-bool liboai::Conversation::AppendStreamData(std::string data) & noexcept(false) {
+auto liboai::Conversation::AppendStreamData(std::string data) & noexcept(false) -> bool {
 	if (!data.empty()) {
 		std::string delta;
 		bool completed = false;
@@ -415,7 +415,7 @@ bool liboai::Conversation::AppendStreamData(std::string data) & noexcept(false) 
 	return false; // data is empty
 }
 
-bool liboai::Conversation::AppendStreamData(std::string data, std::string& delta, bool& completed) & noexcept(false){
+auto liboai::Conversation::AppendStreamData(std::string data, std::string& delta, bool& completed) & noexcept(false)-> bool{
 	if (!data.empty()) {
 		return this->ParseStreamData(data, delta, completed);
 	}
@@ -424,7 +424,7 @@ bool liboai::Conversation::AppendStreamData(std::string data, std::string& delta
 }
 
 
-bool liboai::Conversation::SetFunctions(Functions functions) & noexcept(false) {
+auto liboai::Conversation::SetFunctions(Functions functions) & noexcept(false) -> bool {
 	nlohmann::json j = functions.GetJSON();
 	
 	if (!j.empty() && j.contains("functions") && j["functions"].size() > 0) {
@@ -435,27 +435,27 @@ bool liboai::Conversation::SetFunctions(Functions functions) & noexcept(false) {
 	return false; // functions are empty
 }
 
-void liboai::Conversation::PopFunctions() & noexcept(false) {
+auto liboai::Conversation::PopFunctions() & noexcept(false) -> void {
 	this->_functions = std::nullopt;
 }
 
-std::string liboai::Conversation::GetRawConversation() const & noexcept {
+auto liboai::Conversation::GetRawConversation() const & noexcept -> std::string {
 	return this->_conversation.dump(4);
 }
 
-const nlohmann::json& liboai::Conversation::GetJSON() const & noexcept {
+auto liboai::Conversation::GetJSON() const & noexcept -> const nlohmann::json& {
 	return this->_conversation;
 }
 
-std::string liboai::Conversation::GetRawFunctions() const & noexcept {
+auto liboai::Conversation::GetRawFunctions() const & noexcept -> std::string {
 	return this->HasFunctions() ? this->_functions.value().dump(4) : "";
 }
 
-const nlohmann::json& liboai::Conversation::GetFunctionsJSON() const & noexcept {
+auto liboai::Conversation::GetFunctionsJSON() const & noexcept -> const nlohmann::json& {
 	return this->_functions.value();
 }
 
-std::vector<std::string> liboai::Conversation::SplitStreamedData(std::string data) const noexcept(false) {
+auto liboai::Conversation::SplitStreamedData(std::string data) const noexcept(false) -> std::vector<std::string> {
 	// remove all instances of the string "data: " from the string
 	this->RemoveStrings(data, "data: ");
 
@@ -490,7 +490,7 @@ std::vector<std::string> liboai::Conversation::SplitStreamedData(std::string dat
 	return {};
 }
 
-void liboai::Conversation::RemoveStrings(std::string& s, std::string_view p) const noexcept(false) {
+auto liboai::Conversation::RemoveStrings(std::string& s, std::string_view p) const noexcept(false) -> void {
 	std::string::size_type i = s.find(p);
 	while (i != std::string::npos) {
 		s.erase(i, p.length());
@@ -498,7 +498,7 @@ void liboai::Conversation::RemoveStrings(std::string& s, std::string_view p) con
 	}
 }
 
-std::vector<std::string> liboai::Conversation::SplitFullStreamedData(std::string data) const noexcept(false) {
+auto liboai::Conversation::SplitFullStreamedData(std::string data) const noexcept(false) -> std::vector<std::string> {
 	if (data.empty()) {
 		return {};
 	}
@@ -521,7 +521,7 @@ std::vector<std::string> liboai::Conversation::SplitFullStreamedData(std::string
 	return split_data;
 }
 
-bool liboai::Conversation::ParseStreamData(std::string data, std::string& delta_content, bool& completed){
+auto liboai::Conversation::ParseStreamData(std::string data, std::string& delta_content, bool& completed) -> bool{
 	if (!_last_incomplete_buffer.empty()) {
 		data = _last_incomplete_buffer + data;
 		_last_incomplete_buffer.clear();
@@ -630,7 +630,7 @@ bool liboai::Conversation::ParseStreamData(std::string data, std::string& delta_
 
 
 
-liboai::Response liboai::ChatCompletion::create(const std::string& model, Conversation& conversation, std::optional<std::string> function_call, std::optional<float> temperature, std::optional<float> top_p, std::optional<uint16_t> n, std::optional<ChatStreamCallback> stream, std::optional<std::vector<std::string>> stop, std::optional<uint16_t> max_tokens, std::optional<float> presence_penalty, std::optional<float> frequency_penalty, std::optional<std::unordered_map<std::string, int8_t>> logit_bias, std::optional<std::string> user) const& noexcept(false) {
+auto liboai::ChatCompletion::create(const std::string& model, Conversation& conversation, std::optional<std::string> function_call, std::optional<float> temperature, std::optional<float> top_p, std::optional<uint16_t> n, std::optional<ChatStreamCallback> stream, std::optional<std::vector<std::string>> stop, std::optional<uint16_t> max_tokens, std::optional<float> presence_penalty, std::optional<float> frequency_penalty, std::optional<std::unordered_map<std::string, int8_t>> logit_bias, std::optional<std::string> user) const& noexcept(false) -> liboai::Response {
 	liboai::JsonConstructor jcon;
 	jcon.push_back("model", model);
 	jcon.push_back("temperature", std::move(temperature));
@@ -688,13 +688,13 @@ liboai::Response liboai::ChatCompletion::create(const std::string& model, Conver
 	return res;
 }
 
-liboai::FutureResponse liboai::ChatCompletion::create_async(const std::string& model, Conversation& conversation, std::optional<std::string> function_call, std::optional<float> temperature, std::optional<float> top_p, std::optional<uint16_t> n, std::optional<ChatStreamCallback> stream, std::optional<std::vector<std::string>> stop, std::optional<uint16_t> max_tokens, std::optional<float> presence_penalty, std::optional<float> frequency_penalty, std::optional<std::unordered_map<std::string, int8_t>> logit_bias, std::optional<std::string> user) const& noexcept(false) {
+auto liboai::ChatCompletion::create_async(const std::string& model, Conversation& conversation, std::optional<std::string> function_call, std::optional<float> temperature, std::optional<float> top_p, std::optional<uint16_t> n, std::optional<ChatStreamCallback> stream, std::optional<std::vector<std::string>> stop, std::optional<uint16_t> max_tokens, std::optional<float> presence_penalty, std::optional<float> frequency_penalty, std::optional<std::unordered_map<std::string, int8_t>> logit_bias, std::optional<std::string> user) const& noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::ChatCompletion::create, this, model, std::ref(conversation), function_call, temperature, top_p, n, stream, stop, max_tokens, presence_penalty, frequency_penalty, logit_bias, user);
 }
 
 namespace liboai {
 
-std::ostream& operator<<(std::ostream& os, const Conversation& conv) {
+auto operator<<(std::ostream& os, const Conversation& conv) -> std::ostream& {
 	os << conv.GetRawConversation() << std::endl << (conv.HasFunctions() ? conv.GetRawFunctions() : "");
 
 	return os;
@@ -715,18 +715,18 @@ liboai::Functions::Functions(Functions&& old) noexcept {
 	old._functions = nlohmann::json::object();
 }
 
-liboai::Functions& liboai::Functions::operator=(const Functions& other) {
+auto liboai::Functions::operator=(const Functions& other) -> Functions& {
 	this->_functions = other._functions;
 	return *this;
 }
 
-liboai::Functions& liboai::Functions::operator=(Functions&& old) noexcept {
+auto liboai::Functions::operator=(Functions&& old) noexcept -> Functions& {
 	this->_functions = std::move(old._functions);
 	old._functions = nlohmann::json::object();
 	return *this;
 }
 
-bool liboai::Functions::AddFunction(std::string_view function_name) & noexcept(false) {
+auto liboai::Functions::AddFunction(std::string_view function_name) & noexcept(false) -> bool {
 	if (this->GetFunctionIndex(function_name) == -1) {
 		this->_functions["functions"].push_back({ {"name", function_name} });
 		return true; // function added
@@ -734,7 +734,7 @@ bool liboai::Functions::AddFunction(std::string_view function_name) & noexcept(f
 	return false; // function already exists
 }
 
-bool liboai::Functions::AddFunctions(std::initializer_list<std::string_view> function_names) & noexcept(false) {
+auto liboai::Functions::AddFunctions(std::initializer_list<std::string_view> function_names) & noexcept(false) -> bool {
 	if (function_names.size() > 0) {
 		for (auto& function_name : function_names) {
 			if (this->GetFunctionIndex(function_name) == -1) {
@@ -746,7 +746,7 @@ bool liboai::Functions::AddFunctions(std::initializer_list<std::string_view> fun
 	return false; // functions not added (size 0)
 }
 
-bool liboai::Functions::AddFunctions(std::vector<std::string> function_names) & noexcept(false) {
+auto liboai::Functions::AddFunctions(std::vector<std::string> function_names) & noexcept(false) -> bool {
 	if (function_names.size() > 0) {
 		for (auto& function_name : function_names) {
 			if (this->GetFunctionIndex(function_name) == -1) {
@@ -758,7 +758,7 @@ bool liboai::Functions::AddFunctions(std::vector<std::string> function_names) & 
 	return false; // functions not added (size 0)
 }
 
-bool liboai::Functions::PopFunction(std::string_view function_name) & noexcept(false) {
+auto liboai::Functions::PopFunction(std::string_view function_name) & noexcept(false) -> bool {
 	auto index = this->GetFunctionIndex(function_name);
 
 	if (index != -1) {
@@ -769,7 +769,7 @@ bool liboai::Functions::PopFunction(std::string_view function_name) & noexcept(f
 	return false; // function not removed
 }
 
-bool liboai::Functions::PopFunctions(std::initializer_list<std::string_view> function_names) & noexcept(false) {
+auto liboai::Functions::PopFunctions(std::initializer_list<std::string_view> function_names) & noexcept(false) -> bool {
 	if (function_names.size() > 0) {
 		for (auto& function_name : function_names) {
 			auto index = this->GetFunctionIndex(function_name);
@@ -785,7 +785,7 @@ bool liboai::Functions::PopFunctions(std::initializer_list<std::string_view> fun
 	return false; // functions not removed (size 0)
 }
 
-bool liboai::Functions::PopFunctions(std::vector<std::string> function_names) & noexcept(false) {
+auto liboai::Functions::PopFunctions(std::vector<std::string> function_names) & noexcept(false) -> bool {
 	if (function_names.size() > 0) {
 		for (auto& function_name : function_names) {
 			auto index = this->GetFunctionIndex(function_name);
@@ -800,7 +800,7 @@ bool liboai::Functions::PopFunctions(std::vector<std::string> function_names) & 
 	return false; // functions not removed (size 0)
 }
 
-bool liboai::Functions::SetDescription(std::string_view target, std::string_view description) & noexcept(false) {
+auto liboai::Functions::SetDescription(std::string_view target, std::string_view description) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 	
 	if (i != -1) {
@@ -814,7 +814,7 @@ bool liboai::Functions::SetDescription(std::string_view target, std::string_view
 	return false; // function does not exist
 }
 
-bool liboai::Functions::PopDescription(std::string_view target) & noexcept(false) {
+auto liboai::Functions::PopDescription(std::string_view target) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1) {
@@ -828,7 +828,7 @@ bool liboai::Functions::PopDescription(std::string_view target) & noexcept(false
 	return false; // function does not exist
 }
 
-bool liboai::Functions::SetRequired(std::string_view target, std::initializer_list<std::string_view> params) & noexcept(false) {
+auto liboai::Functions::SetRequired(std::string_view target, std::initializer_list<std::string_view> params) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1 && params.size() > 0) {
@@ -843,7 +843,7 @@ bool liboai::Functions::SetRequired(std::string_view target, std::initializer_li
 	return false; // required parameters not set
 }
 
-bool liboai::Functions::SetRequired(std::string_view target, std::vector<std::string> params) & noexcept(false) {
+auto liboai::Functions::SetRequired(std::string_view target, std::vector<std::string> params) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1 && params.size() > 0) {
@@ -858,7 +858,7 @@ bool liboai::Functions::SetRequired(std::string_view target, std::vector<std::st
 	return false; // required parameters not set
 }
 
-bool liboai::Functions::PopRequired(std::string_view target) & noexcept(false) {
+auto liboai::Functions::PopRequired(std::string_view target) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1) {
@@ -873,7 +873,7 @@ bool liboai::Functions::PopRequired(std::string_view target) & noexcept(false) {
 	return false; // required parameters not removed
 }
 
-bool liboai::Functions::AppendRequired(std::string_view target, std::string_view param) & noexcept(false) {
+auto liboai::Functions::AppendRequired(std::string_view target, std::string_view param) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1) {
@@ -888,7 +888,7 @@ bool liboai::Functions::AppendRequired(std::string_view target, std::string_view
 	return false; // required parameter not appended
 }
 
-bool liboai::Functions::AppendRequired(std::string_view target, std::initializer_list<std::string_view> params) & noexcept(false) {
+auto liboai::Functions::AppendRequired(std::string_view target, std::initializer_list<std::string_view> params) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1 && params.size() > 0) {
@@ -906,7 +906,7 @@ bool liboai::Functions::AppendRequired(std::string_view target, std::initializer
 	return false; // required parameters not appended
 }
 
-bool liboai::Functions::AppendRequired(std::string_view target, std::vector<std::string> params) & noexcept(false) {
+auto liboai::Functions::AppendRequired(std::string_view target, std::vector<std::string> params) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1 && params.size() > 0) {
@@ -924,7 +924,7 @@ bool liboai::Functions::AppendRequired(std::string_view target, std::vector<std:
 	return false; // required parameters not appended
 }
 
-bool liboai::Functions::SetParameter(std::string_view target, FunctionParameter parameter) & noexcept(false) {
+auto liboai::Functions::SetParameter(std::string_view target, FunctionParameter parameter) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1) {
@@ -951,7 +951,7 @@ bool liboai::Functions::SetParameter(std::string_view target, FunctionParameter 
 	return false; // function non-existent, or parameters already set (use AppendParameter(s))
 }
 
-bool liboai::Functions::SetParameters(std::string_view target, std::initializer_list<FunctionParameter> parameters) & noexcept(false) {
+auto liboai::Functions::SetParameters(std::string_view target, std::initializer_list<FunctionParameter> parameters) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1) {
@@ -982,7 +982,7 @@ bool liboai::Functions::SetParameters(std::string_view target, std::initializer_
 	return false; // function non-existent, or parameters already set (use AppendParameter(s))
 }
 
-bool liboai::Functions::SetParameters(std::string_view target, std::vector<FunctionParameter> parameters) & noexcept(false) {
+auto liboai::Functions::SetParameters(std::string_view target, std::vector<FunctionParameter> parameters) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1) {
@@ -1013,7 +1013,7 @@ bool liboai::Functions::SetParameters(std::string_view target, std::vector<Funct
 	return false; // function non-existent, or parameters already set (use AppendParameter(s))
 }
 
-bool liboai::Functions::PopParameters(std::string_view target) & noexcept(false) {
+auto liboai::Functions::PopParameters(std::string_view target) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1) {
@@ -1026,7 +1026,7 @@ bool liboai::Functions::PopParameters(std::string_view target) & noexcept(false)
 	return false; // parameters not removed
 }
 
-bool liboai::Functions::PopParameters(std::string_view target, std::initializer_list<std::string_view> param_names) & noexcept(false) {
+auto liboai::Functions::PopParameters(std::string_view target, std::initializer_list<std::string_view> param_names) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1) {
@@ -1044,7 +1044,7 @@ bool liboai::Functions::PopParameters(std::string_view target, std::initializer_
 	return false; // parameters not removed
 }
 
-bool liboai::Functions::PopParameters(std::string_view target, std::vector<std::string> param_names) & noexcept(false) {
+auto liboai::Functions::PopParameters(std::string_view target, std::vector<std::string> param_names) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1) {
@@ -1062,7 +1062,7 @@ bool liboai::Functions::PopParameters(std::string_view target, std::vector<std::
 	return false; // parameters not removed
 }
 
-bool liboai::Functions::AppendParameter(std::string_view target, FunctionParameter parameter) & noexcept(false) {
+auto liboai::Functions::AppendParameter(std::string_view target, FunctionParameter parameter) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1) {
@@ -1087,7 +1087,7 @@ bool liboai::Functions::AppendParameter(std::string_view target, FunctionParamet
 	return false; // parameter not appended
 }
 
-bool liboai::Functions::AppendParameters(std::string_view target, std::initializer_list<FunctionParameter> parameters) & noexcept(false) {
+auto liboai::Functions::AppendParameters(std::string_view target, std::initializer_list<FunctionParameter> parameters) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1) {
@@ -1114,7 +1114,7 @@ bool liboai::Functions::AppendParameters(std::string_view target, std::initializ
 	return false; // parameters not appended
 }
 
-bool liboai::Functions::AppendParameters(std::string_view target, std::vector<FunctionParameter> parameters) & noexcept(false) {
+auto liboai::Functions::AppendParameters(std::string_view target, std::vector<FunctionParameter> parameters) & noexcept(false) -> bool {
 	index i = this->GetFunctionIndex(target);
 
 	if (i != -1) {
@@ -1141,11 +1141,11 @@ bool liboai::Functions::AppendParameters(std::string_view target, std::vector<Fu
 	return false; // parameters not appended
 }
 
-const nlohmann::json& liboai::Functions::GetJSON() const & noexcept {
+auto liboai::Functions::GetJSON() const & noexcept -> const nlohmann::json& {
 	return this->_functions;
 }
 
-liboai::Functions::index liboai::Functions::GetFunctionIndex(std::string_view function_name) const & noexcept(false) {
+auto liboai::Functions::GetFunctionIndex(std::string_view function_name) const & noexcept(false) -> liboai::Functions::index {
 	index i = 0;
 
 	if (!this->_functions.empty()) {

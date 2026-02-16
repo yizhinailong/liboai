@@ -44,7 +44,7 @@ namespace liboai {
 				@returns True if the key was set successfully, false otherwise.
 			*/
 			[[nodiscard]]
-			LIBOAI_EXPORT bool SetKey(std::string_view key) noexcept;
+			LIBOAI_EXPORT auto SetKey(std::string_view key) noexcept -> bool;
 
 			/*
 				@brief Sets the authorization key for the Azure OpenAI API
@@ -53,7 +53,7 @@ namespace liboai {
 				@returns True if the key was set successfully, false otherwise.
 			*/
 			[[nodiscard]]
-			LIBOAI_EXPORT bool SetAzureKey(std::string_view key) noexcept;
+			LIBOAI_EXPORT auto SetAzureKey(std::string_view key) noexcept -> bool;
 			
 			/*
 				@brief Sets the Active Directory authorization token for the Azure OpenAI API
@@ -62,7 +62,7 @@ namespace liboai {
 				@returns True if the key was set successfully, false otherwise.
 			*/
 			[[nodiscard]]
-			LIBOAI_EXPORT bool SetAzureKeyAD(std::string_view key) noexcept;
+			LIBOAI_EXPORT auto SetAzureKeyAD(std::string_view key) noexcept -> bool;
 
 			/*
 				@brief Sets the authorization key for the OpenAI API
@@ -71,7 +71,7 @@ namespace liboai {
 				@returns True if the key was set successfully, false otherwise.
 			*/
 			[[nodiscard]]
-			LIBOAI_EXPORT bool SetKeyFile(const std::filesystem::path& path) noexcept;
+			LIBOAI_EXPORT auto SetKeyFile(const std::filesystem::path& path) noexcept -> bool;
 
 			/*
 				@brief Sets the authorization key for the Azure OpenAI API
@@ -80,7 +80,7 @@ namespace liboai {
 				@returns True if the key was set successfully, false otherwise.
 			*/
 			[[nodiscard]]
-			LIBOAI_EXPORT bool SetAzureKeyFile(const std::filesystem::path& path) noexcept;
+			LIBOAI_EXPORT auto SetAzureKeyFile(const std::filesystem::path& path) noexcept -> bool;
 
 			/*
 				@brief Sets the Active Directory authorization token for the Azure OpenAI API
@@ -89,7 +89,7 @@ namespace liboai {
 				@returns True if the key was set successfully, false otherwise.
 			*/
 			[[nodiscard]]
-			LIBOAI_EXPORT bool SetAzureKeyFileAD(const std::filesystem::path& path) noexcept;
+			LIBOAI_EXPORT auto SetAzureKeyFileAD(const std::filesystem::path& path) noexcept -> bool;
 
 			/*
 				@brief Sets the authorization key for the OpenAI API
@@ -100,7 +100,7 @@ namespace liboai {
 				@returns True if the key was set successfully, false otherwise.
 			*/
 			[[nodiscard]]
-			LIBOAI_EXPORT bool SetKeyEnv(std::string_view var) noexcept;
+			LIBOAI_EXPORT auto SetKeyEnv(std::string_view var) noexcept -> bool;
 
 			/*
 				@brief Sets the authorization key for the Azure OpenAI API
@@ -111,7 +111,7 @@ namespace liboai {
 				@returns True if the key was set successfully, false otherwise.
 			*/
 			[[nodiscard]]
-			LIBOAI_EXPORT bool SetAzureKeyEnv(std::string_view var) noexcept;
+			LIBOAI_EXPORT auto SetAzureKeyEnv(std::string_view var) noexcept -> bool;
 			
 			/*
 				@brief Sets the Active Directory authorization token for the Azure OpenAI API
@@ -122,7 +122,7 @@ namespace liboai {
 				@returns True if the key was set successfully, false otherwise.
 			*/
 			[[nodiscard]]
-			LIBOAI_EXPORT bool SetAzureKeyEnvAD(std::string_view var) noexcept;
+			LIBOAI_EXPORT auto SetAzureKeyEnvAD(std::string_view var) noexcept -> bool;
 			
 			/*
 				@brief Sets the organization identifier as the passed
@@ -132,7 +132,7 @@ namespace liboai {
 				@returns True if the ID was set successfully, false otherwise.
 			*/
 			[[nodiscard]]
-			LIBOAI_EXPORT bool SetOrganization(std::string_view org) noexcept;
+			LIBOAI_EXPORT auto SetOrganization(std::string_view org) noexcept -> bool;
 
 			/*
 				@brief Sets the organization identifier as the first
@@ -143,7 +143,7 @@ namespace liboai {
 				@returns True if the ID was set successfully, false otherwise.
 			*/
 			[[nodiscard]]
-			LIBOAI_EXPORT bool SetOrganizationFile(const std::filesystem::path& path) noexcept;
+			LIBOAI_EXPORT auto SetOrganizationFile(const std::filesystem::path& path) noexcept -> bool;
 
 			/*
 				@brief Sets the organization identifier as the value
@@ -154,35 +154,35 @@ namespace liboai {
 				@returns True if the ID was set successfully, false otherwise.
 			*/
 			[[nodiscard]]
-			LIBOAI_EXPORT bool SetOrganizationEnv(std::string_view var) noexcept;
+			LIBOAI_EXPORT auto SetOrganizationEnv(std::string_view var) noexcept -> bool;
 			
 			/*
 				@brief Sets proxies to use for component calls.
 				@param hosts : The hosts to use as proxies in 
 					paired { "protocol", "host" } format.
 			*/
-			LIBOAI_EXPORT void SetProxies(const std::initializer_list<std::pair<const std::string, std::string>>& hosts) noexcept;
+			LIBOAI_EXPORT auto SetProxies(const std::initializer_list<std::pair<const std::string, std::string>>& hosts) noexcept -> void;
 			
 			/*
 				@brief Sets proxies to use for component calls.
 				@param hosts : The hosts to use as proxies in
 					paired { "protocol", "host" } format.
 			*/
-			LIBOAI_EXPORT void SetProxies(std::initializer_list<std::pair<const std::string, std::string>>&& hosts) noexcept;
+			LIBOAI_EXPORT auto SetProxies(std::initializer_list<std::pair<const std::string, std::string>>&& hosts) noexcept -> void;
 
 			/*
 				@brief Sets proxies to use for component calls.
 				@param hosts : The hosts to use as proxies in
 					paired { "protocol", "host" } format.
 			*/
-			LIBOAI_EXPORT void SetProxies(const std::map<std::string, std::string>& hosts) noexcept;
+			LIBOAI_EXPORT auto SetProxies(const std::map<std::string, std::string>& hosts) noexcept -> void;
 			
 			/*
 				@brief Sets proxies to use for component calls.
 				@param hosts : The hosts to use as proxies in
 					paired { "protocol", "host" } format.
 			*/
-			LIBOAI_EXPORT void SetProxies(std::map<std::string, std::string>&& hosts) noexcept;
+			LIBOAI_EXPORT auto SetProxies(std::map<std::string, std::string>&& hosts) noexcept -> void;
 			
 			/*
 				@brief Sets authentication information for proxies per-protocol.
@@ -190,51 +190,51 @@ namespace liboai {
 				@param proto_up : A {protocol, {uname, passwd}} map to use for
 					authentication with proxies on a per-protocol basis.
 			*/
-			LIBOAI_EXPORT void SetProxyAuth(const std::map<std::string, netimpl::components::EncodedAuthentication>& proto_up) noexcept;
+			LIBOAI_EXPORT auto SetProxyAuth(const std::map<std::string, netimpl::components::EncodedAuthentication>& proto_up) noexcept -> void;
 
 			/*
 				@brief Sets the timeout for component calls in milliseconds.
 			*/
-			LIBOAI_EXPORT void SetMaxTimeout(int32_t ms) noexcept { this->timeout_ = netimpl::components::Timeout(ms); }
+			LIBOAI_EXPORT auto SetMaxTimeout(int32_t ms) noexcept -> void { this->timeout_ = netimpl::components::Timeout(ms); }
 
 			/*
 				@brief Returns currently the set authorization key.
 			*/
-			constexpr const std::string& GetKey() const noexcept { return this->key_; }
+			constexpr auto GetKey() const noexcept -> const std::string& { return this->key_; }
 
 			/*
 				@brief Returns the currently set organization identifier.
 			*/
-			constexpr const std::string& GetOrganization() const noexcept { return this->org_; }
+			constexpr auto GetOrganization() const noexcept -> const std::string& { return this->org_; }
 			
 			/*
 				@returns The currently set proxies.
 			*/
-			netimpl::components::Proxies GetProxies() const noexcept { return this->proxies_; }
+			auto GetProxies() const noexcept -> netimpl::components::Proxies { return this->proxies_; }
 			
 			/*
 				@returns The currently set proxy authentication information.
 			*/
-			netimpl::components::ProxyAuthentication GetProxyAuth() const noexcept { return this->proxyAuth_; }
+			auto GetProxyAuth() const noexcept -> netimpl::components::ProxyAuthentication { return this->proxyAuth_; }
 			
 			/*
 				@returns The currently set timeout.
 			*/
-			netimpl::components::Timeout GetMaxTimeout() const noexcept { return this->timeout_; }
+			auto GetMaxTimeout() const noexcept -> netimpl::components::Timeout { return this->timeout_; }
 
 			/*
 				@returns An authorization header with the
 					currently set authorization information for use
 					in component calls.
 			*/
-			constexpr const netimpl::components::Header& GetAuthorizationHeaders() const noexcept { return this->openai_auth_headers_; }
+			constexpr auto GetAuthorizationHeaders() const noexcept -> const netimpl::components::Header& { return this->openai_auth_headers_; }
 
 			/*
 				@returns An authorization header with the
 					currently set Azure authorization information for use
 					in Azure component calls.
 			*/
-			constexpr const netimpl::components::Header& GetAzureAuthorizationHeaders() const noexcept { return this->azure_auth_headers_; }
+			constexpr auto GetAzureAuthorizationHeaders() const noexcept -> const netimpl::components::Header& { return this->azure_auth_headers_; }
 
 		private: // member variables
 			std::string key_, org_;

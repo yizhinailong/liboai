@@ -1,6 +1,6 @@
 #include "../include/components/models.h"
 
-liboai::Response liboai::Models::list() const & noexcept(false) {
+auto liboai::Models::list() const & noexcept(false) -> liboai::Response {
 	Response res;
 	res = this->Request(
 		Method::HTTP_GET, this->openai_root_, "/models", "application/json",
@@ -13,11 +13,11 @@ liboai::Response liboai::Models::list() const & noexcept(false) {
 	return res;
 }
 
-liboai::FutureResponse liboai::Models::list_async() const & noexcept(false) {
+auto liboai::Models::list_async() const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Models::list, this);
 }
 
-liboai::Response liboai::Models::retrieve(const std::string& model) const & noexcept(false) {
+auto liboai::Models::retrieve(const std::string& model) const & noexcept(false) -> liboai::Response {
 	Response res;
 	res = this->Request(
 		Method::HTTP_GET, this->openai_root_, "/models/" + model, "application/json",
@@ -30,6 +30,6 @@ liboai::Response liboai::Models::retrieve(const std::string& model) const & noex
 	return res;
 }
 
-liboai::FutureResponse liboai::Models::retrieve_async(const std::string& model) const & noexcept(false) {
+auto liboai::Models::retrieve_async(const std::string& model) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Models::retrieve, this, model);
 }

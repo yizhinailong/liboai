@@ -75,7 +75,7 @@ namespace liboai {
 				@returns A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response create(
+			LIBOAI_EXPORT auto create(
 				const std::string& model_id,
 				std::optional<std::string> prompt = std::nullopt,
 				std::optional<std::string> suffix = std::nullopt,
@@ -92,7 +92,7 @@ namespace liboai {
 				std::optional<uint16_t> best_of = std::nullopt,
 				std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Given a prompt, the model will return one or more
@@ -146,7 +146,7 @@ namespace liboai {
 				@returns A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse create_async(
+			LIBOAI_EXPORT auto create_async(
 				const std::string& model_id,
 				std::optional<std::string> prompt = std::nullopt,
 				std::optional<std::string> suffix = std::nullopt,
@@ -163,7 +163,7 @@ namespace liboai {
 				std::optional<uint16_t> best_of = std::nullopt,
 				std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 		private:
 			Authorization& auth_ = Authorization::Authorizer();

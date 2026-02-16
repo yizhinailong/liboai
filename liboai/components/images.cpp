@@ -1,6 +1,6 @@
 #include "../include/components/images.h"
 
-liboai::Response liboai::Images::create(const std::string& prompt, std::optional<uint8_t> n, std::optional<std::string> size, std::optional<std::string> response_format, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Images::create(const std::string& prompt, std::optional<uint8_t> n, std::optional<std::string> size, std::optional<std::string> response_format, std::optional<std::string> user) const & noexcept(false) -> liboai::Response {
 	liboai::JsonConstructor jcon;
 	jcon.push_back("prompt", prompt);
 	jcon.push_back("n", std::move(n));
@@ -23,11 +23,11 @@ liboai::Response liboai::Images::create(const std::string& prompt, std::optional
 	return res;
 }
 
-liboai::FutureResponse liboai::Images::create_async(const std::string& prompt, std::optional<uint8_t> n, std::optional<std::string> size, std::optional<std::string> response_format, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Images::create_async(const std::string& prompt, std::optional<uint8_t> n, std::optional<std::string> size, std::optional<std::string> response_format, std::optional<std::string> user) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Images::create, this, prompt, n, size, response_format, user);
 }
 
-liboai::Response liboai::Images::create_edit(const std::filesystem::path& image, const std::string& prompt, std::optional<std::filesystem::path> mask, std::optional<uint8_t> n, std::optional<std::string> size, std::optional<std::string> response_format, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Images::create_edit(const std::filesystem::path& image, const std::string& prompt, std::optional<std::filesystem::path> mask, std::optional<uint8_t> n, std::optional<std::string> size, std::optional<std::string> response_format, std::optional<std::string> user) const & noexcept(false) -> liboai::Response {
 	if (!this->Validate(image)) {
 		throw liboai::exception::OpenAIException(
 			"File path provided is non-existent, is not a file, or is empty.",
@@ -69,11 +69,11 @@ liboai::Response liboai::Images::create_edit(const std::filesystem::path& image,
 	return res;
 }
 
-liboai::FutureResponse liboai::Images::create_edit_async(const std::filesystem::path& image, const std::string& prompt, std::optional<std::filesystem::path> mask, std::optional<uint8_t> n, std::optional<std::string> size, std::optional<std::string> response_format, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Images::create_edit_async(const std::filesystem::path& image, const std::string& prompt, std::optional<std::filesystem::path> mask, std::optional<uint8_t> n, std::optional<std::string> size, std::optional<std::string> response_format, std::optional<std::string> user) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Images::create_edit, this, image, prompt, mask, n, size, response_format, user);
 }
 
-liboai::Response liboai::Images::create_variation(const std::filesystem::path& image, std::optional<uint8_t> n, std::optional<std::string> size, std::optional<std::string> response_format, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Images::create_variation(const std::filesystem::path& image, std::optional<uint8_t> n, std::optional<std::string> size, std::optional<std::string> response_format, std::optional<std::string> user) const & noexcept(false) -> liboai::Response {
 	if (!this->Validate(image)) {
 		throw liboai::exception::OpenAIException(
 			"File path provided is non-existent, is not a file, or is empty.",
@@ -104,6 +104,6 @@ liboai::Response liboai::Images::create_variation(const std::filesystem::path& i
 	return res;
 }
 
-liboai::FutureResponse liboai::Images::create_variation_async(const std::filesystem::path& image, std::optional<uint8_t> n, std::optional<std::string> size, std::optional<std::string> response_format, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Images::create_variation_async(const std::filesystem::path& image, std::optional<uint8_t> n, std::optional<std::string> size, std::optional<std::string> response_format, std::optional<std::string> user) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Images::create_variation, this, image, n, size, response_format, user);
 }

@@ -35,13 +35,13 @@ namespace liboai {
 				@return A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response create(
+			LIBOAI_EXPORT auto create(
 				const std::string& prompt,
 				std::optional<uint8_t> n = std::nullopt,
 				std::optional<std::string> size = std::nullopt,
 				std::optional<std::string> response_format = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Images component method to asynchronously create an
@@ -56,13 +56,13 @@ namespace liboai {
 				@return A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse create_async(
+			LIBOAI_EXPORT auto create_async(
 				const std::string& prompt,
 				std::optional<uint8_t> n = std::nullopt,
 				std::optional<std::string> size = std::nullopt,
 				std::optional<std::string> response_format = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 			
 			/*
 				@brief Images component method to produce an edited
@@ -80,7 +80,7 @@ namespace liboai {
 				@return A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/		
-			LIBOAI_EXPORT liboai::Response create_edit(
+			LIBOAI_EXPORT auto create_edit(
 				const std::filesystem::path& image,
 				const std::string& prompt,
 				std::optional<std::filesystem::path> mask = std::nullopt,
@@ -88,7 +88,7 @@ namespace liboai {
 				std::optional<std::string> size = std::nullopt,
 				std::optional<std::string> response_format = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Images component method to asynchronously
@@ -106,7 +106,7 @@ namespace liboai {
 				@return A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/		
-			LIBOAI_EXPORT liboai::FutureResponse create_edit_async(
+			LIBOAI_EXPORT auto create_edit_async(
 				const std::filesystem::path& image,
 				const std::string& prompt,
 				std::optional<std::filesystem::path> mask = std::nullopt,
@@ -114,7 +114,7 @@ namespace liboai {
 				std::optional<std::string> size = std::nullopt,
 				std::optional<std::string> response_format = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 			/*
 				@brief Images component method to produce a variation
@@ -129,13 +129,13 @@ namespace liboai {
 				@return A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response create_variation(
+			LIBOAI_EXPORT auto create_variation(
 				const std::filesystem::path& image,
 				std::optional<uint8_t> n = std::nullopt,
 				std::optional<std::string> size = std::nullopt,
 				std::optional<std::string> response_format = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Images component method to asynchronously produce
@@ -150,13 +150,13 @@ namespace liboai {
 				@return A liboai::Response future containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse create_variation_async(
+			LIBOAI_EXPORT auto create_variation_async(
 				const std::filesystem::path& image,
 				std::optional<uint8_t> n = std::nullopt,
 				std::optional<std::string> size = std::nullopt,
 				std::optional<std::string> response_format = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 		private:
 			Authorization& auth_ = Authorization::Authorizer();

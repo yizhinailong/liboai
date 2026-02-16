@@ -1,6 +1,6 @@
 #include "../include/components/audio.h"
 
-liboai::Response liboai::Audio::transcribe(const std::filesystem::path& file, const std::string& model, std::optional<std::string> prompt, std::optional<std::string> response_format, std::optional<float> temperature, std::optional<std::string> language) const& noexcept(false) {
+auto liboai::Audio::transcribe(const std::filesystem::path& file, const std::string& model, std::optional<std::string> prompt, std::optional<std::string> response_format, std::optional<float> temperature, std::optional<std::string> language) const& noexcept(false) -> liboai::Response {
 	if (!this->Validate(file)) {
 		throw liboai::exception::OpenAIException(
 			"File path provided is non-existent, is not a file, or is empty.",
@@ -32,11 +32,11 @@ liboai::Response liboai::Audio::transcribe(const std::filesystem::path& file, co
 	return res;
 }
 
-liboai::FutureResponse liboai::Audio::transcribe_async(const std::filesystem::path& file, const std::string& model, std::optional<std::string> prompt, std::optional<std::string> response_format, std::optional<float> temperature, std::optional<std::string> language) const& noexcept(false) {
+auto liboai::Audio::transcribe_async(const std::filesystem::path& file, const std::string& model, std::optional<std::string> prompt, std::optional<std::string> response_format, std::optional<float> temperature, std::optional<std::string> language) const& noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Audio::transcribe, this, file, model, prompt, response_format, temperature, language);
 }
 
-liboai::Response liboai::Audio::translate(const std::filesystem::path& file, const std::string& model, std::optional<std::string> prompt, std::optional<std::string> response_format, std::optional<float> temperature) const& noexcept(false) {
+auto liboai::Audio::translate(const std::filesystem::path& file, const std::string& model, std::optional<std::string> prompt, std::optional<std::string> response_format, std::optional<float> temperature) const& noexcept(false) -> liboai::Response {
 	if (!this->Validate(file)) {
 		throw liboai::exception::OpenAIException(
 			"File path provided is non-existent, is not a file, or is empty.",
@@ -67,11 +67,11 @@ liboai::Response liboai::Audio::translate(const std::filesystem::path& file, con
 	return res;
 }
 
-liboai::FutureResponse liboai::Audio::translate_async(const std::filesystem::path& file, const std::string& model, std::optional<std::string> prompt, std::optional<std::string> response_format, std::optional<float> temperature) const& noexcept(false) {
+auto liboai::Audio::translate_async(const std::filesystem::path& file, const std::string& model, std::optional<std::string> prompt, std::optional<std::string> response_format, std::optional<float> temperature) const& noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Audio::translate, this, file, model, prompt, response_format, temperature);
 }
 
-liboai::Response liboai::Audio::speech(const std::string& model, const std::string& voice, const std::string& input, std::optional<std::string> response_format, std::optional<float> speed) const& noexcept(false) {
+auto liboai::Audio::speech(const std::string& model, const std::string& voice, const std::string& input, std::optional<std::string> response_format, std::optional<float> speed) const& noexcept(false) -> liboai::Response {
 	liboai::JsonConstructor jcon;
 	jcon.push_back("model", model);
 	jcon.push_back("voice", voice);
@@ -95,6 +95,6 @@ liboai::Response liboai::Audio::speech(const std::string& model, const std::stri
 	return res;
 }
 
-liboai::FutureResponse liboai::Audio::speech_async(const std::string& model, const std::string& voice, const std::string& input, std::optional<std::string> response_format, std::optional<float> speed) const& noexcept(false) {
+auto liboai::Audio::speech_async(const std::string& model, const std::string& voice, const std::string& input, std::optional<std::string> response_format, std::optional<float> speed) const& noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Audio::translate, this, model, voice, input, response_format, speed);
 }

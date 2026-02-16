@@ -46,12 +46,12 @@ namespace liboai {
 
 				@returns Bool indicating success or failure.
 			*/
-			[[nodiscard]]
-			static inline bool Download(
+		[[nodiscard]]
+			static inline auto Download(
 				const std::string& to,
 				const std::string& from,
 				netimpl::components::Header authorization
-			) noexcept(false) {
+			) noexcept(false) -> bool {
 				std::ofstream file(to, std::ios::binary);
 				Response res;
 				res = netimpl::Download(
@@ -63,13 +63,13 @@ namespace liboai {
 				return res.status_code == 200;
 			}
 
-			[[nodiscard]]
-			static inline bool DownloadWithSession(
+		[[nodiscard]]
+			static inline auto DownloadWithSession(
 				const std::string& to,
 				const std::string& from,
 				netimpl::components::Header authorization,
 				netimpl::Session& session
-			) noexcept(false) {
+			) noexcept(false) -> bool {
 				std::ofstream file(to, std::ios::binary);
 				Response res;
 				res = netimpl::DownloadWithSession(
@@ -98,12 +98,12 @@ namespace liboai {
 
 				@returns Future bool indicating success or failure.
 			*/
-			[[nodiscard]]
-			static inline std::future<bool> DownloadAsync(
+		[[nodiscard]]
+			static inline auto DownloadAsync(
 				const std::string& to,
 				const std::string& from,
 				netimpl::components::Header authorization
-			) noexcept(false) {
+			) noexcept(false) -> std::future<bool> {
 				return std::async(
 					std::launch::async, [&]() -> bool {
 						std::ofstream file(to, std::ios::binary);
@@ -119,13 +119,13 @@ namespace liboai {
 				);
 			}
 
-			[[nodiscard]]
-			static inline std::future<bool> DownloadAsyncWithSession(
+		[[nodiscard]]
+			static inline auto DownloadAsyncWithSession(
 				const std::string& to,
 				const std::string& from,
 				netimpl::components::Header authorization,
 				netimpl::Session& session
-			) noexcept(false) {
+			) noexcept(false) -> std::future<bool> {
 				return std::async(
 					std::launch::async, [&]() -> bool {
 						std::ofstream file(to, std::ios::binary);
@@ -149,16 +149,16 @@ namespace liboai {
 				HTTP_DELETE   // DELETE
 			};
 
-			template <class... _Params,
+		template <class... _Params,
 				std::enable_if_t<std::conjunction_v<std::negation<std::is_lvalue_reference<_Params>>...>, int> = 0>
-			inline Response Request(
+			inline auto Request(
 				const Method& http_method,
 				const std::string& root,
 				const std::string& endpoint,
 				const std::string& content_type,
 				std::optional<netimpl::components::Header> headers = std::nullopt,
 				_Params&&... parameters
-			) const {
+			) const -> Response {
 				netimpl::components::Header _headers = { { "Content-Type", content_type } };
 				if (headers) {
 					if (headers.value().size() != 0) {
@@ -187,9 +187,9 @@ namespace liboai {
 			}
 
 
-			template <class... _Params,
+		template <class... _Params,
 				std::enable_if_t<std::conjunction_v<std::negation<std::is_lvalue_reference<_Params>>...>, int> = 0>
-			inline Response RequestWithSession(
+			inline auto RequestWithSession(
 				const Method& http_method,
 				const std::string& root,
 				const std::string& endpoint,
@@ -197,7 +197,7 @@ namespace liboai {
 				netimpl::Session& session,
 				std::optional<netimpl::components::Header> headers = std::nullopt,
 				_Params&&... parameters
-			) const {
+			) const -> Response {
 				netimpl::components::Header _headers = { { "Content-Type", content_type } };
 				if (headers) {
 					if (headers.value().size() != 0) {
@@ -227,13 +227,13 @@ namespace liboai {
 				return res;
 			}
 
-			/*
+		/*
 				@brief Function to validate the existence and validity of
 					a file located at a provided file path. This is used
 					in functions that take a file path as a parameter
 					to ensure that the file exists and is valid.
 			*/
-			bool Validate(const std::filesystem::path& path) const {
+			auto Validate(const std::filesystem::path& path) const -> bool {
 				// checks if the file exists, is a regular file, and is not empty
 				if (std::filesystem::exists(path) && std::filesystem::is_regular_file(path)) {
 					return std::filesystem::file_size(path) > 0;

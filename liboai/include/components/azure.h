@@ -36,7 +36,7 @@ namespace liboai {
 				@returns A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response create_completion(
+			LIBOAI_EXPORT auto create_completion(
 				const std::string& resource_name,
 				const std::string& deployment_id,
 				const std::string& api_version,
@@ -55,7 +55,7 @@ namespace liboai {
 				std::optional<uint16_t> best_of = std::nullopt,
 				std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 			
 			/*
 				@brief Given a prompt, the model will asynchronously return
@@ -70,7 +70,7 @@ namespace liboai {
 				@returns A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse create_completion_async(
+			LIBOAI_EXPORT auto create_completion_async(
 				const std::string& resource_name,
 				const std::string& deployment_id,
 				const std::string& api_version,
@@ -89,7 +89,7 @@ namespace liboai {
 				std::optional<uint16_t> best_of = std::nullopt,
 				std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 			/*
 				@brief Creates an embedding vector representing the input text.
@@ -104,13 +104,13 @@ namespace liboai {
 				@return A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response create_embedding(
+			LIBOAI_EXPORT auto create_embedding(
 				const std::string& resource_name,
 				const std::string& deployment_id,
 				const std::string& api_version,
 				const std::string& input,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously creates an embedding vector representing the input text.
@@ -125,13 +125,13 @@ namespace liboai {
 				@return A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse create_embedding_async(
+			LIBOAI_EXPORT auto create_embedding_async(
 				const std::string& resource_name,
 				const std::string& deployment_id,
 				const std::string& api_version,
 				const std::string& input,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 			/*
 				@brief Creates a completion for the chat message.
@@ -145,7 +145,7 @@ namespace liboai {
 				@returns A liboai::Response object containing the
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response create_chat_completion(
+			LIBOAI_EXPORT auto create_chat_completion(
 				const std::string& resource_name,
 				const std::string& deployment_id,
 				const std::string& api_version,
@@ -160,7 +160,7 @@ namespace liboai {
 				std::optional<float> frequency_penalty = std::nullopt,
 				std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously creates a completion for the chat message.
@@ -174,7 +174,7 @@ namespace liboai {
 				@returns A liboai::Response object containing the
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse create_chat_completion_async(
+			LIBOAI_EXPORT auto create_chat_completion_async(
 				const std::string& resource_name,
 				const std::string& deployment_id,
 				const std::string& api_version,
@@ -189,7 +189,7 @@ namespace liboai {
 				std::optional<float> frequency_penalty = std::nullopt,
 				std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
 				std::optional<std::string> user = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 			/*
 				@brief Generate a batch of images from a text caption.
@@ -204,13 +204,13 @@ namespace liboai {
 				@returns A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response request_image_generation(
+			LIBOAI_EXPORT auto request_image_generation(
 				const std::string& resource_name,
 				const std::string& api_version,
 				const std::string& prompt,
 				std::optional<uint8_t> n = std::nullopt,
 				std::optional<std::string> size = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously generate a batch of images from a text caption.
@@ -225,13 +225,13 @@ namespace liboai {
 				@returns A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse request_image_generation_async(
+			LIBOAI_EXPORT auto request_image_generation_async(
 				const std::string& resource_name,
 				const std::string& api_version,
 				const std::string& prompt,
 				std::optional<uint8_t> n = std::nullopt,
 				std::optional<std::string> size = std::nullopt
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 			/*
 				@brief Retrieve the results (URL) of a previously called image generation operation.
@@ -243,11 +243,11 @@ namespace liboai {
 				@returns A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response get_generated_image(
+			LIBOAI_EXPORT auto get_generated_image(
 				const std::string& resource_name,
 				const std::string& api_version,
 				const std::string& operation_id
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously retrieve the results (URL) of a previously called image generation operation.
@@ -259,11 +259,11 @@ namespace liboai {
 				@returns A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse get_generated_image_async(
+			LIBOAI_EXPORT auto get_generated_image_async(
 				const std::string& resource_name,
 				const std::string& api_version,
 				const std::string& operation_id
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 			/*
 				@brief Deletes the corresponding image from the Azure server.
@@ -275,11 +275,11 @@ namespace liboai {
 				@returns A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::Response delete_generated_image(
+			LIBOAI_EXPORT auto delete_generated_image(
 				const std::string& resource_name,
 				const std::string& api_version,
 				const std::string& operation_id
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::Response;
 
 			/*
 				@brief Asynchronously deletes the corresponding image from the Azure server.
@@ -291,11 +291,11 @@ namespace liboai {
 				@returns A liboai::Response object containing the image(s)
 					data in JSON format.
 			*/
-			LIBOAI_EXPORT liboai::FutureResponse delete_generated_image_async(
+			LIBOAI_EXPORT auto delete_generated_image_async(
 				const std::string& resource_name,
 				const std::string& api_version,
 				const std::string& operation_id
-			) const & noexcept(false);
+			) const & noexcept(false) -> liboai::FutureResponse;
 
 		private:
 			Authorization& auth_ = Authorization::Authorizer();

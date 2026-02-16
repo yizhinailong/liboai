@@ -4,7 +4,7 @@ liboai::Authorization::~Authorization() {
 	netimpl::components::EncodedAuthentication().SecureStringClear(this->key_);
 }
 
-bool liboai::Authorization::SetKey(std::string_view key) noexcept {
+auto liboai::Authorization::SetKey(std::string_view key) noexcept -> bool {
 	if (!key.empty()) {
 		this->key_ = key;
 		if (this->openai_auth_headers_.count("Authorization") > 0) {
@@ -16,7 +16,7 @@ bool liboai::Authorization::SetKey(std::string_view key) noexcept {
 	return false;
 }
 
-bool liboai::Authorization::SetAzureKey(std::string_view key) noexcept {
+auto liboai::Authorization::SetAzureKey(std::string_view key) noexcept -> bool {
 	if (!key.empty()) {
 		this->key_ = key;
 		if (this->azure_auth_headers_.size() > 0) {
@@ -28,7 +28,7 @@ bool liboai::Authorization::SetAzureKey(std::string_view key) noexcept {
 	return false;
 }
 
-bool liboai::Authorization::SetAzureKeyAD(std::string_view key) noexcept {
+auto liboai::Authorization::SetAzureKeyAD(std::string_view key) noexcept -> bool {
 	if (!key.empty()) {
 		this->key_ = key;
 		if (this->azure_auth_headers_.size() > 0) {
@@ -40,7 +40,7 @@ bool liboai::Authorization::SetAzureKeyAD(std::string_view key) noexcept {
 	return false;
 }
 
-bool liboai::Authorization::SetKeyFile(const std::filesystem::path& path) noexcept {
+auto liboai::Authorization::SetKeyFile(const std::filesystem::path& path) noexcept -> bool {
 	if (std::filesystem::exists(path) && std::filesystem::is_regular_file(path) && std::filesystem::file_size(path) > 0) {
 		std::ifstream file(path);
 		if (file.is_open()) {
@@ -55,7 +55,7 @@ bool liboai::Authorization::SetKeyFile(const std::filesystem::path& path) noexce
 	return false;
 }
 
-bool liboai::Authorization::SetAzureKeyFile(const std::filesystem::path& path) noexcept {
+auto liboai::Authorization::SetAzureKeyFile(const std::filesystem::path& path) noexcept -> bool {
 	if (std::filesystem::exists(path) && std::filesystem::is_regular_file(path) && std::filesystem::file_size(path) > 0) {
 		std::ifstream file(path);
 		if (file.is_open()) {
@@ -70,7 +70,7 @@ bool liboai::Authorization::SetAzureKeyFile(const std::filesystem::path& path) n
 	return false;
 }
 
-bool liboai::Authorization::SetAzureKeyFileAD(const std::filesystem::path& path) noexcept {
+auto liboai::Authorization::SetAzureKeyFileAD(const std::filesystem::path& path) noexcept -> bool {
 	if (std::filesystem::exists(path) && std::filesystem::is_regular_file(path) && std::filesystem::file_size(path) > 0) {
 		std::ifstream file(path);
 		if (file.is_open()) {
@@ -85,7 +85,7 @@ bool liboai::Authorization::SetAzureKeyFileAD(const std::filesystem::path& path)
 	return false;
 }
 
-bool liboai::Authorization::SetKeyEnv(std::string_view var) noexcept {
+auto liboai::Authorization::SetKeyEnv(std::string_view var) noexcept -> bool {
 	if (!var.empty()) {
 		const char* key = std::getenv(var.data());
 		if (key != nullptr) {
@@ -101,7 +101,7 @@ bool liboai::Authorization::SetKeyEnv(std::string_view var) noexcept {
 	return false;
 }
 
-bool liboai::Authorization::SetAzureKeyEnv(std::string_view var) noexcept {
+auto liboai::Authorization::SetAzureKeyEnv(std::string_view var) noexcept -> bool {
 	if (!var.empty()) {
 		const char* key = std::getenv(var.data());
 		if (key != nullptr) {
@@ -117,7 +117,7 @@ bool liboai::Authorization::SetAzureKeyEnv(std::string_view var) noexcept {
 	return false;
 }
 
-bool liboai::Authorization::SetAzureKeyEnvAD(std::string_view var) noexcept {
+auto liboai::Authorization::SetAzureKeyEnvAD(std::string_view var) noexcept -> bool {
 	if (!var.empty()) {
 		const char* key = std::getenv(var.data());
 		if (key != nullptr) {
@@ -133,7 +133,7 @@ bool liboai::Authorization::SetAzureKeyEnvAD(std::string_view var) noexcept {
 	return false;
 }
 
-bool liboai::Authorization::SetOrganization(std::string_view org) noexcept {
+auto liboai::Authorization::SetOrganization(std::string_view org) noexcept -> bool {
 	if (!org.empty()) {
 		this->org_ = std::move(org);
 		if (this->openai_auth_headers_.count("OpenAI-Organization") > 0) {
@@ -145,7 +145,7 @@ bool liboai::Authorization::SetOrganization(std::string_view org) noexcept {
 	return false;
 }
 
-bool liboai::Authorization::SetOrganizationFile(const std::filesystem::path& path) noexcept {
+auto liboai::Authorization::SetOrganizationFile(const std::filesystem::path& path) noexcept -> bool {
 	if (std::filesystem::exists(path) && std::filesystem::is_regular_file(path) && std::filesystem::file_size(path) > 0) {
 		std::ifstream file(path);
 		if (file.is_open()) {
@@ -160,7 +160,7 @@ bool liboai::Authorization::SetOrganizationFile(const std::filesystem::path& pat
 	return false;
 }
 
-bool liboai::Authorization::SetOrganizationEnv(std::string_view var) noexcept {
+auto liboai::Authorization::SetOrganizationEnv(std::string_view var) noexcept -> bool {
 	if (!var.empty()) {
 		const char* org = std::getenv(var.data());
 		if (org != nullptr) {
@@ -176,22 +176,22 @@ bool liboai::Authorization::SetOrganizationEnv(std::string_view var) noexcept {
 	return false;
 }
 
-void liboai::Authorization::SetProxies(const std::initializer_list<std::pair<const std::string, std::string>>& hosts) noexcept {
+auto liboai::Authorization::SetProxies(const std::initializer_list<std::pair<const std::string, std::string>>& hosts) noexcept -> void {
 	this->proxies_ = netimpl::components::Proxies(hosts);
 }
 
-void liboai::Authorization::SetProxies(std::initializer_list<std::pair<const std::string, std::string>>&& hosts) noexcept {
+auto liboai::Authorization::SetProxies(std::initializer_list<std::pair<const std::string, std::string>>&& hosts) noexcept -> void {
 	this->proxies_ = netimpl::components::Proxies(std::move(hosts));
 }
 
-void liboai::Authorization::SetProxies(const std::map<std::string, std::string>& hosts) noexcept {
+auto liboai::Authorization::SetProxies(const std::map<std::string, std::string>& hosts) noexcept -> void {
 	this->proxies_ = netimpl::components::Proxies(hosts);
 }
 
-void liboai::Authorization::SetProxies(std::map<std::string, std::string>&& hosts) noexcept {
+auto liboai::Authorization::SetProxies(std::map<std::string, std::string>&& hosts) noexcept -> void {
 	this->proxies_ = netimpl::components::Proxies(std::move(hosts));
 }
 
-void liboai::Authorization::SetProxyAuth(const std::map<std::string, netimpl::components::EncodedAuthentication>& proto_up) noexcept {
+auto liboai::Authorization::SetProxyAuth(const std::map<std::string, netimpl::components::EncodedAuthentication>& proto_up) noexcept -> void {
 	this->proxyAuth_ = netimpl::components::ProxyAuthentication(proto_up);
 }

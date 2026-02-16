@@ -95,8 +95,8 @@ namespace liboai {
 				@brief Transparent operator[] wrapper to nlohmann::json to
 					access the Response object as if it were a json object.
 			*/
-			template <class _Ty>
-			nlohmann::json::const_reference operator[](const _Ty& key) const noexcept {
+		template <class _Ty>
+			auto operator[](const _Ty& key) const noexcept -> nlohmann::json::const_reference {
 				return this->raw_json[key];
 			}
 			
@@ -104,7 +104,7 @@ namespace liboai {
 				@brief std::ostream operator<< overload to allow for
 					pretty printing of the Response object.
 			*/
-			LIBOAI_EXPORT friend std::ostream& operator<<(std::ostream& os, const Response& r);
+			LIBOAI_EXPORT friend auto operator<<(std::ostream& os, const Response& r) -> std::ostream&;
 			
 		public:
 			long status_code = 0; double elapsed = 0.0;
@@ -116,7 +116,7 @@ namespace liboai {
 				@brief Used internally during construction to check the response
 					for errors and throw exceptions if necessary.
 			*/
-			LIBOAI_EXPORT void CheckResponse() const noexcept(false);
+			LIBOAI_EXPORT auto CheckResponse() const noexcept(false) -> void;
 	};
 	using FutureResponse = std::future<liboai::Response>;
 }

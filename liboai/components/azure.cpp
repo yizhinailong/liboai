@@ -1,6 +1,6 @@
 #include "../include/components/azure.h"
 
-liboai::Response liboai::Azure::create_completion(const std::string& resource_name, const std::string& deployment_id, const std::string& api_version, std::optional<std::string> prompt, std::optional<std::string> suffix, std::optional<uint16_t> max_tokens, std::optional<float> temperature, std::optional<float> top_p, std::optional<uint16_t> n, std::optional<std::function<bool(std::string, intptr_t)>> stream, std::optional<uint8_t> logprobs, std::optional<bool> echo, std::optional<std::vector<std::string>> stop, std::optional<float> presence_penalty, std::optional<float> frequency_penalty, std::optional<uint16_t> best_of, std::optional<std::unordered_map<std::string, int8_t>> logit_bias, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Azure::create_completion(const std::string& resource_name, const std::string& deployment_id, const std::string& api_version, std::optional<std::string> prompt, std::optional<std::string> suffix, std::optional<uint16_t> max_tokens, std::optional<float> temperature, std::optional<float> top_p, std::optional<uint16_t> n, std::optional<std::function<bool(std::string, intptr_t)>> stream, std::optional<uint8_t> logprobs, std::optional<bool> echo, std::optional<std::vector<std::string>> stop, std::optional<float> presence_penalty, std::optional<float> frequency_penalty, std::optional<uint16_t> best_of, std::optional<std::unordered_map<std::string, int8_t>> logit_bias, std::optional<std::string> user) const & noexcept(false) -> liboai::Response {
 	liboai::JsonConstructor jcon;
 	jcon.push_back("prompt", std::move(prompt));
 	jcon.push_back("suffix", std::move(suffix));
@@ -38,11 +38,11 @@ liboai::Response liboai::Azure::create_completion(const std::string& resource_na
 	return res;
 }
 
-liboai::FutureResponse liboai::Azure::create_completion_async(const std::string& resource_name, const std::string& deployment_id, const std::string& api_version, std::optional<std::string> prompt, std::optional<std::string> suffix, std::optional<uint16_t> max_tokens, std::optional<float> temperature, std::optional<float> top_p, std::optional<uint16_t> n, std::optional<std::function<bool(std::string, intptr_t)>> stream, std::optional<uint8_t> logprobs, std::optional<bool> echo, std::optional<std::vector<std::string>> stop, std::optional<float> presence_penalty, std::optional<float> frequency_penalty, std::optional<uint16_t> best_of, std::optional<std::unordered_map<std::string, int8_t>> logit_bias, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Azure::create_completion_async(const std::string& resource_name, const std::string& deployment_id, const std::string& api_version, std::optional<std::string> prompt, std::optional<std::string> suffix, std::optional<uint16_t> max_tokens, std::optional<float> temperature, std::optional<float> top_p, std::optional<uint16_t> n, std::optional<std::function<bool(std::string, intptr_t)>> stream, std::optional<uint8_t> logprobs, std::optional<bool> echo, std::optional<std::vector<std::string>> stop, std::optional<float> presence_penalty, std::optional<float> frequency_penalty, std::optional<uint16_t> best_of, std::optional<std::unordered_map<std::string, int8_t>> logit_bias, std::optional<std::string> user) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Azure::create_completion, this, resource_name, deployment_id, api_version, prompt, suffix, max_tokens, temperature, top_p, n, stream, logprobs, echo, stop, presence_penalty, frequency_penalty, best_of, logit_bias, user);
 }
 
-liboai::Response liboai::Azure::create_embedding(const std::string& resource_name, const std::string& deployment_id, const std::string& api_version, const std::string& input, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Azure::create_embedding(const std::string& resource_name, const std::string& deployment_id, const std::string& api_version, const std::string& input, std::optional<std::string> user) const & noexcept(false) -> liboai::Response {
 	liboai::JsonConstructor jcon;
 	jcon.push_back("input", input);
 	jcon.push_back("user", std::move(user));
@@ -66,11 +66,11 @@ liboai::Response liboai::Azure::create_embedding(const std::string& resource_nam
 	return res;
 }
 
-liboai::FutureResponse liboai::Azure::create_embedding_async(const std::string& resource_name, const std::string& deployment_id, const std::string& api_version, const std::string& input, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Azure::create_embedding_async(const std::string& resource_name, const std::string& deployment_id, const std::string& api_version, const std::string& input, std::optional<std::string> user) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Azure::create_embedding, this, resource_name, deployment_id, api_version, input, user);
 }
 
-liboai::Response liboai::Azure::create_chat_completion(const std::string& resource_name, const std::string& deployment_id, const std::string& api_version, Conversation& conversation, std::optional<std::string> function_call, std::optional<float> temperature, std::optional<uint16_t> n, std::optional<ChatStreamCallback> stream, std::optional<std::vector<std::string>> stop, std::optional<uint16_t> max_tokens, std::optional<float> presence_penalty, std::optional<float> frequency_penalty, std::optional<std::unordered_map<std::string, int8_t>> logit_bias, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Azure::create_chat_completion(const std::string& resource_name, const std::string& deployment_id, const std::string& api_version, Conversation& conversation, std::optional<std::string> function_call, std::optional<float> temperature, std::optional<uint16_t> n, std::optional<ChatStreamCallback> stream, std::optional<std::vector<std::string>> stop, std::optional<uint16_t> max_tokens, std::optional<float> presence_penalty, std::optional<float> frequency_penalty, std::optional<std::unordered_map<std::string, int8_t>> logit_bias, std::optional<std::string> user) const & noexcept(false) -> liboai::Response {
 	liboai::JsonConstructor jcon;
 	jcon.push_back("temperature", std::move(temperature));
 	jcon.push_back("n", std::move(n));
@@ -130,11 +130,11 @@ liboai::Response liboai::Azure::create_chat_completion(const std::string& resour
 	return res;
 }
 
-liboai::FutureResponse liboai::Azure::create_chat_completion_async(const std::string& resource_name, const std::string& deployment_id, const std::string& api_version, Conversation& conversation, std::optional<std::string> function_call, std::optional<float> temperature, std::optional<uint16_t> n, std::optional<ChatStreamCallback> stream, std::optional<std::vector<std::string>> stop, std::optional<uint16_t> max_tokens, std::optional<float> presence_penalty, std::optional<float> frequency_penalty, std::optional<std::unordered_map<std::string, int8_t>> logit_bias, std::optional<std::string> user) const & noexcept(false) {
+auto liboai::Azure::create_chat_completion_async(const std::string& resource_name, const std::string& deployment_id, const std::string& api_version, Conversation& conversation, std::optional<std::string> function_call, std::optional<float> temperature, std::optional<uint16_t> n, std::optional<ChatStreamCallback> stream, std::optional<std::vector<std::string>> stop, std::optional<uint16_t> max_tokens, std::optional<float> presence_penalty, std::optional<float> frequency_penalty, std::optional<std::unordered_map<std::string, int8_t>> logit_bias, std::optional<std::string> user) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Azure::create_chat_completion, this, resource_name, deployment_id, api_version, std::ref(conversation), function_call, temperature, n, stream, stop, max_tokens, presence_penalty, frequency_penalty, logit_bias, user);
 }
 
-liboai::Response liboai::Azure::request_image_generation(const std::string& resource_name, const std::string& api_version, const std::string& prompt, std::optional<uint8_t> n, std::optional<std::string> size) const & noexcept(false) {
+auto liboai::Azure::request_image_generation(const std::string& resource_name, const std::string& api_version, const std::string& prompt, std::optional<uint8_t> n, std::optional<std::string> size) const & noexcept(false) -> liboai::Response {
 	liboai::JsonConstructor jcon;
 	jcon.push_back("prompt", prompt);
 	jcon.push_back("n", std::move(n));
@@ -159,11 +159,11 @@ liboai::Response liboai::Azure::request_image_generation(const std::string& reso
 	return res;
 }
 
-liboai::FutureResponse liboai::Azure::request_image_generation_async(const std::string& resource_name, const std::string& api_version, const std::string& prompt, std::optional<uint8_t> n, std::optional<std::string> size) const & noexcept(false) {
+auto liboai::Azure::request_image_generation_async(const std::string& resource_name, const std::string& api_version, const std::string& prompt, std::optional<uint8_t> n, std::optional<std::string> size) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Azure::request_image_generation, this, resource_name, api_version, prompt, n, size);
 }
 
-liboai::Response liboai::Azure::get_generated_image(const std::string& resource_name, const std::string& api_version, const std::string& operation_id) const & noexcept(false) {
+auto liboai::Azure::get_generated_image(const std::string& resource_name, const std::string& api_version, const std::string& operation_id) const & noexcept(false) -> liboai::Response {
 	netimpl::components::Parameters params;
 	params.Add({ "api-version", api_version });
 
@@ -180,11 +180,11 @@ liboai::Response liboai::Azure::get_generated_image(const std::string& resource_
 	return res;
 }
 
-liboai::FutureResponse liboai::Azure::get_generated_image_async(const std::string& resource_name, const std::string& api_version, const std::string& operation_id) const & noexcept(false) {
+auto liboai::Azure::get_generated_image_async(const std::string& resource_name, const std::string& api_version, const std::string& operation_id) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Azure::get_generated_image, this, resource_name, api_version, operation_id);
 }
 
-liboai::Response liboai::Azure::delete_generated_image(const std::string& resource_name, const std::string& api_version, const std::string& operation_id) const & noexcept(false) {
+auto liboai::Azure::delete_generated_image(const std::string& resource_name, const std::string& api_version, const std::string& operation_id) const & noexcept(false) -> liboai::Response {
 	netimpl::components::Parameters params;
 	params.Add({ "api-version", api_version });
 
@@ -201,6 +201,6 @@ liboai::Response liboai::Azure::delete_generated_image(const std::string& resour
 	return res;
 }
 
-liboai::FutureResponse liboai::Azure::delete_generated_image_async(const std::string& resource_name, const std::string& api_version, const std::string& operation_id) const & noexcept(false) {
+auto liboai::Azure::delete_generated_image_async(const std::string& resource_name, const std::string& api_version, const std::string& operation_id) const & noexcept(false) -> liboai::FutureResponse {
 	return std::async(std::launch::async, &liboai::Azure::delete_generated_image, this, resource_name, api_version, operation_id);
 }

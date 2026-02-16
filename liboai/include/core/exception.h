@@ -47,11 +47,11 @@ namespace liboai {
 				OpenAIException(std::string_view data, EType error_type, std::string_view locale) noexcept
 					: error_type_(error_type), data_(data), locale_(locale) { this->fmt_str_ = (this->locale_ + ": " + this->data_ + " (" + this->GetETypeString(this->error_type_) + ")"); }
 
-				const char* what() const noexcept override {
+			auto what() const noexcept -> const char* override {
 					return this->fmt_str_.c_str();
 				}
 
-				constexpr const char* GetETypeString(EType type) const noexcept {
+				constexpr auto GetETypeString(EType type) const noexcept -> const char* {
 					return _etype_strs_[static_cast<uint8_t>(type)];
 				}
 
@@ -70,11 +70,11 @@ namespace liboai {
 				OpenAIRateLimited(std::string_view data, EType error_type, std::string_view locale) noexcept
 					: error_type_(error_type), data_(data), locale_(locale) { this->fmt_str_ = (this->locale_ + ": " + this->data_ + " (" + this->GetETypeString(this->error_type_) + ")"); }
 
-				const char* what() const noexcept override {
+			auto what() const noexcept -> const char* override {
 					return this->fmt_str_.c_str();
 				}
 
-				constexpr const char* GetETypeString(EType type) const noexcept {
+				constexpr auto GetETypeString(EType type) const noexcept -> const char* {
 					return _etype_strs_[static_cast<uint8_t>(type)];
 				}
 
