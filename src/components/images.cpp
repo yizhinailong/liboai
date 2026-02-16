@@ -81,21 +81,22 @@ namespace liboai {
                     "liboai::Images::create_edit(...)"
                 );
             }
-            form.parts.push_back(
-                { "mask", netimpl::components::File{ mask.value().generic_string() } }
+            form.parts.emplace_back(
+                "mask",
+                netimpl::components::File{ mask.value().generic_string() }
             );
         }
         if (n) {
-            form.parts.push_back({ "n", n.value() });
+            form.parts.emplace_back("n", n.value());
         }
         if (size) {
-            form.parts.push_back({ "size", size.value() });
+            form.parts.emplace_back("size", size.value());
         }
         if (response_format) {
-            form.parts.push_back({ "response_format", response_format.value() });
+            form.parts.emplace_back("response_format", response_format.value());
         }
         if (user) {
-            form.parts.push_back({ "user", user.value() });
+            form.parts.emplace_back("user", user.value());
         }
 
         Response res;
@@ -157,16 +158,16 @@ namespace liboai {
         };
 
         if (n) {
-            form.parts.push_back({ "n", n.value() });
+            form.parts.emplace_back("n", n.value());
         }
         if (size) {
-            form.parts.push_back({ "size", size.value() });
+            form.parts.emplace_back("size", size.value());
         }
         if (response_format) {
-            form.parts.push_back({ "response_format", response_format.value() });
+            form.parts.emplace_back("response_format", response_format.value());
         }
         if (user) {
-            form.parts.push_back({ "user", user.value() });
+            form.parts.emplace_back("user", user.value());
         }
 
         Response res;

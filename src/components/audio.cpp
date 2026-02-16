@@ -24,16 +24,16 @@ namespace liboai {
         };
 
         if (prompt) {
-            form.parts.push_back({ "prompt", prompt.value() });
+            form.parts.emplace_back("prompt", prompt.value());
         }
         if (response_format) {
-            form.parts.push_back({ "response_format", response_format.value() });
+            form.parts.emplace_back("response_format", response_format.value());
         }
         if (temperature) {
-            form.parts.push_back({ "temperature", std::to_string(temperature.value()) });
+            form.parts.emplace_back("temperature", std::to_string(temperature.value()));
         }
         if (language) {
-            form.parts.push_back({ "language", language.value() });
+            form.parts.emplace_back("language", language.value());
         }
 
         Response res;
@@ -94,13 +94,13 @@ namespace liboai {
         };
 
         if (prompt) {
-            form.parts.push_back({ "prompt", std::move(prompt.value()) });
+            form.parts.emplace_back("prompt", std::move(prompt.value()));
         }
         if (response_format) {
-            form.parts.push_back({ "response_format", std::move(response_format.value()) });
+            form.parts.emplace_back("response_format", std::move(response_format.value()));
         }
         if (temperature) {
-            form.parts.push_back({ "temperature", std::to_string(temperature.value()) });
+            form.parts.emplace_back("temperature", std::to_string(temperature.value()));
         }
 
         Response res;
