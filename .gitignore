@@ -4,3 +4,4 @@ out
 TestApp
 .cache
 .sisyphus
+.xmake
