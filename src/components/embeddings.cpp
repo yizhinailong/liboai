@@ -1,35 +1,39 @@
 #include "liboai/components/embeddings.hpp"
 
-auto liboai::Embeddings::create(
-    const std::string& model_id,
-    std::optional<std::string> input,
-    std::optional<std::string> user
-) const& noexcept(false) -> liboai::Response {
-    liboai::JsonConstructor jcon;
-    jcon.push_back("model", model_id);
-    jcon.push_back("input", std::move(input));
-    jcon.push_back("user", std::move(user));
+namespace liboai {
 
-    Response res;
-    res = this->Request(
-        Method::HTTP_POST,
-        this->openai_root_,
-        "/embeddings",
-        "application/json",
-        this->auth_.GetAuthorizationHeaders(),
-        netimpl::components::Body{ jcon.dump() },
-        this->auth_.GetProxies(),
-        this->auth_.GetProxyAuth(),
-        this->auth_.GetMaxTimeout()
-    );
+    auto Embeddings::create(
+        const std::string& model_id,
+        std::optional<std::string> input,
+        std::optional<std::string> user
+    ) const& noexcept(false) -> Response {
+        JsonConstructor jcon;
+        jcon.push_back("model", model_id);
+        jcon.push_back("input", std::move(input));
+        jcon.push_back("user", std::move(user));
 
-    return res;
-}
+        Response res;
+        res = this->Request(
+            Method::HTTP_POST,
+            this->openai_root_,
+            "/embeddings",
+            "application/json",
+            this->auth_.GetAuthorizationHeaders(),
+            netimpl::components::Body{ jcon.dump() },
+            this->auth_.GetProxies(),
+            this->auth_.GetProxyAuth(),
+            this->auth_.GetMaxTimeout()
+        );
 
-auto liboai::Embeddings::create_async(
-    const std::string& model_id,
-    std::optional<std::string> input,
-    std::optional<std::string> user
-) const& noexcept(false) -> liboai::FutureResponse {
-    return std::async(std::launch::async, &liboai::Embeddings::create, this, model_id, input, user);
-}
+        return res;
+    }
+
+    auto Embeddings::create_async(
+        const std::string& model_id,
+        std::optional<std::string> input,
+        std::optional<std::string> user
+    ) const& noexcept(false) -> FutureResponse {
+        return std::async(std::launch::async, &Embeddings::create, this, model_id, input, user);
+    }
+
+} // namespace liboai
