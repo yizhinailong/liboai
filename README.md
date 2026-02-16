@@ -53,7 +53,7 @@ print(response["data"][0]["url"])
 <br>
 
 ```cpp
-#include "liboai.h"
+#include "liboai/liboai.hpp"
 
 using namespace liboai;
 

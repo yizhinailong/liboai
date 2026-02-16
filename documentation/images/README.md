@@ -1,12 +1,12 @@
 <h1>Images</h1>
-<p>The <code>Images</code> class is defined in <code>images.h</code> at <code>liboai::Images</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
+<p>The <code>Images</code> class is defined in <code>images.hpp</code> at <code>liboai::Images</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
 
 This class and its associated <code>liboai::OpenAI</code> interface allow access to the <a href="https://beta.openai.com/docs/api-reference/images">Images</a> endpoint of the OpenAI API; this endpoint's functionality can be found below.</p>
 - Given a prompt and/or an input image, the model will generate a new image.
 
 <br>
 <h2>Methods</h2>
-<p>This document covers the method(s) located in <code>images.h</code>. You can find their function signature(s) below.</p>
+<p>This document covers the method(s) located in <code>images.hpp</code>. You can find their function signature(s) below.</p>
 
 <h3>Create an Image</h3>
 <p>Creates an image given a prompt. Returns a <code>liboai::Response</code> containing response data.</p>

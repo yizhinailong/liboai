@@ -1,4 +1,4 @@
-#include "liboai.h"
+#include "liboai/liboai.hpp"
 
 using namespace liboai;
 

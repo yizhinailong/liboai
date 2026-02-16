@@ -1,11 +1,11 @@
 <h1>Azure</h1>
-<p>The <code>Azure</code> class is defined in <code>azure.h</code> at <code>liboai::Azure</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
+<p>The <code>Azure</code> class is defined in <code>azure.hpp</code> at <code>liboai::Azure</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
 
 This class and its associated <code>liboai::OpenAI</code> interface allow access to the <a href="https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference">Azure</a> OpenAI API components.
 
 <br>
 <h2>Methods</h2>
-<p>This document covers the method(s) located in <code>azure.h</code>. You can find their function signature(s) below.</p>
+<p>This document covers the method(s) located in <code>azure.hpp</code>. You can find their function signature(s) below.</p>
 
 <h3>Create a Completion</h3>
 <p>Given a prompt, the model will return one or more predicted completions. Returns a <code>liboai::Response</code> containing response data.</p>

@@ -2,7 +2,7 @@
 <p>Both above and below, you can find resources and documentation for each component of the library.</p>
 
 <h3>Basic Usage</h3>
-<p>In order to understand how to use each component of the library, it would be ideal to first understand the basic structure of the library as a whole. When using <code>liboai</code> in a project, you <b>should</b> only include one header file, <code>liboai.h</code>. This header provides an interface to all other components of the library such as <code>Images</code>, <code>Completions</code>, etc.
+<p>In order to understand how to use each component of the library, it would be ideal to first understand the basic structure of the library as a whole. When using <code>liboai</code> in a project, you <b>should</b> only include one header file, <code>liboai.hpp</code>. This header provides an interface to all other components of the library such as <code>Images</code>, <code>Completions</code>, etc.
 
 See below for both a correct and incorrect example.</p>
 <table>
@@ -14,7 +14,7 @@ See below for both a correct and incorrect example.</p>
 <td>
 
 ```cpp
-#include "liboai.h"
+#include "liboai/liboai.hpp"
 
 int main() {
   ...
@@ -39,7 +39,7 @@ int main() {
 </table>
 
 <br>
-<p>Once we have properly included the necessary header file to use the library--and assuming symbols are linked properly--we can make use of the class in <code>liboai.h</code> to get started. At some point in our source code, we will have to choose when to define a <code>liboai::OpenAI</code> object to access component interfaces. Each component interface stored in this object offers methods associated with it, so, for instance, interface <code>Image</code> will have a method <code>create(...)</code> to generate an image from text. Each non-async method returns a <code>liboai::Response</code> containing response information whereas async methods return a <code>liboai::FutureResponse</code>. However, before we start using these methods, we must first set our authorization information--otherwise it will not work!
+<p>Once we have properly included the necessary header file to use the library--and assuming symbols are linked properly--we can make use of the class in <code>liboai.hpp</code> to get started. At some point in our source code, we will have to choose when to define a <code>liboai::OpenAI</code> object to access component interfaces. Each component interface stored in this object offers methods associated with it, so, for instance, interface <code>Image</code> will have a method <code>create(...)</code> to generate an image from text. Each non-async method returns a <code>liboai::Response</code> containing response information whereas async methods return a <code>liboai::FutureResponse</code>. However, before we start using these methods, we must first set our authorization information--otherwise it will not work!
 
 <code>liboai::OpenAI</code> also houses another important member, the authorization member, which is used to set authorization information (such as the API key and organization IDs) before we call the API methods. For more information on additional members found in <code>liboai::Authorization</code>, refer to the <a href="./authorization">authorization</a> folder above.
 
@@ -53,7 +53,7 @@ See below for both a correct and incorrect control flow when generating an image
 <td>
 
 ```cpp
-#include "liboai.h"
+#include "liboai/liboai.hpp"
 
 using namespace liboai;
 
@@ -77,7 +77,7 @@ int main() {
 <td>
 
 ```cpp
-#include "liboai.h"
+#include "liboai/liboai.hpp"
 
 using namespace liboai;
 
@@ -108,7 +108,7 @@ int main() {
 <td>
 
 ```cpp
-#include "liboai.h"
+#include "liboai/liboai.hpp"
 
 using namespace liboai;
 
@@ -143,7 +143,7 @@ int main() {
 <td>
 
 ```cpp
-#include "liboai.h"
+#include "liboai/liboai.hpp"
 
 using namespace liboai;
 
@@ -176,7 +176,7 @@ int main() {
 <td>
 
 ```cpp
-#include "liboai.h"
+#include "liboai/liboai.hpp"
 
 using namespace liboai;
 

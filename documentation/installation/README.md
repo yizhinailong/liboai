@@ -34,14 +34,14 @@
 
   1. Ensure cURL and nlohmann-json are installed.
   2. Create a new C++ project.
-  3. Import the <code>liboai</code> source code (.cpp and .h files).
+  3. Import the <code>liboai</code> source code (.cpp and .hpp files).
   4. *Link your project to the cURL library.
   5. *Make sure you are targeting C++17.
   6. *Compile as a static or dynamic library.
   
 <p>Now, in the project you'd like to integrate <code>liboai</code> into:
   
-  1. Include the <code>liboai</code> header files (.h files).
+  1. Include the <code>liboai</code> header files (.hpp files).
   2. *Link to the output static or dynamic library you compiled in the above steps.
   
 *NOTE: how you do these steps depends on your choice of development environment. They can either be done in an IDE or a compiler on the command line.

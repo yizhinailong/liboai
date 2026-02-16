@@ -26,7 +26,7 @@ Each method found in <code>ChatCompletion</code> requires an existing object of 
 <td>
 
 ```cpp
-#include "liboai.h"
+#include "liboai/liboai.hpp"
 
 using namespace liboai;
 

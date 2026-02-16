@@ -1,5 +1,5 @@
 <h1>Audio</h1>
-<p>The <code>Audio</code> class is defined in <code>audio.h</code> at <code>liboai::Audio</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
+<p>The <code>Audio</code> class is defined in <code>audio.hpp</code> at <code>liboai::Audio</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
 
 This class and its associated <code>liboai::OpenAI</code> interface allow access to the <a href="https://beta.openai.com/docs/api-reference/audio">Audio</a> endpoint of the OpenAI API; this endpoint's functionality can be found below.</p>
 - Turn audio to text.
@@ -7,7 +7,7 @@ This class and its associated <code>liboai::OpenAI</code> interface allow access
 
 <br>
 <h2>Methods</h2>
-<p>This document covers the method(s) located in <code>audio.h</code>. You can find their function signature(s) below.</p>
+<p>This document covers the method(s) located in <code>audio.hpp</code>. You can find their function signature(s) below.</p>
 
 <h3>Create a Transcription</h3>
 <p>Transcribes audio into the input language. Returns a <code>liboai::Response</code> containing response data.</p>

@@ -10,7 +10,7 @@ option("build_examples")
     set_description("Build example programs")
 option_end()
 
-includes("liboai")
+includes("src")
 
 if get_config("build_examples") then
     includes("documentation")

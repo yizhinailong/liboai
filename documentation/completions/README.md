@@ -1,12 +1,12 @@
 <h1>Completions</h1>
-<p>The <code>Completions</code> class is defined in <code>completions.h</code> at <code>liboai::Completions</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
+<p>The <code>Completions</code> class is defined in <code>completions.hpp</code> at <code>liboai::Completions</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
 
 This class and its associated <code>liboai::OpenAI</code> interface allow access to the <a href="https://beta.openai.com/docs/api-reference/completions">Completions</a> endpoint of the OpenAI API; this endpoint's functionality can be found below.</p>
 - Given a prompt, the model will return one or more predicted completions, and can also return the probabilities of alternative tokens at each position.
 
 <br>
 <h2>Methods</h2>
-<p>This document covers the method(s) located in <code>completions.h</code>. You can find their function signature(s) below.</p>
+<p>This document covers the method(s) located in <code>completions.hpp</code>. You can find their function signature(s) below.</p>
 
 <h3>Create a Completion</h3>
 <p>Creates a completion for the provided prompt and parameters. Returns a <code>liboai::Response</code> containing response data.</p>

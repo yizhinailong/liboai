@@ -1,12 +1,12 @@
 <h1>Files</h1>
-<p>The <code>Files</code> class is defined in <code>files.h</code> at <code>liboai::Files</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
+<p>The <code>Files</code> class is defined in <code>files.hpp</code> at <code>liboai::Files</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
 
 This class and its associated <code>liboai::OpenAI</code> interface allow access to the <a href="https://beta.openai.com/docs/api-reference/files">Files</a> endpoint of the OpenAI API; this endpoint's functionality can be found below.</p>
 - Files are used to upload documents that can be used with features like Fine-tuning.
 
 <br>
 <h2>Methods</h2>
-<p>This document covers the method(s) located in <code>files.h</code>. You can find their function signature(s) below.</p>
+<p>This document covers the method(s) located in <code>files.hpp</code>. You can find their function signature(s) below.</p>
 
 <h3>List Files</h3>
 <p>Gets a list of files that belong to the user's organization. Returns a <code>liboai::Response</code> containing response data.</p>

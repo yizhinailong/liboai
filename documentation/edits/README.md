@@ -1,12 +1,12 @@
 <h1>Edits</h1>
-<p>The <code>Edits</code> class is defined in <code>edits.h</code> at <code>liboai::Edits</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
+<p>The <code>Edits</code> class is defined in <code>edits.hpp</code> at <code>liboai::Edits</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
 
 This class and its associated <code>liboai::OpenAI</code> interface allow access to the <a href="https://beta.openai.com/docs/api-reference/edits">Edits</a> endpoint of the OpenAI API; this endpoint's functionality can be found below.</p>
 - Given a prompt and an instruction, the model will return an edited version of the prompt.
 
 <br>
 <h2>Methods</h2>
-<p>This document covers the method(s) located in <code>edits.h</code>. You can find their function signature(s) below.</p>
+<p>This document covers the method(s) located in <code>edits.hpp</code>. You can find their function signature(s) below.</p>
 
 <h3>Create an Edit</h3>
 <p>Creates a new edit for the provided input, instruction, and parameters. Returns a <code>liboai::Response</code> containing response data.</p>

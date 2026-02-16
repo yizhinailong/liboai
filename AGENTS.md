@@ -6,52 +6,52 @@
 
 ## OVERVIEW
 
-Unofficial C++17 library for OpenAI API. Spiritual port of Python's `openai` library with similar structure. Single-header include design (`#include "liboai.h"`).
+Unofficial C++17 library for OpenAI API. Spiritual port of Python's `openai` library with similar structure. Single-header include design (`#include "liboai/liboai.hpp"`).
 
 ## STRUCTURE
 
 ```
-liboai/
-├── include/
-│   ├── liboai.h              # Main entry - include only this
-│   ├── components/           # API endpoint wrappers (audio, chat, images, etc.)
-│   └── core/                 # Infrastructure (auth, network, response, exception)
-├── components/               # Component implementations (.cpp)
-├── core/                     # Core implementations (.cpp)
-documentation/                # Examples per API feature
+include/liboai/
+├── liboai.hpp              # Main entry - include only this
+├── components/             # API endpoint wrappers (audio, chat, images, etc.)
+└── core/                   # Infrastructure (auth, network, response, exception)
+src/
+├── components/             # Component implementations (.cpp)
+└── core/                   # Core implementations (.cpp)
+documentation/              # Examples per API feature
 ```
 
 ## WHERE TO LOOK
 
 | Task | Location | Notes |
 |------|----------|-------|
-| Add new API endpoint | `liboai/include/components/` + `liboai/components/` | Create .h/.cpp pair, add to CMakeLists.txt, include in liboai.h |
-| Modify auth behavior | `liboai/include/core/authorization.h` | Singleton pattern |
-| Change network layer | `liboai/include/core/netimpl.h` | cURL wrapper, 47k lines |
-| Response handling | `liboai/include/core/response.h` | JSON via nlohmann::json |
+| Add new API endpoint | `include/liboai/components/` + `src/components/` | Create .hpp/.cpp pair, add to CMakeLists.txt, include in liboai.hpp |
+| Modify auth behavior | `include/liboai/core/authorization.hpp` | Singleton pattern |
+| Change network layer | `include/liboai/core/netimpl.hpp` | cURL wrapper, 47k lines |
+| Response handling | `include/liboai/core/response.hpp` | JSON via nlohmann::json |
 | Usage examples | `documentation/{feature}/examples/` | Sync + async variants |
-| Build configuration | `CMakeLists.txt`, `liboai/CMakeLists.txt` | |
+| Build configuration | `CMakeLists.txt` | |
 
 ## CODE MAP
 
 | Symbol | Type | Location | Role |
 |--------|------|----------|------|
-| `OpenAI` | Class | `include/liboai.h` | Facade - owns all component pointers |
-| `Authorization` | Class | `include/core/authorization.h` | Singleton for API keys/proxies |
-| `Response` | Class | `include/core/response.h` | JSON response wrapper |
-| `FutureResponse` | Type | `include/core/response.h` | `std::future<liboai::Response>` |
-| `JsonConstructor` | Class | `include/core/response.h` | Build JSON payloads |
-| `Audio` | Component | `include/components/audio.h` | Speech/transcription/translation |
-| `ChatCompletion` | Component | `include/components/chat.h` | ChatGPT API (largest, 40k lines) |
-| `Azure` | Component | `include/components/azure.h` | Azure OpenAI endpoints |
-| `Images` | Component | `include/components/images.h` | DALL-E generation |
-| `Models` | Component | `include/components/models.h` | Model listing/retrieval |
+| `OpenAI` | Class | `include/liboai/liboai.hpp` | Facade - owns all component pointers |
+| `Authorization` | Class | `include/liboai/core/authorization.hpp` | Singleton for API keys/proxies |
+| `Response` | Class | `include/liboai/core/response.hpp` | JSON response wrapper |
+| `FutureResponse` | Type | `include/liboai/core/response.hpp` | `std::future<liboai::Response>` |
+| `JsonConstructor` | Class | `include/liboai/core/response.hpp` | Build JSON payloads |
+| `Audio` | Component | `include/liboai/components/audio.hpp` | Speech/transcription/translation |
+| `ChatCompletion` | Component | `include/liboai/components/chat.hpp` | ChatGPT API (largest, 40k lines) |
+| `Azure` | Component | `include/liboai/components/azure.hpp` | Azure OpenAI endpoints |
+| `Images` | Component | `include/liboai/components/images.hpp` | DALL-E generation |
+| `Models` | Component | `include/liboai/components/models.hpp` | Model listing/retrieval |
 
 ## CONVENTIONS
 
 - **C++17** required
 - **Namespace**: `liboai`
-- **Single header**: Users include only `liboai.h`
+- **Single header**: Users include only `liboai/liboai.hpp`
 - **Singleton auth**: `Authorization::Authorizer()` for global auth state
 - **Non-copyable/movable**: Core classes use `NON_COPYABLE(Class)` and `NON_MOVABLE(Class)` macros
 - **Return type**: `Response` for sync, `FutureResponse` for async
@@ -60,7 +60,7 @@ documentation/                # Examples per API feature
 
 ## ANTI-PATTERNS
 
-- **DO NOT** include individual component headers - use `liboai.h`
+- **DO NOT** include individual component headers - use `liboai/liboai.hpp`
 - **DO NOT** copy/move `OpenAI`, `Authorization`, `Response` instances (deleted ops)
 - **DO NOT** access `raw_json` directly before checking `status_code`
 
