@@ -861,25 +861,31 @@ namespace liboai {
 
         /*
             @brief Returns the raw JSON dump of the internal conversation object
-                in string format.
+ in
+         * string format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto GetRawConversation() const& noexcept -> std::string;
 
         /*
 				@brief Returns the JSON object of the internal conversation.
 			*/
+        [[nodiscard]]
         LIBOAI_EXPORT auto GetJSON() const& noexcept -> const nlohmann::json&;
 
         /*
 				@brief Returns the raw JSON dump of the internal functions object
 
-         * in string format - if one exists.
+ * in
+         * string format - if one exists.
 			*/
+        [[nodiscard]]
         LIBOAI_EXPORT auto GetRawFunctions() const& noexcept -> std::string;
 
         /*
 				@brief Returns the JSON object of the set functions.
 			*/
+        [[nodiscard]]
         LIBOAI_EXPORT auto GetFunctionsJSON() const& noexcept -> const nlohmann::json&;
 
         /*
@@ -979,6 +985,7 @@ namespace liboai {
             @returns A liboai::Response object containing the
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto create(
             const std::string& model,
             Conversation& conversation,
@@ -1041,6 +1048,7 @@ namespace liboai {
             @returns A liboai::Response future containing the
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto create_async(
             const std::string& model,
             Conversation& conversation,

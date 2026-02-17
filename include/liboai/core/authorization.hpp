@@ -33,6 +33,7 @@ namespace liboai {
             @return A reference to the singleton instance of this class
                 to be used in all component classes.
         */
+        [[nodiscard]]
         static Authorization& Authorizer() noexcept {
             static Authorization instance;
             return instance;
@@ -210,21 +211,31 @@ namespace liboai {
         /*
             @brief Returns currently the set authorization key.
         */
-        constexpr auto GetKey() const noexcept -> const std::string& { return this->m_key; }
+        [[nodiscard]]
+        constexpr auto GetKey() const noexcept -> const std::string& {
+            return this->m_key;
+        }
 
         /*
             @brief Returns the currently set organization identifier.
         */
-        constexpr auto GetOrganization() const noexcept -> const std::string& { return this->m_org; }
+        [[nodiscard]]
+        constexpr auto GetOrganization() const noexcept -> const std::string& {
+            return this->m_org;
+        }
 
         /*
             @returns The currently set proxies.
         */
-        auto GetProxies() const noexcept -> netimpl::components::Proxies { return this->m_proxies; }
+        [[nodiscard]]
+        auto GetProxies() const noexcept -> netimpl::components::Proxies {
+            return this->m_proxies;
+        }
 
         /*
             @returns The currently set proxy authentication information.
         */
+        [[nodiscard]]
         auto GetProxyAuth() const noexcept -> netimpl::components::ProxyAuthentication {
             return this->m_proxyAuth;
         }
@@ -232,6 +243,7 @@ namespace liboai {
         /*
             @returns The currently set timeout.
         */
+        [[nodiscard]]
         auto GetMaxTimeout() const noexcept -> netimpl::components::Timeout {
             return this->m_timeout;
         }
@@ -241,6 +253,7 @@ namespace liboai {
                 currently set authorization information for use
                 in component calls.
         */
+        [[nodiscard]]
         constexpr auto GetAuthorizationHeaders() const noexcept
             -> const netimpl::components::Header& {
             return this->m_openai_auth_headers;
@@ -251,6 +264,7 @@ namespace liboai {
                 currently set Azure authorization information for use
                 in Azure component calls.
         */
+        [[nodiscard]]
         constexpr auto GetAzureAuthorizationHeaders() const noexcept
             -> const netimpl::components::Header& {
             return this->m_azure_auth_headers;

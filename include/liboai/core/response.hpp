@@ -81,7 +81,10 @@ namespace liboai {
             }
         }
 
-        std::string dump() const { return this->m_json.dump(4); }
+        [[nodiscard]]
+        std::string dump() const {
+            return this->m_json.dump(4);
+        }
 
     private:
         nlohmann::json m_json;
@@ -109,6 +112,7 @@ namespace liboai {
                 access the Response object as if it were a json object.
         */
         template <class _Ty>
+        [[nodiscard]]
         auto operator[](const _Ty& key) const noexcept -> nlohmann::json::const_reference {
             return this->raw_json[key];
         }

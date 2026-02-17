@@ -148,6 +148,7 @@ namespace liboai {
             std::enable_if_t<
                 std::conjunction_v<std::negation<std::is_lvalue_reference<_Params>>...>,
                 int> = 0>
+        [[nodiscard]]
         inline auto Request(
             const Method& http_method,
             const std::string& root,
@@ -191,6 +192,7 @@ namespace liboai {
             std::enable_if_t<
                 std::conjunction_v<std::negation<std::is_lvalue_reference<_Params>>...>,
                 int> = 0>
+        [[nodiscard]]
         inline auto RequestWithSession(
             const Method& http_method,
             const std::string& root,
@@ -242,6 +244,7 @@ namespace liboai {
 					to ensure that the file exists
          * and is valid.
 			*/
+        [[nodiscard]]
         auto Validate(const std::filesystem::path& path) const -> bool {
             // checks if the file exists, is a regular file, and is not empty
             if (std::filesystem::exists(path) && std::filesystem::is_regular_file(path)) {

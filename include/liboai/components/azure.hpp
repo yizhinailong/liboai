@@ -38,6 +38,7 @@ namespace liboai {
             @returns A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto create_completion(
             const std::string& resource_name,
             const std::string& deployment_id,
@@ -74,6 +75,7 @@ namespace liboai {
             @returns A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto create_completion_async(
             const std::string& resource_name,
             const std::string& deployment_id,
@@ -110,6 +112,7 @@ namespace liboai {
             @return A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto create_embedding(
             const std::string& resource_name,
             const std::string& deployment_id,
@@ -133,6 +136,7 @@ namespace liboai {
             @return A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto create_embedding_async(
             const std::string& resource_name,
             const std::string& deployment_id,
@@ -154,6 +158,7 @@ namespace liboai {
             @returns A liboai::Response object containing the
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto create_chat_completion(
             const std::string& resource_name,
             const std::string& deployment_id,
@@ -184,6 +189,7 @@ namespace liboai {
             @returns A liboai::Response object containing the
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto create_chat_completion_async(
             const std::string& resource_name,
             const std::string& deployment_id,
@@ -215,6 +221,7 @@ namespace liboai {
             @returns A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto request_image_generation(
             const std::string& resource_name,
             const std::string& api_version,
@@ -237,6 +244,7 @@ namespace liboai {
             @returns A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto request_image_generation_async(
             const std::string& resource_name,
             const std::string& api_version,
@@ -256,6 +264,7 @@ namespace liboai {
             @returns A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto get_generated_image(
             const std::string& resource_name,
             const std::string& api_version,
@@ -274,6 +283,7 @@ namespace liboai {
             @returns A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto get_generated_image_async(
             const std::string& resource_name,
             const std::string& api_version,
@@ -291,6 +301,7 @@ namespace liboai {
             @returns A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto delete_generated_image(
             const std::string& resource_name,
             const std::string& api_version,
@@ -308,6 +319,7 @@ namespace liboai {
             @returns A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto delete_generated_image_async(
             const std::string& resource_name,
             const std::string& api_version,

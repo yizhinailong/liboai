@@ -49,6 +49,7 @@ namespace liboai {
             @return A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto create(
             const std::string& training_file,
             std::optional<std::string> validation_file = std::nullopt,
@@ -89,6 +90,7 @@ namespace liboai {
             @return A liboai::Response future containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto create_async(
             const std::string& training_file,
             std::optional<std::string> validation_file = std::nullopt,
@@ -110,6 +112,7 @@ namespace liboai {
             @return A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto list() const& noexcept(false) -> liboai::Response;
 
         /*
@@ -118,6 +121,7 @@ namespace liboai {
             @return A liboai::Response future containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto list_async() const& noexcept(false) -> liboai::FutureResponse;
 
         /*
@@ -128,6 +132,7 @@ namespace liboai {
             @return A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto retrieve(const std::string& fine_tune_id) const& noexcept(false)
             -> liboai::Response;
 
@@ -139,6 +144,7 @@ namespace liboai {
             @return A liboai::Response future containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto retrieve_async(const std::string& fine_tune_id) const& noexcept(false)
             -> liboai::FutureResponse;
 
@@ -150,6 +156,7 @@ namespace liboai {
             @return A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto cancel(const std::string& fine_tune_id) const& noexcept(false)
             -> liboai::Response;
 
@@ -161,6 +168,7 @@ namespace liboai {
             @return A liboai::Response future containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto cancel_async(const std::string& fine_tune_id) const& noexcept(false)
             -> liboai::FutureResponse;
 
@@ -176,6 +184,7 @@ namespace liboai {
             @return A liboai::Response future containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto list_events(
             const std::string& fine_tune_id,
             std::optional<StreamCallback> stream = std::nullopt
@@ -193,6 +202,7 @@ namespace liboai {
             @return A liboai::Response future containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto list_events_async(
             const std::string& fine_tune_id,
             std::optional<StreamCallback> stream = std::nullopt
@@ -206,6 +216,7 @@ namespace liboai {
             @return A liboai::Response future containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto remove(const std::string& model) const& noexcept(false)
             -> liboai::Response;
 
@@ -218,6 +229,7 @@ namespace liboai {
             @return A liboai::Response future containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto remove_async(const std::string& model) const& noexcept(false)
             -> liboai::FutureResponse;
 

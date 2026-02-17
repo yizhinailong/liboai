@@ -72,6 +72,7 @@ namespace liboai {
             @returns A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto create(
             const std::string& model_id,
             std::optional<std::string> prompt = std::nullopt,
@@ -140,6 +141,7 @@ namespace liboai {
             @returns A liboai::Response future containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto create_async(
             const std::string& model_id,
             std::optional<std::string> prompt = std::nullopt,

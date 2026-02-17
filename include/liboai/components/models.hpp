@@ -28,6 +28,7 @@ namespace liboai {
             @returns A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto list() const& noexcept(false) -> liboai::Response;
 
         /*
@@ -36,6 +37,7 @@ namespace liboai {
             @returns A liboai::Response future containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto list_async() const& noexcept(false) -> liboai::FutureResponse;
 
         /*
@@ -46,6 +48,7 @@ namespace liboai {
             @returns A liboai::Response object containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto retrieve(const std::string& model) const& noexcept(false)
             -> liboai::Response;
 
@@ -57,6 +60,7 @@ namespace liboai {
             @returns A liboai::Response future containing the image(s)
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto retrieve_async(const std::string& model) const& noexcept(false)
             -> liboai::FutureResponse;
 

@@ -48,6 +48,7 @@ namespace liboai {
             @returns A liboai::Response object containing the
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto transcribe(
             const std::filesystem::path& file,
             const std::string& model,
@@ -79,6 +80,7 @@ namespace liboai {
             @returns A liboai::Response future containing the
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto transcribe_async(
             const std::filesystem::path& file,
             const std::string& model,
@@ -108,6 +110,7 @@ namespace liboai {
             @returns A liboai::Response object containing the
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto translate(
             const std::filesystem::path& file,
             const std::string& model,
@@ -136,6 +139,7 @@ namespace liboai {
             @returns A liboai::Response future containing the
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto translate_async(
             const std::filesystem::path& file,
             const std::string& model,
@@ -161,6 +165,7 @@ namespace liboai {
             @returns A liboai::Response object containing the
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto speech(
             const std::string& model,
             const std::string& voice,
@@ -186,6 +191,7 @@ namespace liboai {
             @returns A liboai::Response object containing the
                 data in JSON format.
         */
+        [[nodiscard]]
         LIBOAI_EXPORT auto speech_async(
             const std::string& model,
             const std::string& voice,
