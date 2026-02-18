@@ -6,7 +6,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/models",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
@@ -26,7 +26,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/models/" + model,
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),

@@ -33,7 +33,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/fine-tunes",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
@@ -83,7 +83,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/fine-tunes",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
@@ -103,7 +103,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/fine-tunes/" + fine_tune_id,
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
@@ -124,7 +124,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/fine-tunes/" + fine_tune_id + "/cancel",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
@@ -151,7 +151,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/fine-tunes/" + fine_tune_id + "/events",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
@@ -183,7 +183,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_DELETE,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/models/" + model,
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),

@@ -6,7 +6,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/files",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
@@ -42,7 +42,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/files",
             "multipart/form-data",
             this->m_auth.GetAuthorizationHeaders(),
@@ -66,7 +66,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_DELETE,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/files/" + file_id,
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
@@ -86,7 +86,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/files/" + file_id,
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),

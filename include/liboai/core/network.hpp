@@ -13,6 +13,7 @@
         information to successfully complete the request.
 */
 
+#include <array>
 #include <future>
 #include <optional>
 
@@ -33,6 +34,7 @@ namespace liboai {
         Network& operator=(const Network&) = delete;
         Network(Network&&) = delete;
         Network& operator=(Network&&) = delete;
+        ~Network() = default;
 
         /*
             @brief Function to download a file at 'from'
@@ -51,24 +53,23 @@ namespace liboai {
             @returns Bool indicating success or failure.
         */
         [[nodiscard]]
-        static inline auto Download(
+        static auto Download(
             const std::string& to,
             const std::string& from,
-            netimpl::components::Header authorization
+            const netimpl::components::Header& authorization
         ) noexcept(false) -> bool {
             std::ofstream file(to, std::ios::binary);
             Response res;
-            res =
-                netimpl::Download(file, netimpl::components::Url{ from }, std::move(authorization));
+            res = netimpl::Download(file, netimpl::components::Url{ from }, authorization);
 
             return res.status_code == 200;
         }
 
         [[nodiscard]]
-        static inline auto DownloadWithSession(
+        static auto DownloadWithSession(
             const std::string& to,
             const std::string& from,
-            netimpl::components::Header authorization,
+            const netimpl::components::Header& authorization,
             netimpl::Session& session
         ) noexcept(false) -> bool {
             std::ofstream file(to, std::ios::binary);
@@ -77,7 +78,7 @@ namespace liboai {
                 session,
                 file,
                 netimpl::components::Url{ from },
-                std::move(authorization)
+                authorization
             );
 
             return res.status_code == 200;
@@ -100,7 +101,7 @@ namespace liboai {
             @returns Future bool indicating success or failure.
         */
         [[nodiscard]]
-        static inline auto DownloadAsync(
+        static auto DownloadAsync(
             const std::string& to,
             const std::string& from,
             netimpl::components::Header authorization
@@ -119,7 +120,7 @@ namespace liboai {
         }
 
         [[nodiscard]]
-        static inline auto DownloadAsyncWithSession(
+        static auto DownloadAsyncWithSession(
             const std::string& to,
             const std::string& from,
             netimpl::components::Header authorization,
@@ -147,18 +148,18 @@ namespace liboai {
         };
 
         template <
-            class... _Params,
+            class... Params,
             std::enable_if_t<
-                std::conjunction_v<std::negation<std::is_lvalue_reference<_Params>>...>,
+                std::conjunction_v<std::negation<std::is_lvalue_reference<Params>>...>,
                 int> = 0>
         [[nodiscard]]
-        inline auto Request(
+        auto Request(
             const Method& http_method,
             const std::string& root,
             const std::string& endpoint,
             const std::string& content_type,
             std::optional<netimpl::components::Header> headers = std::nullopt,
-            _Params&&... parameters
+            Params&&... parameters
         ) const -> Response {
             netimpl::components::Header _headers = {
                 { "Content-Type", content_type }
@@ -173,37 +174,37 @@ namespace liboai {
 
             Response res;
             if constexpr (sizeof...(parameters) > 0) {
-                res = Network::MethodSchema<netimpl::components::Header&&, _Params&&...>::_method
-                    [static_cast<uint8_t>(http_method)](
-                        netimpl::components::Url{ root + endpoint },
-                        std::move(_headers),
-                        std::forward<_Params>(parameters)...
-                    );
+                res = Network::MethodSchema<netimpl::components::Header&&, Params&&...>::_method
+                          .at(static_cast<uint8_t>(http_method))(
+                              netimpl::components::Url{ root + endpoint },
+                              std::move(_headers),
+                              std::forward<Params>(parameters)...
+                          );
             } else {
                 res = Network::MethodSchema<netimpl::components::Header&&>::_method
-                    [static_cast<uint8_t>(http_method)](
-                        netimpl::components::Url{ root + endpoint },
-                        std::move(_headers)
-                    );
+                          .at(static_cast<uint8_t>(http_method))(
+                              netimpl::components::Url{ root + endpoint },
+                              std::move(_headers)
+                          );
             }
 
             return res;
         }
 
         template <
-            class... _Params,
+            class... Params,
             std::enable_if_t<
-                std::conjunction_v<std::negation<std::is_lvalue_reference<_Params>>...>,
+                std::conjunction_v<std::negation<std::is_lvalue_reference<Params>>...>,
                 int> = 0>
         [[nodiscard]]
-        inline auto RequestWithSession(
+        auto RequestWithSession(
             const Method& http_method,
             const std::string& root,
             const std::string& endpoint,
             const std::string& content_type,
             netimpl::Session& session,
             std::optional<netimpl::components::Header> headers = std::nullopt,
-            _Params&&... parameters
+            Params&&... parameters
         ) const -> Response {
             netimpl::components::Header _headers = {
                 { "Content-Type", content_type }
@@ -218,35 +219,30 @@ namespace liboai {
 
             Response res;
             if constexpr (sizeof...(parameters) > 0) {
-                res =
-                    Network::MethodSchemaWithSession<netimpl::components::Header&&, _Params&&...>::
-                        _method[static_cast<uint8_t>(http_method)](
-                            session,
-                            netimpl::components::Url{ root + endpoint },
-                            std::move(_headers),
-                            std::forward<_Params>(parameters)...
-                        );
+                res = Network::MethodSchemaWithSession<netimpl::components::Header&&, Params&&...>::
+                          _method.at(static_cast<uint8_t>(http_method))(
+                              session,
+                              netimpl::components::Url{ root + endpoint },
+                              std::move(_headers),
+                              std::forward<Params>(parameters)...
+                          );
             } else {
                 res = Network::MethodSchemaWithSession<netimpl::components::Header&&>::_method
-                    [static_cast<uint8_t>(http_method)](
-                        session,
-                        netimpl::components::Url{ root + endpoint },
-                        std::move(_headers)
-                    );
+                          .at(static_cast<uint8_t>(http_method))(
+                              session,
+                              netimpl::components::Url{ root + endpoint },
+                              std::move(_headers)
+                          );
             }
 
             return res;
         }
 
-        /*
-				@brief Function to validate the existence and validity of
-
-         * a file located at a provided file path. This is used
-					in functions
-         * that take a file path as a parameter
-					to ensure that the file exists
+        /* @brief Function to validate the existence and validity of
+         * a file located at a provided file path. This is used in functions
+         * that take a file path as a parameter to ensure that the file exists
          * and is valid.
-			*/
+         */
         [[nodiscard]]
         auto Validate(const std::filesystem::path& path) const -> bool {
             // checks if the file exists, is a regular file, and is not empty
@@ -256,24 +252,28 @@ namespace liboai {
             return false;
         }
 
+        [[nodiscard]] const std::string& GetOpenAIRoot() const noexcept { return m_openai_root; }
+
+        [[nodiscard]] const std::string& GetAzureRoot() const noexcept { return m_azure_root; }
+
+    private:
         const std::string m_openai_root;
         const std::string m_azure_root = ".openai.azure.com/openai";
 
-    private:
         template <class... T> struct MethodSchema {
-            inline static std::function<Response(netimpl::components::Url&&, T...)> _method[3] = {
-                netimpl::Get<netimpl::components::Url&&, T...>,
-                netimpl::Post<netimpl::components::Url&&, T...>,
-                netimpl::Delete<netimpl::components::Url&&, T...>
-            };
+            inline static std::array<std::function<Response(netimpl::components::Url&&, T...)>, 3>
+                _method = { netimpl::Get<netimpl::components::Url&&, T...>,
+                            netimpl::Post<netimpl::components::Url&&, T...>,
+                            netimpl::Delete<netimpl::components::Url&&, T...> };
         };
 
         template <class... T> struct MethodSchemaWithSession {
-            inline static std::function<
-                Response(netimpl::Session&, netimpl::components::Url&&, T...)>
-                _method[3] = { netimpl::GetWithSession<netimpl::components::Url&&, T...>,
-                               netimpl::PostWithSession<netimpl::components::Url&&, T...>,
-                               netimpl::DeleteWithSession<netimpl::components::Url&&, T...> };
+            inline static std::array<
+                std::function<Response(netimpl::Session&, netimpl::components::Url&&, T...)>,
+                3>
+                _method = { netimpl::GetWithSession<netimpl::components::Url&&, T...>,
+                            netimpl::PostWithSession<netimpl::components::Url&&, T...>,
+                            netimpl::DeleteWithSession<netimpl::components::Url&&, T...> };
         };
     };
 } // namespace liboai

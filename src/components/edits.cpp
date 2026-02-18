@@ -21,7 +21,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/edits",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),

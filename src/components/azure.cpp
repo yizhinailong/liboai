@@ -45,7 +45,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            ("https://" + resource_name + this->m_azure_root + "/deployments/" + deployment_id),
+            ("https://" + resource_name + this->GetAzureRoot() + "/deployments/" + deployment_id),
             "/completions",
             "application/json",
             this->m_auth.GetAzureAuthorizationHeaders(),
@@ -123,7 +123,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            ("https://" + resource_name + this->m_azure_root + "/deployments/" + deployment_id),
+            ("https://" + resource_name + this->GetAzureRoot() + "/deployments/" + deployment_id),
             "/embeddings",
             "application/json",
             this->m_auth.GetAzureAuthorizationHeaders(),
@@ -220,7 +220,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            ("https://" + resource_name + this->m_azure_root + "/deployments/" + deployment_id),
+            ("https://" + resource_name + this->GetAzureRoot() + "/deployments/" + deployment_id),
             "/chat/completions",
             "application/json",
             this->m_auth.GetAzureAuthorizationHeaders(),
@@ -291,7 +291,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            ("https://" + resource_name + this->m_azure_root),
+            ("https://" + resource_name + this->GetAzureRoot()),
             "/images/generations:submit",
             "application/json",
             this->m_auth.GetAzureAuthorizationHeaders(),
@@ -335,7 +335,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_GET,
-            ("https://" + resource_name + this->m_azure_root),
+            ("https://" + resource_name + this->GetAzureRoot()),
             "/operations/images/" + operation_id,
             "application/json",
             this->m_auth.GetAzureAuthorizationHeaders(),
@@ -374,7 +374,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_DELETE,
-            ("https://" + resource_name + this->m_azure_root),
+            ("https://" + resource_name + this->GetAzureRoot()),
             "/operations/images/" + operation_id,
             "application/json",
             this->m_auth.GetAzureAuthorizationHeaders(),

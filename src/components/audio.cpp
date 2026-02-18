@@ -39,7 +39,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/audio/transcriptions",
             "multipart/form-data",
             this->m_auth.GetAuthorizationHeaders(),
@@ -106,7 +106,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/audio/translations",
             "multipart/form-data",
             this->m_auth.GetAuthorizationHeaders(),
@@ -160,7 +160,7 @@ namespace liboai {
         Response res;
         res = this->Request(
             Method::HTTP_POST,
-            this->m_openai_root,
+            this->GetOpenAIRoot(),
             "/audio/speech",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
