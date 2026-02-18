@@ -1,6 +1,6 @@
 set_project("liboai")
-set_version("4.0.1")
-set_languages("c++17")
+set_version("5.0.1")
+set_languages("c++23")
 
 add_requires("nlohmann_json", "libcurl", "gtest")
 
