@@ -58,8 +58,9 @@ namespace liboai {
 
         OpenAI(OpenAI const&) = delete;
         OpenAI(OpenAI&&) = delete;
-        void operator=(OpenAI const&) = delete;
-        void operator=(OpenAI&&) = delete;
+        OpenAI& operator=(OpenAI const&) = delete;
+        OpenAI& operator=(OpenAI&&) = delete;
+        ~OpenAI() = default;
 
         /*
             @brief A pointer to the Audio component class that
