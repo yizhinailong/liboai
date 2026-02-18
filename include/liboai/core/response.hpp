@@ -21,13 +21,6 @@
     #define LIBOAI_EXPORT __declspec(dllexport)
 #endif
 
-#define NON_COPYABLE(Class) \
-    Class(const Class&) = delete; \
-    Class& operator=(const Class&) = delete;
-#define NON_MOVABLE(Class) \
-    Class(Class&&) = delete; \
-    Class& operator=(Class&&) = delete;
-
 #include <future>
 #include <iostream>
 #include <optional>

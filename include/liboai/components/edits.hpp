@@ -18,8 +18,11 @@ namespace liboai {
     class Edits final : private Network {
     public:
         explicit Edits(const std::string& root) : Network(root) {}
-        NON_COPYABLE(Edits)
-        NON_MOVABLE(Edits)
+
+        Edits(const Edits&) = delete;
+        Edits& operator=(const Edits&) = delete;
+        Edits(Edits&&) = delete;
+        Edits& operator=(Edits&&) = delete;
         ~Edits() = default;
 
         /*

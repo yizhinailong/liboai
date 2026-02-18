@@ -28,8 +28,11 @@ namespace liboai {
             @param root     The URL to direct API calls to.
         */
         explicit Network(const std::string& root) noexcept : m_openai_root(root) {}
-        NON_COPYABLE(Network)
-        NON_MOVABLE(Network)
+
+        Network(const Network&) = delete;
+        Network& operator=(const Network&) = delete;
+        Network(Network&&) = delete;
+        Network& operator=(Network&&) = delete;
 
         /*
             @brief Function to download a file at 'from'

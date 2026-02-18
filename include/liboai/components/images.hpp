@@ -18,8 +18,11 @@ namespace liboai {
     class Images final : private Network {
     public:
         explicit Images(const std::string& root) : Network(root) {}
-        NON_COPYABLE(Images)
-        NON_MOVABLE(Images)
+
+        Images(const Images&) = delete;
+        Images& operator=(const Images&) = delete;
+        Images(Images&&) = delete;
+        Images& operator=(Images&&) = delete;
         ~Images() = default;
 
         /*

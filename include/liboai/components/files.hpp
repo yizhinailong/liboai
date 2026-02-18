@@ -18,8 +18,11 @@ namespace liboai {
     class Files final : private Network {
     public:
         explicit Files(const std::string& root) : Network(root) {}
-        NON_COPYABLE(Files)
-        NON_MOVABLE(Files)
+
+        Files(const Files&) = delete;
+        Files& operator=(const Files&) = delete;
+        Files(Files&&) = delete;
+        Files& operator=(Files&&) = delete;
         ~Files() = default;
 
         /*

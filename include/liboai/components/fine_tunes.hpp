@@ -18,8 +18,11 @@ namespace liboai {
     class FineTunes final : private Network {
     public:
         explicit FineTunes(const std::string& root) : Network(root) {}
-        NON_COPYABLE(FineTunes)
-        NON_MOVABLE(FineTunes)
+
+        FineTunes(const FineTunes&) = delete;
+        FineTunes& operator=(const FineTunes&) = delete;
+        FineTunes(FineTunes&&) = delete;
+        FineTunes& operator=(FineTunes&&) = delete;
         ~FineTunes() = default;
 
         using StreamCallback = std::function<bool(std::string, intptr_t)>;

@@ -16,8 +16,11 @@ namespace liboai {
     class Azure final : private Network {
     public:
         explicit Azure(const std::string& root) : Network(root) {}
-        NON_COPYABLE(Azure)
-        NON_MOVABLE(Azure)
+
+        Azure(const Azure&) = delete;
+        Azure& operator=(const Azure&) = delete;
+        Azure(Azure&&) = delete;
+        Azure& operator=(Azure&&) = delete;
         ~Azure() = default;
 
         using ChatStreamCallback = std::function<bool(std::string, intptr_t, Conversation&)>;

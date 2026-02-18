@@ -933,8 +933,11 @@ namespace liboai {
     class ChatCompletion final : private Network {
     public:
         explicit ChatCompletion(const std::string& root) : Network(root) {}
-        NON_COPYABLE(ChatCompletion)
-        NON_MOVABLE(ChatCompletion)
+
+        ChatCompletion(const ChatCompletion&) = delete;
+        ChatCompletion& operator=(const ChatCompletion&) = delete;
+        ChatCompletion(ChatCompletion&&) = delete;
+        ChatCompletion& operator=(ChatCompletion&&) = delete;
         ~ChatCompletion() = default;
 
         using ChatStreamCallback = std::function<bool(std::string, intptr_t, Conversation&)>;

@@ -56,8 +56,10 @@ namespace liboai::netimpl {
     class CurlHolder {
     public:
         CurlHolder();
-        NON_COPYABLE(CurlHolder)
-        NON_MOVABLE(CurlHolder)
+        CurlHolder(const CurlHolder&) = delete;
+        CurlHolder& operator=(const CurlHolder&) = delete;
+        CurlHolder(CurlHolder&&) = delete;
+        CurlHolder& operator=(CurlHolder&&) = delete;
         virtual ~CurlHolder();
 
         std::string urlEncode(const std::string& s);

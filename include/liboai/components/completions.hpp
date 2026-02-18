@@ -18,8 +18,11 @@ namespace liboai {
     class Completions final : private Network {
     public:
         explicit Completions(const std::string& root) : Network(root) {}
-        NON_COPYABLE(Completions)
-        NON_MOVABLE(Completions)
+
+        Completions(const Completions&) = delete;
+        Completions& operator=(const Completions&) = delete;
+        Completions(Completions&&) = delete;
+        Completions& operator=(Completions&&) = delete;
         ~Completions() = default;
 
         using StreamCallback = std::function<bool(std::string, intptr_t)>;

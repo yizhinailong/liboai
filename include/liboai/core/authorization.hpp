@@ -21,8 +21,10 @@ namespace liboai {
     class Authorization final {
     public: // cons/des, operator deletions
         Authorization() = default;
-        NON_COPYABLE(Authorization)
-        NON_MOVABLE(Authorization)
+        Authorization(const Authorization&) = delete;
+        Authorization& operator=(const Authorization&) = delete;
+        Authorization(Authorization&&) = delete;
+        Authorization& operator=(Authorization&&) = delete;
         ~Authorization();
 
     public: // member methods

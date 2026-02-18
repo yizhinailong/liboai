@@ -18,8 +18,11 @@ namespace liboai {
     class Embeddings final : private Network {
     public:
         explicit Embeddings(const std::string& root) : Network(root) {}
-        NON_COPYABLE(Embeddings)
-        NON_MOVABLE(Embeddings)
+
+        Embeddings(const Embeddings&) = delete;
+        Embeddings& operator=(const Embeddings&) = delete;
+        Embeddings(Embeddings&&) = delete;
+        Embeddings& operator=(Embeddings&&) = delete;
         ~Embeddings() = default;
 
         /*

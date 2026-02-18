@@ -18,8 +18,11 @@ namespace liboai {
     class Models final : private Network {
     public:
         explicit Models(const std::string& root) : Network(root) {}
-        NON_COPYABLE(Models)
-        NON_MOVABLE(Models)
+
+        Models(const Models&) = delete;
+        Models& operator=(const Models&) = delete;
+        Models(Models&&) = delete;
+        Models& operator=(Models&&) = delete;
         ~Models() = default;
 
         /*
