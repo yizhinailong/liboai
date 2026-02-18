@@ -222,11 +222,11 @@ namespace liboai::netimpl {
         public:
             Url() = default;
 
-            Url(std::string url) : StringHolder<Url>(std::move(url)) {}
+            explicit Url(std::string url) : StringHolder<Url>(std::move(url)) {}
 
-            Url(std::string_view url) : StringHolder<Url>(url) {}
+            explicit Url(std::string_view url) : StringHolder<Url>(url) {}
 
-            Url(const char* url) : StringHolder<Url>(url) {}
+            explicit Url(const char* url) : StringHolder<Url>(url) {}
 
             Url(const char* str, size_t len) : StringHolder<Url>(std::string(str, len)) {}
 
@@ -248,17 +248,17 @@ namespace liboai::netimpl {
 
             Body(Body&& old) noexcept { this->m_str = std::move(old.m_str); }
 
-            Body(std::string body) : StringHolder<Body>(std::move(body)) {}
+            explicit Body(std::string body) : StringHolder<Body>(std::move(body)) {}
 
-            Body(std::string_view body) : StringHolder<Body>(body) {}
+            explicit Body(std::string_view body) : StringHolder<Body>(body) {}
 
-            Body(const char* body) : StringHolder<Body>(body) {}
+            explicit Body(const char* body) : StringHolder<Body>(body) {}
 
             Body(const char* str, size_t len) : StringHolder<Body>(str, len) {}
 
             Body(const std::initializer_list<std::string> args) : StringHolder<Body>(args) {}
 
-            Body(const File& file) {
+            explicit Body(const File& file) {
                 std::ifstream is(file.filepath, std::ifstream::binary);
                 if (!is) {
                     throw std::invalid_argument("Can't open the file for HTTP request body!");
@@ -527,9 +527,9 @@ namespace liboai::netimpl {
 
         class Timeout final {
         public:
-            Timeout(const std::chrono::milliseconds& duration) : ms{ duration } {}
+            explicit Timeout(const std::chrono::milliseconds& duration) : ms{ duration } {}
 
-            Timeout(const std::int32_t& milliseconds)
+            explicit Timeout(const std::int32_t& milliseconds)
                 : Timeout{ std::chrono::milliseconds(milliseconds) } {}
 
             long Milliseconds() const;

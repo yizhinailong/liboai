@@ -17,7 +17,7 @@
 namespace liboai {
     class Audio final : private Network {
     public:
-        Audio(const std::string& root) : Network(root) {}
+        explicit Audio(const std::string& root) : Network(root) {}
 
         ~Audio() = default;
         Audio(const Audio&) = delete;

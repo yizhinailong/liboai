@@ -579,13 +579,13 @@ namespace liboai {
         Conversation();
         Conversation(const Conversation& other);
         Conversation(Conversation&& old) noexcept;
-        Conversation(std::string_view system_data);
+        explicit Conversation(std::string_view system_data);
         Conversation(std::string_view system_data, std::string_view user_data);
         Conversation(
             std::string_view system_data,
             std::initializer_list<std::string_view> user_data
         );
-        Conversation(std::initializer_list<std::string_view> user_data);
+        explicit Conversation(std::initializer_list<std::string_view> user_data);
         explicit Conversation(const std::vector<std::string>& user_data);
         ~Conversation() = default;
 
@@ -932,7 +932,7 @@ namespace liboai {
 
     class ChatCompletion final : private Network {
     public:
-        ChatCompletion(const std::string& root) : Network(root) {}
+        explicit ChatCompletion(const std::string& root) : Network(root) {}
         NON_COPYABLE(ChatCompletion)
         NON_MOVABLE(ChatCompletion)
         ~ChatCompletion() = default;

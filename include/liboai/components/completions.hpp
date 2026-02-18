@@ -17,7 +17,7 @@
 namespace liboai {
     class Completions final : private Network {
     public:
-        Completions(const std::string& root) : Network(root) {}
+        explicit Completions(const std::string& root) : Network(root) {}
         NON_COPYABLE(Completions)
         NON_MOVABLE(Completions)
         ~Completions() = default;

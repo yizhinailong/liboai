@@ -43,7 +43,7 @@
 namespace liboai {
     class OpenAI {
     public:
-        OpenAI(const std::string& root = "https://api.openai.com/v1")
+        explicit OpenAI(const std::string& root = "https://api.openai.com/v1")
             : Audio(std::make_unique<liboai::Audio>(root)),
               Azure(std::make_unique<liboai::Azure>(root)),
               ChatCompletion(std::make_unique<liboai::ChatCompletion>(root)),

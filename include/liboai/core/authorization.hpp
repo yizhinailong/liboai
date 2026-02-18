@@ -273,6 +273,6 @@ namespace liboai {
         netimpl::components::Header m_openai_auth_headers, m_azure_auth_headers;
         netimpl::components::Proxies m_proxies;
         netimpl::components::ProxyAuthentication m_proxyAuth;
-        netimpl::components::Timeout m_timeout = { 30000 };
+        netimpl::components::Timeout m_timeout{ 30000 };
     };
 } // namespace liboai

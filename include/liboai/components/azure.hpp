@@ -15,7 +15,7 @@
 namespace liboai {
     class Azure final : private Network {
     public:
-        Azure(const std::string& root) : Network(root) {}
+        explicit Azure(const std::string& root) : Network(root) {}
         NON_COPYABLE(Azure)
         NON_MOVABLE(Azure)
         ~Azure() = default;

@@ -17,7 +17,7 @@
 namespace liboai {
     class Images final : private Network {
     public:
-        Images(const std::string& root) : Network(root) {}
+        explicit Images(const std::string& root) : Network(root) {}
         NON_COPYABLE(Images)
         NON_MOVABLE(Images)
         ~Images() = default;

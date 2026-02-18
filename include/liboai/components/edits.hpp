@@ -17,7 +17,7 @@
 namespace liboai {
     class Edits final : private Network {
     public:
-        Edits(const std::string& root) : Network(root) {}
+        explicit Edits(const std::string& root) : Network(root) {}
         NON_COPYABLE(Edits)
         NON_MOVABLE(Edits)
         ~Edits() = default;

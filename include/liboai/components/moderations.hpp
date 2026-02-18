@@ -17,7 +17,7 @@
 namespace liboai {
     class Moderations final : private Network {
     public:
-        Moderations(const std::string& root) : Network(root) {}
+        explicit Moderations(const std::string& root) : Network(root) {}
         NON_COPYABLE(Moderations)
         NON_MOVABLE(Moderations)
         ~Moderations() = default;

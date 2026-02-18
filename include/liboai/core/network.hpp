@@ -27,7 +27,7 @@ namespace liboai {
 
             @param root     The URL to direct API calls to.
         */
-        Network(const std::string& root) noexcept : m_openai_root(root) {}
+        explicit Network(const std::string& root) noexcept : m_openai_root(root) {}
         NON_COPYABLE(Network)
         NON_MOVABLE(Network)
 
