@@ -61,7 +61,6 @@ namespace liboai {
         void operator=(OpenAI const&) = delete;
         void operator=(OpenAI&&) = delete;
 
-    public: // component interfaces
         /*
             @brief A pointer to the Audio component class that
                 provides access to its OpenAI API endpoints.
@@ -128,7 +127,6 @@ namespace liboai {
         */
         std::unique_ptr<liboai::Moderations> Moderation;
 
-    public:
         /*
             @brief Convenience reference to the Authorization class
                 singleton used to set authorization information.
