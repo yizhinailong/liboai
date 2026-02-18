@@ -15,12 +15,11 @@ target("oai", function()
         "components/images.cpp",
         "components/models.cpp",
         "components/moderations.cpp",
-        -- Core (3 files)
+        -- Core (2 files)
         "core/authorization.cpp",
-        "core/netimpl.cpp",
         "core/response.cpp"
     )
     
     add_includedirs("../include", {public = true})
-    add_packages("nlohmann_json", "libcurl")
+    add_packages("nlohmann_json", "cpr")
 end)
