@@ -7,11 +7,13 @@
         component classes.
 */
 
+#include <cstdint>
 #include <exception>
-#include <iostream>
-#include <memory>
+#include <string>
+#include <string_view>
 
 #if defined(LIBOAI_DEBUG)
+    #include <cstdio>
     #define _liboai_dbg(fmt, ...) printf(fmt, __VA_ARGS__);
 #endif
 

@@ -1,5 +1,8 @@
 #include "liboai/core/authorization.hpp"
 
+#include <cstdlib>
+#include <fstream>
+
 namespace liboai {
 
     Authorization::~Authorization() {
