@@ -1,3 +1,10 @@
+/**
+ * @file models.cpp
+ *
+ * Implementation of Models component for model listing/retrieval API.
+
+ */
+
 #include "liboai/components/models.hpp"
 
 namespace liboai {

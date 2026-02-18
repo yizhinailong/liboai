@@ -1,3 +1,9 @@
+/**
+ * @file authorization.cpp
+ *
+ * Implementation of the Authorization singleton for API key
+ * management.
+ */
 #include "liboai/core/authorization.hpp"
 
 #include <cstdlib>
@@ -6,7 +12,13 @@
 namespace liboai {
 
     Authorization::~Authorization() {
-        netimpl::components::EncodedAuthentication().SecureStringClear(this->m_key);
+        // Securely clear the key memory
+        if (!this->m_key.empty()) {
+            volatile char* p = const_cast<volatile char*>(this->m_key.data());
+            for (size_t i = 0; i < this->m_key.size(); ++i) {
+                p[i] = '\0';
+            }
+        }
     }
 
     auto Authorization::SetKey(std::string_view key) noexcept -> bool {
@@ -188,28 +200,28 @@ namespace liboai {
     auto Authorization::SetProxies(
         const std::initializer_list<std::pair<const std::string, std::string>>& hosts
     ) noexcept -> void {
-        this->m_proxies = netimpl::components::Proxies(hosts);
+        this->m_proxies = cpr::Proxies(hosts);
     }
 
     auto Authorization::SetProxies(
         std::initializer_list<std::pair<const std::string, std::string>>&& hosts
     ) noexcept -> void {
-        this->m_proxies = netimpl::components::Proxies(std::move(hosts));
+        this->m_proxies = cpr::Proxies(std::move(hosts));
     }
 
     auto Authorization::SetProxies(const std::map<std::string, std::string>& hosts) noexcept
         -> void {
-        this->m_proxies = netimpl::components::Proxies(hosts);
+        this->m_proxies = cpr::Proxies(hosts);
     }
 
     auto Authorization::SetProxies(std::map<std::string, std::string>&& hosts) noexcept -> void {
-        this->m_proxies = netimpl::components::Proxies(std::move(hosts));
+        this->m_proxies = cpr::Proxies(std::move(hosts));
     }
 
     auto Authorization::SetProxyAuth(
-        const std::map<std::string, netimpl::components::EncodedAuthentication>& proto_up
+        const std::map<std::string, cpr::EncodedAuthentication>& proto_up
     ) noexcept -> void {
-        this->m_proxyAuth = netimpl::components::ProxyAuthentication(proto_up);
+        this->m_proxyAuth = cpr::ProxyAuthentication(proto_up);
     }
 
 } // namespace liboai

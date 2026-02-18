@@ -1,3 +1,8 @@
+/**
+ * @file files.cpp
+ *
+ * Implementation of Files component for file management API.
+ */
 #include "liboai/components/files.hpp"
 
 namespace liboai {
@@ -34,9 +39,9 @@ namespace liboai {
             );
         }
 
-        netimpl::components::Multipart form = {
-            { "purpose",                                            purpose },
-            {    "file", netimpl::components::File{ file.generic_string() } }
+        cpr::Multipart form = {
+            { "purpose",                            purpose },
+            {    "file", cpr::File{ file.generic_string() } }
         };
 
         Response res;

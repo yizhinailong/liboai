@@ -1,15 +1,15 @@
 #pragma once
 
-/*
-    images.h : Images component class for OpenAI.
-        This class contains all the methods for the Images component
-        of the OpenAI API. This class provides access to 'Images'
-        endpoints on the OpenAI API and should be accessed via the
-        liboai.h header file through an instantiated liboai::OpenAI
-        object after setting necessary authentication information
-        through the liboai::Authorization::Authorizer() singleton
-        object.
-*/
+/**
+ * @file images.hpp
+ * @brief Images component class for OpenAI.
+ *
+ * This class contains all the methods for the Images component of the OpenAI API.
+ * This class provides access to 'Images' endpoints on the OpenAI API and should
+ * be accessed via the liboai.h header file through an instantiated liboai::OpenAI
+ * object after setting necessary authentication information through the
+ * liboai::Authorization::Authorizer() singleton object.
+ */
 
 #include "liboai/core/authorization.hpp"
 #include "liboai/core/response.hpp"
@@ -25,19 +25,17 @@ namespace liboai {
         Images& operator=(Images&&) = delete;
         ~Images() = default;
 
-        /*
-            @brief Images component method to create an image from
-                provided text.
-
-            @param *prompt         The text to create an image from.
-            @param n               The number of images to create.
-            @param size            The size of the image to create.
-            @param response_format The format of the response.
-            @param user            A unique identifier representing an end-user.
-
-            @return A liboai::Response object containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Images component method to create an image from provided text.
+         *
+         * @param prompt           The text to create an image from.
+         * @param n                The number of images to create.
+         * @param size             The size of the image to create.
+         * @param response_format  The format of the response.
+         * @param user             A unique identifier representing an end-user.
+         *
+         * @return A liboai::Response object containing the image(s) data in JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto create(
             const std::string& prompt,
@@ -47,19 +45,17 @@ namespace liboai {
             std::optional<std::string> user = std::nullopt
         ) const& noexcept(false) -> liboai::Response;
 
-        /*
-            @brief Images component method to asynchronously create an
-                image from provided text.
-
-            @param *prompt         The text to create an image from.
-            @param n               The number of images to create.
-            @param size            The size of the image to create.
-            @param response_format The format of the response.
-            @param user            A unique identifier representing an end-user.
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Images component method to asynchronously create an image from provided text.
+         *
+         * @param prompt           The text to create an image from.
+         * @param n                The number of images to create.
+         * @param size             The size of the image to create.
+         * @param response_format  The format of the response.
+         * @param user             A unique identifier representing an end-user.
+         *
+         * @return A liboai::Response future containing the image(s) data in JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto create_async(
             const std::string& prompt,
@@ -69,22 +65,20 @@ namespace liboai {
             std::optional<std::string> user = std::nullopt
         ) const& noexcept(false) -> liboai::FutureResponse;
 
-        /*
-            @brief Images component method to produce an edited
-                image from a provided base image and mask image
-                according to given text.
-
-            @param *image          The image to edit (path).
-            @param *prompt         The text description of the desired image.
-            @param mask            The mask to edit the image with (path).
-            @param n		       The number of images to create.
-            @param size            The size of the image to create.
-            @param response_format The format of the response.
-            @param user            A unique identifier representing an end-user.
-
-            @return A liboai::Response object containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Images component method to produce an edited image from a provided
+         *        base image and mask image according to given text.
+         *
+         * @param image            The image to edit (path).
+         * @param prompt           The text description of the desired image.
+         * @param mask             The mask to edit the image with (path).
+         * @param n                The number of images to create.
+         * @param size             The size of the image to create.
+         * @param response_format  The format of the response.
+         * @param user             A unique identifier representing an end-user.
+         *
+         * @return A liboai::Response object containing the image(s) data in JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto create_edit(
             const std::filesystem::path& image,
@@ -96,22 +90,20 @@ namespace liboai {
             std::optional<std::string> user = std::nullopt
         ) const& noexcept(false) -> liboai::Response;
 
-        /*
-            @brief Images component method to asynchronously
-                produce an edited image from a provided base
-                image and mask image according to given text.
-
-            @param *image          The image to edit (path).
-            @param *prompt         The text description of the desired image.
-            @param mask            The mask to edit the image with (path).
-            @param n		       The number of images to create.
-            @param size            The size of the image to create.
-            @param response_format The format of the response.
-            @param user            A unique identifier representing an end-user.
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Images component method to asynchronously produce an edited image
+         *        from a provided base image and mask image according to given text.
+         *
+         * @param image            The image to edit (path).
+         * @param prompt           The text description of the desired image.
+         * @param mask             The mask to edit the image with (path).
+         * @param n                The number of images to create.
+         * @param size             The size of the image to create.
+         * @param response_format  The format of the response.
+         * @param user             A unique identifier representing an end-user.
+         *
+         * @return A liboai::Response future containing the image(s) data in JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto create_edit_async(
             const std::filesystem::path& image,
@@ -123,19 +115,17 @@ namespace liboai {
             std::optional<std::string> user = std::nullopt
         ) const& noexcept(false) -> liboai::FutureResponse;
 
-        /*
-            @brief Images component method to produce a variation
-                of a supplied image.
-
-            @param *image          The image to produce a variation of (path).
-            @param n               The number of images to create.
-            @param size            The size of the image to create.
-            @param response_format The format of the response.
-            @param user            A unique identifier representing an end-user.
-
-            @return A liboai::Response object containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Images component method to produce a variation of a supplied image.
+         *
+         * @param image            The image to produce a variation of (path).
+         * @param n                The number of images to create.
+         * @param size             The size of the image to create.
+         * @param response_format  The format of the response.
+         * @param user             A unique identifier representing an end-user.
+         *
+         * @return A liboai::Response object containing the image(s) data in JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto create_variation(
             const std::filesystem::path& image,
@@ -145,19 +135,18 @@ namespace liboai {
             std::optional<std::string> user = std::nullopt
         ) const& noexcept(false) -> liboai::Response;
 
-        /*
-            @brief Images component method to asynchronously produce
-                a variation of a supplied image.
-
-            @param *image          The image to produce a variation of (path).
-            @param n               The number of images to create.
-            @param size            The size of the image to create.
-            @param response_format The format of the response.
-            @param user            A unique identifier representing an end-user.
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Images component method to asynchronously produce a variation
+         *        of a supplied image.
+         *
+         * @param image            The image to produce a variation of (path).
+         * @param n                The number of images to create.
+         * @param size             The size of the image to create.
+         * @param response_format  The format of the response.
+         * @param user             A unique identifier representing an end-user.
+         *
+         * @return A liboai::Response future containing the image(s) data in JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto create_variation_async(
             const std::filesystem::path& image,

@@ -1,3 +1,9 @@
+/**
+ * @file fine_tunes.cpp
+ *
+ * Implementation of FineTunes component for model fine-tuning API.
+
+ */
 #include "liboai/components/fine_tunes.hpp"
 
 namespace liboai {
@@ -37,7 +43,7 @@ namespace liboai {
             "/fine-tunes",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
-            netimpl::components::Body{ jcon.dump() },
+            cpr::Body{ jcon.dump() },
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
@@ -145,7 +151,7 @@ namespace liboai {
         const std::string& fine_tune_id,
         std::optional<std::function<bool(std::string, intptr_t)>> stream
     ) const& noexcept(false) -> Response {
-        netimpl::components::Parameters params;
+        cpr::Parameters params;
         stream ? params.Add({ "stream", "true" }) : void();
 
         Response res;
@@ -156,8 +162,11 @@ namespace liboai {
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
             std::move(params),
-            stream ? netimpl::components::WriteCallback{ std::move(stream.value()) } :
-                     netimpl::components::WriteCallback{},
+            stream ? cpr::WriteCallback{ [cb = std::move(stream.value())](
+                                             std::string_view data,
+                                             intptr_t userdata
+                                         ) -> bool { return cb(std::string(data), userdata); } } :
+                     cpr::WriteCallback{},
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()

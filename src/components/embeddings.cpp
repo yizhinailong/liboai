@@ -1,3 +1,9 @@
+/**
+ * @file embeddings.cpp
+ *
+ * Implementation of Embeddings component for text embedding API.
+ */
+
 #include "liboai/components/embeddings.hpp"
 
 namespace liboai {
@@ -19,7 +25,7 @@ namespace liboai {
             "/embeddings",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
-            netimpl::components::Body{ jcon.dump() },
+            cpr::Body{ jcon.dump() },
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()

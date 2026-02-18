@@ -1,15 +1,16 @@
 #pragma once
 
-/*
-    edits.h : Edits component class for OpenAI.
-        This class contains all the methods for the Edits component
-        of the OpenAI API. This class provides access to 'Edits'
-        endpoints on the OpenAI API and should be accessed via the
-        liboai.h header file through an instantiated liboai::OpenAI
-        object after setting necessary authentication information
-        through the liboai::Authorization::Authorizer() singleton
-        object.
-*/
+/**
+ * @file edits.h
+ * Edits component class for OpenAI.
+ * This class contains all the methods for the Edits component
+ * of the OpenAI API. This class provides access to 'Edits'
+ * endpoints on the OpenAI API and should be accessed via the
+ * liboai.h header file through an instantiated liboai::OpenAI
+ * object after setting necessary authentication information
+ * through the liboai::Authorization::Authorizer() singleton
+ * object.
+ */
 
 #include "liboai/core/authorization.hpp"
 #include "liboai/core/response.hpp"
@@ -25,28 +26,28 @@ namespace liboai {
         Edits& operator=(Edits&&) = delete;
         ~Edits() = default;
 
-        /*
-            @brief Creates a new edit for the provided input,
-                instruction, and parameters
-
-            @param *model       The model to use for the edit.
-            @param input        The input text to edit.
-            @param instruction  The instruction to edit the input.
-            @param n            The number of edits to return.
-            @param temperature  Higher values means the model will take more
-                                    risks. Try 0.9 for more creative applications,
-                                    and 0 (argmax sampling) for ones with a
-                                    well-defined answer.
-            @param top_p        An alternative to sampling with temperature,
-                                     called nucleus sampling, where the model
-                                     considers the results of the tokens with
-                                     top_p probability mass. So 0.1 means only
-                                     the tokens comprising the top 10% probability
-                                     mass are considered.
-
-            @return A liboai::Response object containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Creates a new edit for the provided input,
+         * instruction, and parameters
+         *
+         * @param *model       The model to use for the edit.
+         * @param input        The input text to edit.
+         * @param instruction  The instruction to edit the input.
+         * @param n            The number of edits to return.
+         * @param temperature  Higher values means the model will take more
+         *                     risks. Try 0.9 for more creative applications,
+         *                     and 0 (argmax sampling) for ones with a
+         *                     well-defined answer.
+         * @param top_p        An alternative to sampling with temperature,
+         *                     called nucleus sampling, where the model
+         *                     considers the results of the tokens with
+         *                     top_p probability mass. So 0.1 means only
+         *                     the tokens comprising the top 10% probability
+         *                     mass are considered.
+         *
+         * @return A liboai::Response object containing the image(s)
+         *         data in JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto create(
             const std::string& model_id,
@@ -57,28 +58,28 @@ namespace liboai {
             std::optional<float> top_p = std::nullopt
         ) const& noexcept(false) -> liboai::Response;
 
-        /*
-            @brief Asynchronously creates a new edit for the
-                provided input, instruction, and parameters
-
-            @param *model       The model to use for the edit.
-            @param input        The input text to edit.
-            @param instruction  The instruction to edit the input.
-            @param n            The number of edits to return.
-            @param temperature  Higher values means the model will take more
-                                    risks. Try 0.9 for more creative applications,
-                                    and 0 (argmax sampling) for ones with a
-                                    well-defined answer.
-            @param top_p        An alternative to sampling with temperature,
-                                     called nucleus sampling, where the model
-                                     considers the results of the tokens with
-                                     top_p probability mass. So 0.1 means only
-                                     the tokens comprising the top 10% probability
-                                     mass are considered.
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Asynchronously creates a new edit for the
+         * provided input, instruction, and parameters
+         *
+         * @param *model       The model to use for the edit.
+         * @param input        The input text to edit.
+         * @param instruction  The instruction to edit the input.
+         * @param n            The number of edits to return.
+         * @param temperature  Higher values means the model will take more
+         *                     risks. Try 0.9 for more creative applications,
+         *                     and 0 (argmax sampling) for ones with a
+         *                     well-defined answer.
+         * @param top_p        An alternative to sampling with temperature,
+         *                     called nucleus sampling, where the model
+         *                     considers the results of the tokens with
+         *                     top_p probability mass. So 0.1 means only
+         *                     the tokens comprising the top 10% probability
+         *                     mass are considered.
+         *
+         * @return A liboai::Response future containing the image(s)
+         *         data in JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto create_async(
             const std::string& model_id,

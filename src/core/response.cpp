@@ -1,4 +1,11 @@
+/**
+ * @file response.cpp
+ *
+ * Implementation of Response class for handling API responses.
+ */
 #include "liboai/core/response.hpp"
+
+#include <cpr/cpr.h>
 
 namespace liboai {
 
@@ -121,5 +128,25 @@ namespace liboai {
                 );
             }
         }
+    }
+
+    auto to_liboai_response(cpr::Response&& cpr_res) -> Response {
+        // Map cpr error to exception if network error
+        if (cpr_res.error && cpr_res.status_code == 0) {
+            throw exception::OpenAIException(
+                cpr_res.error.message,
+                exception::EType::E_CONNECTIONERROR,
+                "liboai::to_liboai_response"
+            );
+        }
+
+        return Response(
+            std::string(cpr_res.url.str()),
+            std::move(cpr_res.text),
+            std::move(cpr_res.status_line),
+            std::move(cpr_res.reason),
+            cpr_res.status_code,
+            cpr_res.elapsed
+        );
     }
 } // namespace liboai

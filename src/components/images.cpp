@@ -1,3 +1,8 @@
+/**
+ * @file images.cpp
+ *
+ * Implementation of Images component for DALL-E image generation API.
+ */
 #include "liboai/components/images.hpp"
 
 namespace liboai {
@@ -23,7 +28,7 @@ namespace liboai {
             "/images/generations",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
-            netimpl::components::Body{ jcon.dump() },
+            cpr::Body{ jcon.dump() },
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
@@ -68,9 +73,9 @@ namespace liboai {
             );
         }
 
-        netimpl::components::Multipart form = {
-            { "prompt",                                              prompt },
-            {  "image", netimpl::components::File{ image.generic_string() } }
+        cpr::Multipart form = {
+            { "prompt",                              prompt },
+            {  "image", cpr::File{ image.generic_string() } }
         };
 
         if (mask) {
@@ -81,10 +86,7 @@ namespace liboai {
                     "liboai::Images::create_edit(...)"
                 );
             }
-            form.parts.emplace_back(
-                "mask",
-                netimpl::components::File{ mask.value().generic_string() }
-            );
+            form.parts.emplace_back("mask", cpr::File{ mask.value().generic_string() });
         }
         if (n) {
             form.parts.emplace_back("n", n.value());
@@ -153,8 +155,8 @@ namespace liboai {
             );
         }
 
-        netimpl::components::Multipart form = {
-            { "image", netimpl::components::File{ image.generic_string() } }
+        cpr::Multipart form = {
+            { "image", cpr::File{ image.generic_string() } }
         };
 
         if (n) {

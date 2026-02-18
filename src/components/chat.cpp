@@ -1,3 +1,8 @@
+/**
+ * @file chat.cpp
+ *
+ * Implementation of ChatCompletion component for ChatGPT API.
+ */
 #include "liboai/components/chat.hpp"
 
 namespace liboai {
@@ -768,9 +773,13 @@ namespace liboai {
             "/chat/completions",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
-            netimpl::components::Body{ jcon.dump() },
-            _sscb ? netimpl::components::WriteCallback{ std::move(_sscb) } :
-                    netimpl::components::WriteCallback{},
+            cpr::Body{ jcon.dump() },
+            _sscb ?
+                cpr::WriteCallback{
+                    [cb = std::move(_sscb)](std::string_view data, intptr_t userdata) -> bool {
+                        return cb(std::string(data), userdata);
+                    } } :
+                cpr::WriteCallback{},
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()

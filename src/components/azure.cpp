@@ -1,3 +1,8 @@
+/**
+ * @file azure.cpp
+ *
+ * Implementation of Azure component for Azure OpenAI endpoints.
+ */
 #include "liboai/components/azure.hpp"
 
 namespace liboai {
@@ -39,7 +44,7 @@ namespace liboai {
         jcon.push_back("logit_bias", std::move(logit_bias));
         jcon.push_back("user", std::move(user));
 
-        netimpl::components::Parameters params;
+        cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
         Response res;
@@ -49,10 +54,13 @@ namespace liboai {
             "/completions",
             "application/json",
             this->m_auth.GetAzureAuthorizationHeaders(),
-            netimpl::components::Body{ jcon.dump() },
+            cpr::Body{ jcon.dump() },
             std::move(params),
-            stream ? netimpl::components::WriteCallback{ std::move(stream.value()) } :
-                     netimpl::components::WriteCallback{},
+            stream ? cpr::WriteCallback{ [cb = std::move(stream.value())](
+                                             std::string_view data,
+                                             intptr_t userdata
+                                         ) -> bool { return cb(std::string(data), userdata); } } :
+                     cpr::WriteCallback{},
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
@@ -117,7 +125,7 @@ namespace liboai {
         jcon.push_back("input", input);
         jcon.push_back("user", std::move(user));
 
-        netimpl::components::Parameters params;
+        cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
         Response res;
@@ -127,7 +135,7 @@ namespace liboai {
             "/embeddings",
             "application/json",
             this->m_auth.GetAzureAuthorizationHeaders(),
-            netimpl::components::Body{ jcon.dump() },
+            cpr::Body{ jcon.dump() },
             std::move(params),
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
@@ -214,7 +222,7 @@ namespace liboai {
             jcon.push_back("functions", conversation.GetFunctionsJSON()["functions"]);
         }
 
-        netimpl::components::Parameters params;
+        cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
         Response res;
@@ -224,10 +232,14 @@ namespace liboai {
             "/chat/completions",
             "application/json",
             this->m_auth.GetAzureAuthorizationHeaders(),
-            netimpl::components::Body{ jcon.dump() },
+            cpr::Body{ jcon.dump() },
             std::move(params),
-            _sscb ? netimpl::components::WriteCallback{ std::move(_sscb) } :
-                    netimpl::components::WriteCallback{},
+            _sscb ?
+                cpr::WriteCallback{
+                    [cb = std::move(_sscb)](std::string_view data, intptr_t userdata) -> bool {
+                        return cb(std::string(data), userdata);
+                    } } :
+                cpr::WriteCallback{},
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
@@ -285,7 +297,7 @@ namespace liboai {
         jcon.push_back("n", std::move(n));
         jcon.push_back("size", std::move(size));
 
-        netimpl::components::Parameters params;
+        cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
         Response res;
@@ -295,7 +307,7 @@ namespace liboai {
             "/images/generations:submit",
             "application/json",
             this->m_auth.GetAzureAuthorizationHeaders(),
-            netimpl::components::Body{ jcon.dump() },
+            cpr::Body{ jcon.dump() },
             std::move(params),
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
@@ -329,7 +341,7 @@ namespace liboai {
         const std::string& api_version,
         const std::string& operation_id
     ) const& noexcept(false) -> Response {
-        netimpl::components::Parameters params;
+        cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
         Response res;
@@ -368,7 +380,7 @@ namespace liboai {
         const std::string& api_version,
         const std::string& operation_id
     ) const& noexcept(false) -> Response {
-        netimpl::components::Parameters params;
+        cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
         Response res;

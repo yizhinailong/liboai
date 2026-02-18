@@ -1,3 +1,8 @@
+/**
+ * @file moderations.cpp
+ *
+ * Implementation of Moderations component for content moderation API.
+ */
 #include "liboai/components/moderations.hpp"
 
 namespace liboai {
@@ -17,7 +22,7 @@ namespace liboai {
             "/moderations",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
-            netimpl::components::Body{ jcon.dump() },
+            cpr::Body{ jcon.dump() },
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()

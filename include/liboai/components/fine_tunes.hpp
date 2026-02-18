@@ -1,15 +1,15 @@
 #pragma once
 
-/*
-    fine_tunes.h : Fine-tunes component class for OpenAI.
-        This class contains all the methods for the Fine-tunes component
-        of the OpenAI API. This class provides access to 'Fine-tunes'
-        endpoints on the OpenAI API and should be accessed via the
-        liboai.h header file through an instantiated liboai::OpenAI
-        object after setting necessary authentication information
-        through the liboai::Authorization::Authorizer() singleton
-        object.
-*/
+/**
+ * @file fine_tunes.h
+ *
+ * Fine-tunes component class for OpenAI. This class contains all the methods
+ * for the Fine-tunes component of the OpenAI API. This class provides access
+ * to 'Fine-tunes' endpoints on the OpenAI API and should be accessed via the
+ * liboai.h header file through an instantiated liboai::OpenAI object after
+ * setting necessary authentication information through the
+ * liboai::Authorization::Authorizer() singleton object.
+ */
 
 #include "liboai/core/authorization.hpp"
 #include "liboai/core/response.hpp"
@@ -27,31 +27,36 @@ namespace liboai {
 
         using StreamCallback = std::function<bool(std::string, intptr_t)>;
 
-        /*
-            @brief Creates a job that fine-tunes a specified model from a
-                given dataset.
-
-            @param *training_file                  The ID of an uploaded file that contains
-                                                      training data.
-            @param validation_file                 The ID of an uploaded file that contains
-                                                      validation data.
-            @param model                           The name of the base model to fine-tune.
-            @param n_epochs                        The number of epochs to train for.
-            @param batch_size                      The batch size to use for training.
-            @param learning_rate_multiplier        The learning rate multiplier to use for training.
-            @param prompt_loss_weight              The prompt loss weight to use for training.
-            @param compute_classification_metrics  If set, we calculate classification-specific
-           metrics such as accuracy and F-1 score using the validation set at the end of every
-           epoch.
-            @param classification_n_classes        The number of classes in the classification task.
-            @param classification_positive_class   The positive class in binary classification.
-            @param classification_betas            If this is provided, we calculate F-beta scores
-           at the specified beta values.
-            @param suffix 						   A suffix to append to the model name.
-
-            @return A liboai::Response object containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Creates a job that fine-tunes a specified model from a given
+         *        dataset.
+         *
+         * @param *training_file The ID of an uploaded file that contains
+         *                       training data.
+         * @param validation_file The ID of an uploaded file that contains
+         *                        validation data.
+         * @param model The name of the base model to fine-tune.
+         * @param n_epochs The number of epochs to train for.
+         * @param batch_size The batch size to use for training.
+         * @param learning_rate_multiplier The learning rate multiplier to use
+         *                                 for training.
+         * @param prompt_loss_weight The prompt loss weight to use for training.
+         * @param compute_classification_metrics If set, we calculate
+         *                                       classification-specific metrics
+         *                                       such as accuracy and F-1 score
+         *                                       using the validation set at the
+         *                                       end of every epoch.
+         * @param classification_n_classes The number of classes in the
+         *                                 classification task.
+         * @param classification_positive_class The positive class in binary
+         *                                      classification.
+         * @param classification_betas If this is provided, we calculate F-beta
+         *                             scores at the specified beta values.
+         * @param suffix A suffix to append to the model name.
+         *
+         * @return A liboai::Response object containing the image(s) data in
+         *         JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto create(
             const std::string& training_file,
@@ -68,31 +73,36 @@ namespace liboai {
             std::optional<std::string> suffix = std::nullopt
         ) const& noexcept(false) -> liboai::Response;
 
-        /*
-            @brief Asynchronously creates a job that fine-tunes a specified
-                model from a given dataset.
-
-            @param *training_file                  The ID of an uploaded file that contains
-                                                      training data.
-            @param validation_file                 The ID of an uploaded file that contains
-                                                      validation data.
-            @param model                           The name of the base model to fine-tune.
-            @param n_epochs                        The number of epochs to train for.
-            @param batch_size                      The batch size to use for training.
-            @param learning_rate_multiplier        The learning rate multiplier to use for training.
-            @param prompt_loss_weight              The prompt loss weight to use for training.
-            @param compute_classification_metrics  If set, we calculate classification-specific
-           metrics such as accuracy and F-1 score using the validation set at the end of every
-           epoch.
-            @param classification_n_classes        The number of classes in the classification task.
-            @param classification_positive_class   The positive class in binary classification.
-            @param classification_betas            If this is provided, we calculate F-beta scores
-           at the specified beta values.
-            @param suffix 						   A suffix to append to the model name.
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Asynchronously creates a job that fine-tunes a specified model
+         *        from a given dataset.
+         *
+         * @param *training_file The ID of an uploaded file that contains
+         *                       training data.
+         * @param validation_file The ID of an uploaded file that contains
+         *                        validation data.
+         * @param model The name of the base model to fine-tune.
+         * @param n_epochs The number of epochs to train for.
+         * @param batch_size The batch size to use for training.
+         * @param learning_rate_multiplier The learning rate multiplier to use
+         *                                 for training.
+         * @param prompt_loss_weight The prompt loss weight to use for training.
+         * @param compute_classification_metrics If set, we calculate
+         *                                       classification-specific metrics
+         *                                       such as accuracy and F-1 score
+         *                                       using the validation set at the
+         *                                       end of every epoch.
+         * @param classification_n_classes The number of classes in the
+         *                                 classification task.
+         * @param classification_positive_class The positive class in binary
+         *                                      classification.
+         * @param classification_betas If this is provided, we calculate F-beta
+         *                             scores at the specified beta values.
+         * @param suffix A suffix to append to the model name.
+         *
+         * @return A liboai::Response future containing the image(s) data in
+         *         JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto create_async(
             const std::string& training_file,
@@ -109,129 +119,131 @@ namespace liboai {
             std::optional<std::string> suffix = std::nullopt
         ) const& noexcept(false) -> liboai::FutureResponse;
 
-        /*
-            @brief List your organization's fine-tuning jobs
-
-            @return A liboai::Response object containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief List your organization's fine-tuning jobs.
+         *
+         * @return A liboai::Response object containing the image(s) data in
+         *         JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto list() const& noexcept(false) -> liboai::Response;
 
-        /*
-            @brief Asynchronously list your organization's fine-tuning jobs
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Asynchronously list your organization's fine-tuning jobs.
+         *
+         * @return A liboai::Response future containing the image(s) data in
+         *         JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto list_async() const& noexcept(false) -> liboai::FutureResponse;
 
-        /*
-            @brief Returns information about a specific file.
-
-            @param *fine_tune_id   The ID of the fine-tune job
-
-            @return A liboai::Response object containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Returns information about a specific file.
+         *
+         * @param *fine_tune_id The ID of the fine-tune job.
+         *
+         * @return A liboai::Response object containing the image(s) data in
+         *         JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto retrieve(const std::string& fine_tune_id) const& noexcept(false)
             -> liboai::Response;
 
-        /*
-            @brief Asynchronously returns information about a specific file.
-
-            @param *fine_tune_id   The ID of the fine-tune job
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Asynchronously returns information about a specific file.
+         *
+         * @param *fine_tune_id The ID of the fine-tune job.
+         *
+         * @return A liboai::Response future containing the image(s) data in
+         *         JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto retrieve_async(const std::string& fine_tune_id) const& noexcept(false)
             -> liboai::FutureResponse;
 
-        /*
-            @brief Immediately cancel a fine-tune job.
-
-            @param *fine_tune_id   The ID of the fine-tune job to cancel
-
-            @return A liboai::Response object containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Immediately cancel a fine-tune job.
+         *
+         * @param *fine_tune_id The ID of the fine-tune job to cancel.
+         *
+         * @return A liboai::Response object containing the image(s) data in
+         *         JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto cancel(const std::string& fine_tune_id) const& noexcept(false)
             -> liboai::Response;
 
-        /*
-            @brief Immediately cancel a fine-tune job asynchronously.
-
-            @param *fine_tune_id   The ID of the fine-tune job to cancel
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Immediately cancel a fine-tune job asynchronously.
+         *
+         * @param *fine_tune_id The ID of the fine-tune job to cancel.
+         *
+         * @return A liboai::Response future containing the image(s) data in
+         *         JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto cancel_async(const std::string& fine_tune_id) const& noexcept(false)
             -> liboai::FutureResponse;
 
-        /*
-            @brief Get fine-grained status updates for a fine-tune job.
-
-            @param *fine_tune_id   The ID of the fine-tune job to get events for.
-            @param stream          Callback to stream events for the fine-tune job.
-                                      If no callback is supplied, this parameter is
-                                      disabled and the API will wait until the completion
-                                      is finished before returning the response.
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Get fine-grained status updates for a fine-tune job.
+         *
+         * @param *fine_tune_id The ID of the fine-tune job to get events for.
+         * @param stream Callback to stream events for the fine-tune job. If no
+         *               callback is supplied, this parameter is disabled and the
+         *               API will wait until the completion is finished before
+         *               returning the response.
+         *
+         * @return A liboai::Response future containing the image(s) data in
+         *         JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto list_events(
             const std::string& fine_tune_id,
             std::optional<StreamCallback> stream = std::nullopt
         ) const& noexcept(false) -> liboai::Response;
 
-        /*
-            @brief Asynchronously get fine-grained status updates for a fine-tune job.
-
-            @param *fine_tune_id   The ID of the fine-tune job to get events for.
-            @param stream          Callback to stream events for the fine-tune job.
-                                      If no callback is supplied, this parameter is
-                                      disabled and the API will wait until the completion
-                                      is finished before returning the response.
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Asynchronously get fine-grained status updates for a
+         *        fine-tune job.
+         *
+         * @param *fine_tune_id The ID of the fine-tune job to get events for.
+         * @param stream Callback to stream events for the fine-tune job. If no
+         *               callback is supplied, this parameter is disabled and the
+         *               API will wait until the completion is finished before
+         *               returning the response.
+         *
+         * @return A liboai::Response future containing the image(s) data in
+         *         JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto list_events_async(
             const std::string& fine_tune_id,
             std::optional<StreamCallback> stream = std::nullopt
         ) const& noexcept(false) -> liboai::FutureResponse;
 
-        /*
-            @brief Delete a fine-tuned model. You must have the Owner role in your organization.
-
-            @param *model   The model to delete
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Delete a fine-tuned model. You must have the Owner role in
+         *        your organization.
+         *
+         * @param *model The model to delete.
+         *
+         * @return A liboai::Response future containing the image(s) data in
+         *         JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto remove(const std::string& model) const& noexcept(false)
             -> liboai::Response;
 
-        /*
-            @brief Asynchronously deletes a fine-tuned model. You must have the Owner role in your
-           organization.
-
-            @param *model   The model to delete
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Asynchronously deletes a fine-tuned model. You must have the
+         *        Owner role in your organization.
+         *
+         * @param *model The model to delete.
+         *
+         * @return A liboai::Response future containing the image(s) data in
+         *         JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto remove_async(const std::string& model) const& noexcept(false)
             -> liboai::FutureResponse;

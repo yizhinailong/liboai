@@ -1,6 +1,7 @@
 #pragma once
 
-/*
+/**
+    @file liboai.h
     Copyright (c) 2012-2022 Johnny (pseud. Dread) and others
 
     Permission is hereby granted, free of charge, to any person obtaining
@@ -62,76 +63,88 @@ namespace liboai {
         OpenAI& operator=(OpenAI&&) = delete;
         ~OpenAI() = default;
 
-        /*
-            @brief A pointer to the Audio component class that
-                provides access to its OpenAI API endpoints.
-        */
+        /**
+         * @brief A pointer to the Audio component class that
+         *        provides access to its OpenAI API endpoints.
+         *
+         */
         std::unique_ptr<liboai::Audio> Audio;
 
-        /*
-            @brief A pointer to the Azure component class that
-                provides access to its API endpoints.
-        */
+        /**
+         * @brief A pointer to the Azure component class that
+         *        provides access to its API endpoints.
+         *
+         */
         std::unique_ptr<liboai::Azure> Azure;
 
-        /*
-            @brief A pointer to the Chat component class that
-                provides access to its OpenAI API endpoints.
-        */
+        /**
+         * @brief A pointer to the Chat component class that
+         *        provides access to its OpenAI API endpoints.
+         *
+         */
         std::unique_ptr<liboai::ChatCompletion> ChatCompletion;
 
-        /*
-            @brief A pointer to the Completions component class that
-                provides access to its OpenAI API endpoints.
-        */
+        /**
+         * @brief A pointer to the Completions component class that
+         *        provides access to its OpenAI API endpoints.
+         *
+         */
         std::unique_ptr<liboai::Completions> Completion;
 
-        /*
-            @brief A pointer to the Edits component class that
-                provides access to its OpenAI API endpoints.
-        */
+        /**
+         * @brief A pointer to the Edits component class that
+         *        provides access to its OpenAI API endpoints.
+         *
+         */
         std::unique_ptr<liboai::Edits> Edit;
 
-        /*
-            @brief A pointer to the Embeddings component class that
-                provides access to its OpenAI API endpoints.
-        */
+        /**
+         * @brief A pointer to the Embeddings component class that
+         *        provides access to its OpenAI API endpoints.
+         *
+         */
         std::unique_ptr<liboai::Embeddings> Embedding;
 
-        /*
-            @brief A pointer to the Files component class that
-                provides access to its OpenAI API endpoints.
-        */
+        /**
+         * @brief A pointer to the Files component class that
+         *        provides access to its OpenAI API endpoints.
+         *
+         */
         std::unique_ptr<liboai::Files> File;
 
-        /*
-            @brief A pointer to the FineTunes component class that
-                provides access to its OpenAI API endpoints.
-        */
+        /**
+         * @brief A pointer to the FineTunes component class that
+         *        provides access to its OpenAI API endpoints.
+         *
+         */
         std::unique_ptr<liboai::FineTunes> FineTune;
 
-        /*
-            @brief A pointer to the Images component class that
-                provides access to its OpenAI API endpoints.
-        */
+        /**
+         * @brief A pointer to the Images component class that
+         *        provides access to its OpenAI API endpoints.
+         *
+         */
         std::unique_ptr<liboai::Images> Image;
 
-        /*
-            @brief A pointer to the Models component class that
-                provides access to its OpenAI API endpoints.
-        */
+        /**
+         * @brief A pointer to the Models component class that
+         *        provides access to its OpenAI API endpoints.
+         *
+         */
         std::unique_ptr<liboai::Models> Model;
 
-        /*
-            @brief A pointer to the Moderations component class that
-                provides access to its OpenAI API endpoints.
-        */
+        /**
+         * @brief A pointer to the Moderations component class that
+         *        provides access to its OpenAI API endpoints.
+         *
+         */
         std::unique_ptr<liboai::Moderations> Moderation;
 
-        /*
-            @brief Convenience reference to the Authorization class
-                singleton used to set authorization information.
-        */
+        /**
+         * @brief Convenience reference to the Authorization class
+         *        singleton used to set authorization information.
+         *
+         */
         Authorization& auth = Authorization::Authorizer();
     };
 } // namespace liboai

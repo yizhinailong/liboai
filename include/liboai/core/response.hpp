@@ -1,19 +1,20 @@
 #pragma once
 
-/*
-    response.h : liboai response container implementation.
-        This header file provides declarations for the liboai Response
-        implementation. Each component class will include this header
-        and use the Response class to return data to the user.
-
-        For instance, making a call to liboai::Image::Create(...) will
-        return a liboai::Response object. The user can then check the
-        object and retrieve the data found in the response as needed.
-
-        This class will construct itself from the output of
-        liboai::Network::Request(...) (cpr::Response) and parse it
-        into a usable format for the user to access via this class.
-*/
+/**
+ * @file response.h
+ * @brief liboai response container implementation.
+ *
+ * This header file provides declarations for the liboai Response
+ * implementation. Each component class will include this header
+ * and use the Response class to return data to the user.
+ *
+ * - For instance, making a call to liboai::Image::Create(...) will
+ *   return a liboai::Response object. The user can then check the
+ *   object and retrieve the data found in the response as needed.
+ * - This class will construct itself from the output of
+ *   liboai::Network::Request(...) (cpr::Response) and parse it
+ *   into a usable format for the user to access via this class.
+ */
 
 #if defined(__linux__) || defined(__APPLE__)
     #define LIBOAI_EXPORT
@@ -100,20 +101,22 @@ namespace liboai {
         Response& operator=(const liboai::Response& other) noexcept;
         Response& operator=(liboai::Response&& old) noexcept;
 
-        /*
-            @brief Transparent operator[] wrapper to nlohmann::json to
-                access the Response object as if it were a json object.
-        */
+        /**
+         * @brief Transparent operator[] wrapper to nlohmann::json.
+         *
+         * Allows access to the Response object as if it were a json object.
+         */
         template <class _Ty>
         [[nodiscard]]
         auto operator[](const _Ty& key) const noexcept -> nlohmann::json::const_reference {
             return this->raw_json[key];
         }
 
-        /*
-            @brief std::ostream operator<< overload to allow for
-                pretty printing of the Response object.
-        */
+        /**
+         * @brief std::ostream operator<< overload.
+         *
+         * Allows for pretty printing of the Response object.
+         */
         LIBOAI_EXPORT friend auto operator<<(std::ostream& os, const Response& r) -> std::ostream&;
 
     public:
@@ -123,10 +126,12 @@ namespace liboai {
         nlohmann::json raw_json{};
 
     private:
-        /*
-            @brief Used internally during construction to check the response
-                for errors and throw exceptions if necessary.
-        */
+        /**
+         * @brief Check response for errors.
+         *
+         * Used internally during construction to check the response
+         * for errors and throw exceptions if necessary.
+         */
         LIBOAI_EXPORT auto CheckResponse() const noexcept(false) -> void;
     };
 

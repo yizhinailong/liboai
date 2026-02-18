@@ -1,3 +1,8 @@
+/**
+ * @file edits.cpp
+ *
+ * Implementation of Edits component for text editing API.
+ */
 #include "liboai/components/edits.hpp"
 
 namespace liboai {
@@ -25,7 +30,7 @@ namespace liboai {
             "/edits",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
-            netimpl::components::Body{ jcon.dump() },
+            cpr::Body{ jcon.dump() },
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()

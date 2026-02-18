@@ -1,3 +1,8 @@
+/**
+ * @file audio.cpp
+ *
+ * Implementation of Audio component for speech/transcription/translation.
+ */
 #include "liboai/components/audio.hpp"
 
 namespace liboai {
@@ -18,9 +23,9 @@ namespace liboai {
             );
         }
 
-        netimpl::components::Multipart form = {
-            {  "file", netimpl::components::File{ file.generic_string() } },
-            { "model",                                              model }
+        cpr::Multipart form = {
+            {  "file", cpr::File{ file.generic_string() } },
+            { "model",                              model }
         };
 
         if (prompt) {
@@ -88,9 +93,9 @@ namespace liboai {
             );
         }
 
-        netimpl::components::Multipart form = {
-            {  "file", netimpl::components::File{ file.generic_string() } },
-            { "model",                                              model }
+        cpr::Multipart form = {
+            {  "file", cpr::File{ file.generic_string() } },
+            { "model",                              model }
         };
 
         if (prompt) {
@@ -164,7 +169,7 @@ namespace liboai {
             "/audio/speech",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
-            netimpl::components::Body{ jcon.dump() },
+            cpr::Body{ jcon.dump() },
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()

@@ -1,11 +1,13 @@
 #pragma once
 
-/*
-    exception.h : liboai exception header.
-        This header file provides declarations for exception
-        directives for handling exceptions thrown by liboai
-        component classes.
-*/
+/**
+ * @file exception.hpp
+ * @brief liboai exception header.
+ *
+ * This header file provides declarations for exception
+ * directives for handling exceptions thrown by liboai
+ * component classes.
+ */
 
 #include <cstdint>
 #include <exception>
@@ -34,6 +36,12 @@ namespace liboai {
                                                   "E_CONNECTIONERROR:0x04", "E_FILEERROR:0x05",
                                                   "E_CURLERROR:0x06" };
 
+        /**
+         * @brief Base exception class for liboai errors.
+         *
+         * Represents errors thrown by liboai component classes
+         * with error type, message, and locale information.
+         */
         class OpenAIException : public std::exception {
         public:
             OpenAIException() = default;
@@ -77,6 +85,12 @@ namespace liboai {
             std::string m_data, m_locale, m_fmt_str;
         };
 
+        /**
+         * @brief Exception for rate limit errors.
+         *
+         * Specialized exception for handling API rate limit
+         * conditions with error type, message, and locale.
+         */
         class OpenAIRateLimited : public std::exception {
         public:
             OpenAIRateLimited() = default;

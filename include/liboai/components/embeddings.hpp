@@ -1,15 +1,17 @@
 #pragma once
 
-/*
-    embeddings.h : Embeddings component class for OpenAI.
-        This class contains all the methods for the Embeddings component
-        of the OpenAI API. This class provides access to 'Embeddings'
-        endpoints on the OpenAI API and should be accessed via the
-        liboai.h header file through an instantiated liboai::OpenAI
-        object after setting necessary authentication information
-        through the liboai::Authorization::Authorizer() singleton
-        object.
-*/
+/**
+ * @file embeddings.hpp
+ * @brief Embeddings component class for OpenAI.
+ *
+ * This class contains all the methods for the Embeddings component
+ * of the OpenAI API. This class provides access to 'Embeddings'
+ * endpoints on the OpenAI API and should be accessed via the
+ * liboai.h header file through an instantiated liboai::OpenAI
+ * object after setting necessary authentication information
+ * through the liboai::Authorization::Authorizer() singleton
+ * object.
+ */
 
 #include "liboai/core/authorization.hpp"
 #include "liboai/core/response.hpp"
@@ -25,16 +27,16 @@ namespace liboai {
         Embeddings& operator=(Embeddings&&) = delete;
         ~Embeddings() = default;
 
-        /*
-            @brief Creates an embedding vector representing the input text.
-
-            @param *model       The model to use for the edit.
-            @param input        The input text to edit.
-            @param user         A unique identifier representing your end-user
-
-            @return A liboai::Response object containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Creates an embedding vector representing the input text.
+         *
+         * @param *model       The model to use for the edit.
+         * @param input        The input text to edit.
+         * @param user         A unique identifier representing your end-user
+         *
+         * @return A liboai::Response object containing the image(s)
+         *         data in JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto create(
             const std::string& model_id,
@@ -42,16 +44,16 @@ namespace liboai {
             std::optional<std::string> user = std::nullopt
         ) const& noexcept(false) -> liboai::Response;
 
-        /*
-            @brief Asynchronously creates an embedding vector representing the input text.
-
-            @param *model       The model to use for the edit.
-            @param input        The input text to edit.
-            @param user         A unique identifier representing your end-user
-
-            @return A liboai::Response future containing the image(s)
-                data in JSON format.
-        */
+        /**
+         * @brief Asynchronously creates an embedding vector representing the input text.
+         *
+         * @param *model       The model to use for the edit.
+         * @param input        The input text to edit.
+         * @param user         A unique identifier representing your end-user
+         *
+         * @return A liboai::Response future containing the image(s)
+         *         data in JSON format.
+         */
         [[nodiscard]]
         LIBOAI_EXPORT auto create_async(
             const std::string& model_id,

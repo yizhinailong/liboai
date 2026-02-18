@@ -1,3 +1,9 @@
+/**
+ * @file completions.cpp
+ *
+ * Implementation of Completions component for text completion API.
+
+ */
 #include "liboai/components/completions.hpp"
 
 namespace liboai {
@@ -45,9 +51,12 @@ namespace liboai {
             "/completions",
             "application/json",
             this->m_auth.GetAuthorizationHeaders(),
-            netimpl::components::Body{ jcon.dump() },
-            stream ? netimpl::components::WriteCallback{ std::move(stream.value()) } :
-                     netimpl::components::WriteCallback{},
+            cpr::Body{ jcon.dump() },
+            stream ? cpr::WriteCallback{ [cb = std::move(stream.value())](
+                                             std::string_view data,
+                                             intptr_t userdata
+                                         ) -> bool { return cb(std::string(data), userdata); } } :
+                     cpr::WriteCallback{},
             this->m_auth.GetProxies(),
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
