@@ -10,7 +10,7 @@
 
 namespace liboai {
 
-    auto Embeddings::create(
+    auto Embeddings::Create(
         const std::string& model_id,
         std::optional<std::string> input,
         std::optional<std::string> user
@@ -33,12 +33,12 @@ namespace liboai {
         );
     }
 
-    auto Embeddings::create_async(
+    auto Embeddings::CreateAsync(
         const std::string& model_id,
         std::optional<std::string> input,
         std::optional<std::string> user
     ) const& noexcept -> FutureExpected<Response> {
-        return std::async(std::launch::async, &Embeddings::create, this, model_id, input, user);
+        return std::async(std::launch::async, &Embeddings::Create, this, model_id, input, user);
     }
 
 } // namespace liboai
