@@ -59,7 +59,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create(
+        LIBOAI_EXPORT auto Create(
             const std::string& training_file,
             std::optional<std::string> validation_file = std::nullopt,
             std::optional<std::string> model_id = std::nullopt,
@@ -105,7 +105,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create_async(
+        LIBOAI_EXPORT auto CreateAsync(
             const std::string& training_file,
             std::optional<std::string> validation_file = std::nullopt,
             std::optional<std::string> model_id = std::nullopt,
@@ -127,7 +127,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto list() const& noexcept -> liboai::Expected<liboai::Response>;
+        LIBOAI_EXPORT auto List() const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously list your organization's fine-tuning jobs.
@@ -136,7 +136,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto list_async() const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        LIBOAI_EXPORT auto ListAsync() const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Returns information about a specific file.
@@ -147,7 +147,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto retrieve(const std::string& fine_tune_id) const& noexcept
+        LIBOAI_EXPORT auto Retrieve(const std::string& fine_tune_id) const& noexcept
             -> liboai::Expected<liboai::Response>;
 
         /**
@@ -159,7 +159,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto retrieve_async(const std::string& fine_tune_id) const& noexcept
+        LIBOAI_EXPORT auto RetrieveAsync(const std::string& fine_tune_id) const& noexcept
             -> liboai::FutureExpected<liboai::Response>;
 
         /**
@@ -171,7 +171,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto cancel(const std::string& fine_tune_id) const& noexcept
+        LIBOAI_EXPORT auto Cancel(const std::string& fine_tune_id) const& noexcept
             -> liboai::Expected<liboai::Response>;
 
         /**
@@ -183,7 +183,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto cancel_async(const std::string& fine_tune_id) const& noexcept
+        LIBOAI_EXPORT auto CancelAsync(const std::string& fine_tune_id) const& noexcept
             -> liboai::FutureExpected<liboai::Response>;
 
         /**
@@ -199,7 +199,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto list_events(
+        LIBOAI_EXPORT auto ListEvents(
             const std::string& fine_tune_id,
             std::optional<StreamCallback> stream = std::nullopt
         ) const& noexcept -> liboai::Expected<liboai::Response>;
@@ -218,7 +218,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto list_events_async(
+        LIBOAI_EXPORT auto ListEventsAsync(
             const std::string& fine_tune_id,
             std::optional<StreamCallback> stream = std::nullopt
         ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
@@ -233,7 +233,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto remove(const std::string& model) const& noexcept
+        LIBOAI_EXPORT auto Remove(const std::string& model) const& noexcept
             -> liboai::Expected<liboai::Response>;
 
         /**
@@ -246,7 +246,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto remove_async(const std::string& model) const& noexcept
+        LIBOAI_EXPORT auto RemoveAsync(const std::string& model) const& noexcept
             -> liboai::FutureExpected<liboai::Response>;
 
     private:
