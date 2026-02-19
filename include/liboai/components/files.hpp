@@ -35,7 +35,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto list() const& noexcept -> liboai::Expected<liboai::Response>;
+        LIBOAI_EXPORT auto List() const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously returns a list of files that belong to the
@@ -45,7 +45,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto list_async() const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        LIBOAI_EXPORT auto ListAsync() const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Upload a file that contains document(s) to be
@@ -61,7 +61,7 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        create(const std::filesystem::path& file, const std::string& purpose) const& noexcept
+        Create(const std::filesystem::path& file, const std::string& purpose) const& noexcept
             -> liboai::Expected<liboai::Response>;
 
         /**
@@ -78,7 +78,7 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        create_async(const std::filesystem::path& file, const std::string& purpose) const& noexcept
+        CreateAsync(const std::filesystem::path& file, const std::string& purpose) const& noexcept
             -> liboai::FutureExpected<liboai::Response>;
 
         /**
@@ -90,7 +90,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto remove(const std::string& file_id) const& noexcept
+        LIBOAI_EXPORT auto Remove(const std::string& file_id) const& noexcept
             -> liboai::Expected<liboai::Response>;
 
         /**
@@ -102,7 +102,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto remove_async(const std::string& file_id) const& noexcept
+        LIBOAI_EXPORT auto RemoveAsync(const std::string& file_id) const& noexcept
             -> liboai::FutureExpected<liboai::Response>;
 
         /**
@@ -114,7 +114,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto retrieve(const std::string& file_id) const& noexcept
+        LIBOAI_EXPORT auto Retrieve(const std::string& file_id) const& noexcept
             -> liboai::Expected<liboai::Response>;
 
         /**
@@ -126,7 +126,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto retrieve_async(const std::string& file_id) const& noexcept
+        LIBOAI_EXPORT auto RetrieveAsync(const std::string& file_id) const& noexcept
             -> liboai::FutureExpected<liboai::Response>;
 
         /**
@@ -141,7 +141,7 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        download(const std::string& file_id, const std::string& save_to) const& noexcept
+        Download(const std::string& file_id, const std::string& save_to) const& noexcept
             -> liboai::Expected<bool>;
 
         /**
@@ -156,7 +156,7 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        download_async(const std::string& file_id, const std::string& save_to) const& noexcept
+        DownloadAsync(const std::string& file_id, const std::string& save_to) const& noexcept
             -> liboai::FutureExpected<bool>;
 
     private:
