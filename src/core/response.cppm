@@ -26,6 +26,7 @@ module;
 
 // Third-party library headers
 #include <cpr/cpr.h>
+
 #include <nlohmann/json.hpp>
 
 export module liboai:core.response;
@@ -216,7 +217,7 @@ export namespace liboai {
         // Check for JSON parse errors first
         if (!content.empty() && content[0] == '{') {
             try {
-                nlohmann::json::parse(content);
+                auto _ = nlohmann::json::parse(content);
             } catch (const nlohmann::json::parse_error& e) {
                 return std::unexpected(OpenAIError::parse_error(e.what()));
             }

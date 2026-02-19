@@ -1020,6 +1020,11 @@ export namespace liboai {
           m_functions(other.m_functions),
           m_last_resp_is_fc(other.m_last_resp_is_fc) {}
 
+    inline Conversation::Conversation()
+        : m_conversation(nlohmann::json::object()),
+          m_functions(nlohmann::json::object()),
+          m_last_resp_is_fc(false) {}
+
     Conversation::Conversation(Conversation&& old) noexcept
         : m_conversation(std::move(old.m_conversation)),
           m_functions(std::move(old.m_functions)),

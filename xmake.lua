@@ -1,9 +1,14 @@
 set_project("liboai")
 set_version("2.0.0")
 set_languages("c++23")
+set_policy("build.c++.modules.reuse", true)
+set_policy("build.c++.modules.hide_dependencies", false)
 
 add_rules("mode.debug", "mode.release")
-add_rules("plugin.compile_commands.autoupdate", {outputdir = "build"})
+
+if not get_config("build_examples") then
+    add_rules("plugin.compile_commands.autoupdate", {outputdir = "build"})
+end
 
 add_requires("nlohmann_json", "cpr")
 
