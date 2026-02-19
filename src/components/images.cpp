@@ -9,7 +9,7 @@
 
 namespace liboai {
 
-    auto Images::create(
+    auto Images::Create(
         const std::string& prompt,
         std::optional<uint8_t> n,
         std::optional<std::string> size,
@@ -36,7 +36,7 @@ namespace liboai {
         );
     }
 
-    auto Images::create_async(
+    auto Images::CreateAsync(
         const std::string& prompt,
         std::optional<uint8_t> n,
         std::optional<std::string> size,
@@ -45,7 +45,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &Images::create,
+            &Images::Create,
             this,
             prompt,
             n,
@@ -55,7 +55,7 @@ namespace liboai {
         );
     }
 
-    auto Images::create_edit(
+    auto Images::CreateEdit(
         const std::filesystem::path& image,
         const std::string& prompt,
         std::optional<std::filesystem::path> mask,
@@ -113,7 +113,7 @@ namespace liboai {
         );
     }
 
-    auto Images::create_edit_async(
+    auto Images::CreateEditAsync(
         const std::filesystem::path& image,
         const std::string& prompt,
         std::optional<std::filesystem::path> mask,
@@ -124,7 +124,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &Images::create_edit,
+            &Images::CreateEdit,
             this,
             image,
             prompt,
@@ -136,7 +136,7 @@ namespace liboai {
         );
     }
 
-    auto Images::create_variation(
+    auto Images::CreateVariation(
         const std::filesystem::path& image,
         std::optional<uint8_t> n,
         std::optional<std::string> size,
@@ -181,7 +181,7 @@ namespace liboai {
         );
     }
 
-    auto Images::create_variation_async(
+    auto Images::CreateVariationAsync(
         const std::filesystem::path& image,
         std::optional<uint8_t> n,
         std::optional<std::string> size,
@@ -190,7 +190,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &Images::create_variation,
+            &Images::CreateVariation,
             this,
             image,
             n,

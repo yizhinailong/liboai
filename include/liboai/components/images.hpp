@@ -38,7 +38,7 @@ namespace liboai {
          * @return A liboai::Response object containing the image(s) data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create(
+        LIBOAI_EXPORT auto Create(
             const std::string& prompt,
             std::optional<uint8_t> n = std::nullopt,
             std::optional<std::string> size = std::nullopt,
@@ -58,7 +58,7 @@ namespace liboai {
          * @return A liboai::Response future containing the image(s) data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create_async(
+        LIBOAI_EXPORT auto CreateAsync(
             const std::string& prompt,
             std::optional<uint8_t> n = std::nullopt,
             std::optional<std::string> size = std::nullopt,
@@ -81,7 +81,7 @@ namespace liboai {
          * @return A liboai::Response object containing the image(s) data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create_edit(
+        LIBOAI_EXPORT auto CreateEdit(
             const std::filesystem::path& image,
             const std::string& prompt,
             std::optional<std::filesystem::path> mask = std::nullopt,
@@ -106,7 +106,7 @@ namespace liboai {
          * @return A liboai::Response future containing the image(s) data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create_edit_async(
+        LIBOAI_EXPORT auto CreateEditAsync(
             const std::filesystem::path& image,
             const std::string& prompt,
             std::optional<std::filesystem::path> mask = std::nullopt,
@@ -128,7 +128,7 @@ namespace liboai {
          * @return A liboai::Response object containing the image(s) data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create_variation(
+        LIBOAI_EXPORT auto CreateVariation(
             const std::filesystem::path& image,
             std::optional<uint8_t> n = std::nullopt,
             std::optional<std::string> size = std::nullopt,
@@ -149,7 +149,7 @@ namespace liboai {
          * @return A liboai::Response future containing the image(s) data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create_variation_async(
+        LIBOAI_EXPORT auto CreateVariationAsync(
             const std::filesystem::path& image,
             std::optional<uint8_t> n = std::nullopt,
             std::optional<std::string> size = std::nullopt,
