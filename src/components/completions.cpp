@@ -11,7 +11,7 @@
 
 namespace liboai {
 
-    auto Completions::create(
+    auto Completions::Create(
         const std::string& model_id,
         std::optional<std::string> prompt,
         std::optional<std::string> suffix,
@@ -65,7 +65,7 @@ namespace liboai {
         );
     }
 
-    auto Completions::create_async(
+    auto Completions::CreateAsync(
         const std::string& model_id,
         std::optional<std::string> prompt,
         std::optional<std::string> suffix,
@@ -85,7 +85,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &liboai::Completions::create,
+            &liboai::Completions::Create,
             this,
             model_id,
             prompt,
