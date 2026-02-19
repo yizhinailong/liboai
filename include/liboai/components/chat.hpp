@@ -915,7 +915,7 @@ namespace liboai {
          * @return A liboai::Response object containing the data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create(
+        LIBOAI_EXPORT auto Create(
             const std::string& model,
             Conversation& conversation,
             std::optional<std::string> function_call = std::nullopt,
@@ -977,7 +977,7 @@ namespace liboai {
          * @return A liboai::Response future containing the data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create_async(
+        LIBOAI_EXPORT auto CreateAsync(
             const std::string& model,
             Conversation& conversation,
             std::optional<std::string> function_call = std::nullopt,

@@ -703,7 +703,7 @@ namespace liboai {
         return true; // last message received
     }
 
-    auto ChatCompletion::create(
+    auto ChatCompletion::Create(
         const std::string& model,
         Conversation& conversation,
         std::optional<std::string> function_call,
@@ -781,7 +781,7 @@ namespace liboai {
         );
     }
 
-    auto ChatCompletion::create_async(
+    auto ChatCompletion::CreateAsync(
         const std::string& model,
         Conversation& conversation,
         std::optional<std::string> function_call,
@@ -798,7 +798,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &ChatCompletion::create,
+            &ChatCompletion::Create,
             this,
             model,
             std::ref(conversation),
