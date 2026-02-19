@@ -16,7 +16,6 @@
 module;
 
 // Standard library headers
-#include <array>
 #include <cstdint>
 #include <expected>
 #include <filesystem>
@@ -141,7 +140,7 @@ export namespace liboai {
             return std::async(std::launch::async, [&]() -> Expected<bool> {
                 std::ofstream file(to, std::ios::binary);
                 session.SetUrl(cpr::Url{ from });
-                session.SetHeader(std::move(authorization));
+                session.SetHeader(authorization);
                 auto cpr_res = cpr::Download(
                     file,
                     cpr::Url{ session.GetFullRequestUrl() },
