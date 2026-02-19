@@ -3,28 +3,28 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
+    OpenAI oai;
 
-  // create a conversation
-  Conversation convo;
+    // create a conversation
+    Conversation convo;
 
-  // add a message to the conversation
-  convo.AddUserData("Hello, how are you? What time is it for you?");
+    // add a message to the conversation
+    convo.AddUserData("Hello, how are you? What time is it for you?");
 
-  if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    try {
-      Response response = oai.ChatCompletion->create(
-        "gpt-3.5-turbo", convo
-      );
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        auto response = oai.ChatCompletion->create("gpt-3.5-turbo", convo);
 
-      // update the conversation with the response
-      convo.Update(response);
+        if (response) {
+            // update the conversation with the response
+            convo.Update(response.value());
 
-      // print the raw JSON conversation string
-      std::cout << convo.GetRawConversation() << std::endl;
+            // print the raw JSON conversation string
+            auto rawConvo = convo.GetRawConversation();
+            if (rawConvo) {
+                std::cout << rawConvo.value() << std::endl;
+            }
+        } else {
+            std::cout << response.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }

@@ -5,6 +5,8 @@
  */
 #include "liboai/components/edits.hpp"
 
+#include "liboai/core/error.hpp"
+
 namespace liboai {
 
     auto Edits::create(
@@ -14,7 +16,7 @@ namespace liboai {
         std::optional<uint16_t> n,
         std::optional<float> temperature,
         std::optional<float> top_p
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         JsonConstructor jcon;
         jcon.push_back("model", model_id);
         jcon.push_back("input", std::move(input));
@@ -23,8 +25,7 @@ namespace liboai {
         jcon.push_back("temperature", std::move(temperature));
         jcon.push_back("top_p", std::move(top_p));
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
             "/edits",
@@ -35,8 +36,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Edits::create_async(
@@ -46,7 +45,7 @@ namespace liboai {
         std::optional<uint16_t> n,
         std::optional<float> temperature,
         std::optional<float> top_p
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &Edits::create,

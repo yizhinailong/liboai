@@ -12,6 +12,7 @@
  */
 
 #include "liboai/core/authorization.hpp"
+#include "liboai/core/error.hpp"
 #include "liboai/core/response.hpp"
 
 namespace liboai {
@@ -71,7 +72,7 @@ namespace liboai {
             std::optional<std::string> classification_positive_class = std::nullopt,
             std::optional<std::vector<float>> classification_betas = std::nullopt,
             std::optional<std::string> suffix = std::nullopt
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously creates a job that fine-tunes a specified model
@@ -117,7 +118,7 @@ namespace liboai {
             std::optional<std::string> classification_positive_class = std::nullopt,
             std::optional<std::vector<float>> classification_betas = std::nullopt,
             std::optional<std::string> suffix = std::nullopt
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief List your organization's fine-tuning jobs.
@@ -126,7 +127,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto list() const& noexcept(false) -> liboai::Response;
+        LIBOAI_EXPORT auto list() const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously list your organization's fine-tuning jobs.
@@ -135,7 +136,7 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto list_async() const& noexcept(false) -> liboai::FutureResponse;
+        LIBOAI_EXPORT auto list_async() const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Returns information about a specific file.
@@ -146,8 +147,8 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto retrieve(const std::string& fine_tune_id) const& noexcept(false)
-            -> liboai::Response;
+        LIBOAI_EXPORT auto retrieve(const std::string& fine_tune_id) const& noexcept
+            -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously returns information about a specific file.
@@ -158,8 +159,8 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto retrieve_async(const std::string& fine_tune_id) const& noexcept(false)
-            -> liboai::FutureResponse;
+        LIBOAI_EXPORT auto retrieve_async(const std::string& fine_tune_id) const& noexcept
+            -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Immediately cancel a fine-tune job.
@@ -170,8 +171,8 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto cancel(const std::string& fine_tune_id) const& noexcept(false)
-            -> liboai::Response;
+        LIBOAI_EXPORT auto cancel(const std::string& fine_tune_id) const& noexcept
+            -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Immediately cancel a fine-tune job asynchronously.
@@ -182,8 +183,8 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto cancel_async(const std::string& fine_tune_id) const& noexcept(false)
-            -> liboai::FutureResponse;
+        LIBOAI_EXPORT auto cancel_async(const std::string& fine_tune_id) const& noexcept
+            -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Get fine-grained status updates for a fine-tune job.
@@ -201,7 +202,7 @@ namespace liboai {
         LIBOAI_EXPORT auto list_events(
             const std::string& fine_tune_id,
             std::optional<StreamCallback> stream = std::nullopt
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously get fine-grained status updates for a
@@ -220,7 +221,7 @@ namespace liboai {
         LIBOAI_EXPORT auto list_events_async(
             const std::string& fine_tune_id,
             std::optional<StreamCallback> stream = std::nullopt
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Delete a fine-tuned model. You must have the Owner role in
@@ -232,8 +233,8 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto remove(const std::string& model) const& noexcept(false)
-            -> liboai::Response;
+        LIBOAI_EXPORT auto remove(const std::string& model) const& noexcept
+            -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously deletes a fine-tuned model. You must have the
@@ -245,8 +246,8 @@ namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto remove_async(const std::string& model) const& noexcept(false)
-            -> liboai::FutureResponse;
+        LIBOAI_EXPORT auto remove_async(const std::string& model) const& noexcept
+            -> liboai::FutureExpected<liboai::Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();

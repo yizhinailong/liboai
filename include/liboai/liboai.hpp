@@ -29,6 +29,8 @@
         included in order to use the library.
 */
 
+#include "liboai/core/error.hpp"
+
 #include "liboai/components/audio.hpp"
 #include "liboai/components/azure.hpp"
 #include "liboai/components/chat.hpp"

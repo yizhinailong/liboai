@@ -28,7 +28,11 @@
 
 #include <nlohmann/json.hpp>
 
-#include "liboai/core/exception.hpp"
+#include "liboai/core/error.hpp"
+
+namespace cpr {
+    class Response;
+}
 
 namespace liboai {
     template <typename T, typename = void> struct has_value_type : std::false_type {};
@@ -96,7 +100,23 @@ namespace liboai {
             std::string&& reason,
             long status_code,
             double elapsed
-        ) noexcept(false);
+        ) noexcept;
+
+        /**
+         * @brief Factory method to create a validated Response.
+         *
+         * Constructs a Response and validates it. Returns std::expected
+         * with the Response on success or OpenAIError on failure.
+         */
+        [[nodiscard]]
+        static auto create(
+            std::string&& url,
+            std::string&& content,
+            std::string&& status_line,
+            std::string&& reason,
+            long status_code,
+            double elapsed
+        ) -> Expected<Response>;
 
         Response& operator=(const liboai::Response& other) noexcept;
         Response& operator=(liboai::Response&& old) noexcept;
@@ -127,13 +147,16 @@ namespace liboai {
 
     private:
         /**
-         * @brief Check response for errors.
+         * @brief Validate response for errors.
          *
-         * Used internally during construction to check the response
-         * for errors and throw exceptions if necessary.
+         * Used internally to check the response for errors.
+         * Returns std::expected<void, OpenAIError>.
          */
-        LIBOAI_EXPORT auto CheckResponse() const noexcept(false) -> void;
+        LIBOAI_EXPORT auto CheckResponse() const -> Expected<void>;
     };
+
+    [[nodiscard]]
+    auto to_liboai_response(cpr::Response&& cpr_res) -> Expected<Response>;
 
     using FutureResponse = std::future<liboai::Response>;
 } // namespace liboai

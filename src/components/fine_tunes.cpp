@@ -3,8 +3,11 @@
  *
  * Implementation of FineTunes component for model fine-tuning API.
 
+
  */
 #include "liboai/components/fine_tunes.hpp"
+
+#include "liboai/core/error.hpp"
 
 namespace liboai {
 
@@ -21,7 +24,7 @@ namespace liboai {
         std::optional<std::string> classification_positive_class,
         std::optional<std::vector<float>> classification_betas,
         std::optional<std::string> suffix
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         JsonConstructor jcon;
         jcon.push_back("training_file", training_file);
         jcon.push_back("validation_file", std::move(validation_file));
@@ -36,8 +39,7 @@ namespace liboai {
         jcon.push_back("classification_betas", std::move(classification_betas));
         jcon.push_back("suffix", std::move(suffix));
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
             "/fine-tunes",
@@ -48,8 +50,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto FineTunes::create_async(
@@ -65,7 +65,7 @@ namespace liboai {
         std::optional<std::string> classification_positive_class,
         std::optional<std::vector<float>> classification_betas,
         std::optional<std::string> suffix
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &liboai::FineTunes::create,
@@ -85,9 +85,8 @@ namespace liboai {
         );
     }
 
-    auto FineTunes::list() const& -> Response {
-        Response res;
-        res = this->Request(
+    auto FineTunes::list() const& noexcept -> Expected<Response> {
+        return this->Request(
             Method::HTTP_GET,
             this->GetOpenAIRoot(),
             "/fine-tunes",
@@ -97,17 +96,15 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
-    auto FineTunes::list_async() const& noexcept(false) -> FutureResponse {
+    auto FineTunes::list_async() const& noexcept -> FutureExpected<Response> {
         return std::async(std::launch::async, &liboai::FineTunes::list, this);
     }
 
-    auto FineTunes::retrieve(const std::string& fine_tune_id) const& -> Response {
-        Response res;
-        res = this->Request(
+    auto FineTunes::retrieve(const std::string& fine_tune_id) const& noexcept
+        -> Expected<Response> {
+        return this->Request(
             Method::HTTP_GET,
             this->GetOpenAIRoot(),
             "/fine-tunes/" + fine_tune_id,
@@ -117,18 +114,15 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
-    auto FineTunes::retrieve_async(const std::string& fine_tune_id) const& noexcept(false)
-        -> FutureResponse {
+    auto FineTunes::retrieve_async(const std::string& fine_tune_id) const& noexcept
+        -> FutureExpected<Response> {
         return std::async(std::launch::async, &liboai::FineTunes::retrieve, this, fine_tune_id);
     }
 
-    auto FineTunes::cancel(const std::string& fine_tune_id) const& -> Response {
-        Response res;
-        res = this->Request(
+    auto FineTunes::cancel(const std::string& fine_tune_id) const& noexcept -> Expected<Response> {
+        return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
             "/fine-tunes/" + fine_tune_id + "/cancel",
@@ -138,24 +132,21 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
-    auto FineTunes::cancel_async(const std::string& fine_tune_id) const& noexcept(false)
-        -> FutureResponse {
+    auto FineTunes::cancel_async(const std::string& fine_tune_id) const& noexcept
+        -> FutureExpected<Response> {
         return std::async(std::launch::async, &liboai::FineTunes::cancel, this, fine_tune_id);
     }
 
     auto FineTunes::list_events(
         const std::string& fine_tune_id,
         std::optional<std::function<bool(std::string, intptr_t)>> stream
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         cpr::Parameters params;
         stream ? params.Add({ "stream", "true" }) : void();
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_GET,
             this->GetOpenAIRoot(),
             "/fine-tunes/" + fine_tune_id + "/events",
@@ -171,14 +162,12 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto FineTunes::list_events_async(
         const std::string& fine_tune_id,
         std::optional<std::function<bool(std::string, intptr_t)>> stream
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &liboai::FineTunes::list_events,
@@ -188,9 +177,8 @@ namespace liboai {
         );
     }
 
-    auto FineTunes::remove(const std::string& model) const& noexcept(false) -> Response {
-        Response res;
-        res = this->Request(
+    auto FineTunes::remove(const std::string& model) const& noexcept -> Expected<Response> {
+        return this->Request(
             Method::HTTP_DELETE,
             this->GetOpenAIRoot(),
             "/models/" + model,
@@ -200,12 +188,10 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
-    auto FineTunes::remove_async(const std::string& model) const& noexcept(false)
-        -> FutureResponse {
+    auto FineTunes::remove_async(const std::string& model) const& noexcept
+        -> FutureExpected<Response> {
         return std::async(std::launch::async, &liboai::FineTunes::remove, this, model);
     }
 

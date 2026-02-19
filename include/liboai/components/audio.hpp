@@ -14,6 +14,7 @@
  */
 
 #include "liboai/core/authorization.hpp"
+#include "liboai/core/error.hpp"
 #include "liboai/core/response.hpp"
 
 namespace liboai {
@@ -55,7 +56,7 @@ namespace liboai {
             std::optional<std::string> response_format = std::nullopt,
             std::optional<float> temperature = std::nullopt,
             std::optional<std::string> language = std::nullopt
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously transcribes audio into the input language.
@@ -84,7 +85,7 @@ namespace liboai {
             std::optional<std::string> response_format = std::nullopt,
             std::optional<float> temperature = std::nullopt,
             std::optional<std::string> language = std::nullopt
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Translates audio into English.
@@ -110,7 +111,7 @@ namespace liboai {
             std::optional<std::string> prompt = std::nullopt,
             std::optional<std::string> response_format = std::nullopt,
             std::optional<float> temperature = std::nullopt
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously translates audio into English.
@@ -136,7 +137,7 @@ namespace liboai {
             std::optional<std::string> prompt = std::nullopt,
             std::optional<std::string> response_format = std::nullopt,
             std::optional<float> temperature = std::nullopt
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Turn text into lifelike spoken audio.
@@ -172,7 +173,7 @@ namespace liboai {
             const std::string& input,
             std::optional<std::string> response_format = std::nullopt,
             std::optional<float> speed = std::nullopt
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously turn text into lifelike spoken audio.
@@ -208,7 +209,7 @@ namespace liboai {
             const std::string& input,
             std::optional<std::string> response_format = std::nullopt,
             std::optional<float> speed = std::nullopt
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();

@@ -12,6 +12,7 @@
  */
 
 #include "liboai/core/authorization.hpp"
+#include "liboai/core/error.hpp"
 #include "liboai/core/response.hpp"
 
 namespace liboai {
@@ -32,7 +33,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto list() const& noexcept(false) -> liboai::Response;
+        LIBOAI_EXPORT auto list() const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously list all available models.
@@ -41,7 +42,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto list_async() const& noexcept(false) -> liboai::FutureResponse;
+        LIBOAI_EXPORT auto list_async() const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Retrieve a specific model's information.
@@ -52,8 +53,8 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto retrieve(const std::string& model) const& noexcept(false)
-            -> liboai::Response;
+        LIBOAI_EXPORT auto retrieve(const std::string& model) const& noexcept
+            -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously retrieve a specific model's information.
@@ -64,8 +65,8 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto retrieve_async(const std::string& model) const& noexcept(false)
-            -> liboai::FutureResponse;
+        LIBOAI_EXPORT auto retrieve_async(const std::string& model) const& noexcept
+            -> liboai::FutureExpected<liboai::Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();

@@ -5,6 +5,8 @@
  */
 #include "liboai/components/images.hpp"
 
+#include "liboai/core/error.hpp"
+
 namespace liboai {
 
     auto Images::create(
@@ -13,7 +15,7 @@ namespace liboai {
         std::optional<std::string> size,
         std::optional<std::string> response_format,
         std::optional<std::string> user
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         JsonConstructor jcon;
         jcon.push_back("prompt", prompt);
         jcon.push_back("n", std::move(n));
@@ -21,8 +23,7 @@ namespace liboai {
         jcon.push_back("response_format", std::move(response_format));
         jcon.push_back("user", std::move(user));
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
             "/images/generations",
@@ -33,8 +34,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Images::create_async(
@@ -43,7 +42,7 @@ namespace liboai {
         std::optional<std::string> size,
         std::optional<std::string> response_format,
         std::optional<std::string> user
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &Images::create,
@@ -64,12 +63,12 @@ namespace liboai {
         std::optional<std::string> size,
         std::optional<std::string> response_format,
         std::optional<std::string> user
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         if (!this->Validate(image)) {
-            throw exception::OpenAIException(
-                "File path provided is non-existent, is not a file, or is empty.",
-                exception::EType::E_FILEERROR,
-                "liboai::Images::create_edit(...)"
+            return std::unexpected(
+                OpenAIError::file_error(
+                    "File path provided is non-existent, is not a file, or is empty."
+                )
             );
         }
 
@@ -80,10 +79,10 @@ namespace liboai {
 
         if (mask) {
             if (!this->Validate(mask.value())) {
-                throw exception::OpenAIException(
-                    "File path provided is non-existent, is not a file, or is empty.",
-                    exception::EType::E_FILEERROR,
-                    "liboai::Images::create_edit(...)"
+                return std::unexpected(
+                    OpenAIError::file_error(
+                        "File path provided is non-existent, is not a file, or is empty."
+                    )
                 );
             }
             form.parts.emplace_back("mask", cpr::File{ mask.value().generic_string() });
@@ -101,8 +100,7 @@ namespace liboai {
             form.parts.emplace_back("user", user.value());
         }
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
             "/images/edits",
@@ -113,8 +111,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Images::create_edit_async(
@@ -125,7 +121,7 @@ namespace liboai {
         std::optional<std::string> size,
         std::optional<std::string> response_format,
         std::optional<std::string> user
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &Images::create_edit,
@@ -146,12 +142,12 @@ namespace liboai {
         std::optional<std::string> size,
         std::optional<std::string> response_format,
         std::optional<std::string> user
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         if (!this->Validate(image)) {
-            throw exception::OpenAIException(
-                "File path provided is non-existent, is not a file, or is empty.",
-                exception::EType::E_FILEERROR,
-                "liboai::Images::create_variation(...)"
+            return std::unexpected(
+                OpenAIError::file_error(
+                    "File path provided is non-existent, is not a file, or is empty."
+                )
             );
         }
 
@@ -172,8 +168,7 @@ namespace liboai {
             form.parts.emplace_back("user", user.value());
         }
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
             "/images/variations",
@@ -184,8 +179,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Images::create_variation_async(
@@ -194,7 +187,7 @@ namespace liboai {
         std::optional<std::string> size,
         std::optional<std::string> response_format,
         std::optional<std::string> user
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &Images::create_variation,

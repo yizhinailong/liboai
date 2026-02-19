@@ -3,19 +3,20 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
+    OpenAI oai;
 
-  if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
-    try {
-      Response res = oai.Azure->create_embedding(
-        "resource", "deploymentID", "api_version",
-        "String to get embedding for"
-      );
+    if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
+        auto res = oai.Azure->create_embedding(
+            "resource",
+            "deploymentID",
+            "api_version",
+            "String to get embedding for"
+        );
 
-      std::cout << res << std::endl;
+        if (res) {
+            std::cout << res.value() << std::endl;
+        } else {
+            std::cout << res.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }

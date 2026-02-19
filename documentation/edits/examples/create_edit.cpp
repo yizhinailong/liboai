@@ -3,18 +3,17 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
-  if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    try {
-      Response response = oai.Edit->create(
-        "text-davinci-edit-001",
-        "What day of the wek is it?",
-        "Fix the spelling mistakes"
-      );
-      std::cout << response["choices"][0]["text"].get<std::string>() << std::endl;
+    OpenAI oai;
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        auto response = oai.Edit->create(
+            "text-davinci-edit-001",
+            "What day of the wek is it?",
+            "Fix the spelling mistakes"
+        );
+        if (response) {
+            std::cout << response.value()["choices"][0]["text"].get<std::string>() << std::endl;
+        } else {
+            std::cout << response.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }

@@ -5,6 +5,8 @@
  */
 #include "liboai/components/audio.hpp"
 
+#include "liboai/core/error.hpp"
+
 namespace liboai {
 
     auto Audio::transcribe(
@@ -14,12 +16,12 @@ namespace liboai {
         std::optional<std::string> response_format,
         std::optional<float> temperature,
         std::optional<std::string> language
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         if (!this->Validate(file)) {
-            throw liboai::exception::OpenAIException(
-                "File path provided is non-existent, is not a file, or is empty.",
-                liboai::exception::EType::E_FILEERROR,
-                "liboai::Audio::transcribe(...)"
+            return std::unexpected(
+                OpenAIError::file_error(
+                    "File path provided is non-existent, is not a file, or is empty."
+                )
             );
         }
 
@@ -41,8 +43,7 @@ namespace liboai {
             form.parts.emplace_back("language", language.value());
         }
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
             "/audio/transcriptions",
@@ -53,8 +54,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Audio::transcribe_async(
@@ -64,7 +63,7 @@ namespace liboai {
         std::optional<std::string> response_format,
         std::optional<float> temperature,
         std::optional<std::string> language
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &liboai::Audio::transcribe,
@@ -84,12 +83,12 @@ namespace liboai {
         std::optional<std::string> prompt,
         std::optional<std::string> response_format,
         std::optional<float> temperature
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         if (!this->Validate(file)) {
-            throw liboai::exception::OpenAIException(
-                "File path provided is non-existent, is not a file, or is empty.",
-                liboai::exception::EType::E_FILEERROR,
-                "liboai::Audio::translate(...)"
+            return std::unexpected(
+                OpenAIError::file_error(
+                    "File path provided is non-existent, is not a file, or is empty."
+                )
             );
         }
 
@@ -108,8 +107,7 @@ namespace liboai {
             form.parts.emplace_back("temperature", std::to_string(temperature.value()));
         }
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
             "/audio/translations",
@@ -120,8 +118,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Audio::translate_async(
@@ -130,7 +126,7 @@ namespace liboai {
         std::optional<std::string> prompt,
         std::optional<std::string> response_format,
         std::optional<float> temperature
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &liboai::Audio::translate,
@@ -149,7 +145,7 @@ namespace liboai {
         const std::string& input,
         std::optional<std::string> response_format,
         std::optional<float> speed
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         JsonConstructor jcon;
         jcon.push_back("model", model);
         jcon.push_back("voice", voice);
@@ -162,8 +158,7 @@ namespace liboai {
             jcon.push_back("speed", speed.value());
         }
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
             "/audio/speech",
@@ -174,8 +169,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Audio::speech_async(
@@ -184,10 +177,10 @@ namespace liboai {
         const std::string& input,
         std::optional<std::string> response_format,
         std::optional<float> speed
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &liboai::Audio::translate,
+            &liboai::Audio::speech,
             this,
             model,
             voice,

@@ -14,6 +14,7 @@
 #include <limits>
 
 #include "liboai/core/authorization.hpp"
+#include "liboai/core/error.hpp"
 #include "liboai/core/response.hpp"
 
 namespace liboai {
@@ -85,7 +86,8 @@ namespace liboai {
          * @return True/False denoting whether the function was added successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto AddFunction(std::string_view function_name) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto AddFunction(std::string_view function_name) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Same as AddFunction, but allows for adding multiple functions at once.
@@ -95,8 +97,8 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        AddFunctions(std::initializer_list<std::string_view> function_names) & noexcept(false)
-            -> bool;
+        AddFunctions(std::initializer_list<std::string_view> function_names) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Same as AddFunction, but allows for adding multiple functions at once.
@@ -105,8 +107,8 @@ namespace liboai {
          * @return True/False denoting whether the functions were added successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto AddFunctions(std::vector<std::string> function_names) & noexcept(false)
-            -> bool;
+        LIBOAI_EXPORT auto AddFunctions(std::vector<std::string> function_names) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Same as AddFunction, but allows for adding multiple functions at once.
@@ -119,7 +121,8 @@ namespace liboai {
             std::enable_if_t<
                 std::conjunction_v<std::is_convertible<_Fnames, std::string_view>...>,
                 int> = 0>
-        [[nodiscard]] auto AddFunctions(_Fnames... function_names) & noexcept(false) -> bool {
+        [[nodiscard]] auto AddFunctions(_Fnames... function_names) & noexcept
+            -> liboai::Expected<bool> {
             return this->AddFunctions({ function_names... });
         }
 
@@ -133,7 +136,8 @@ namespace liboai {
          * @return True/False denoting whether the function was popped successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto PopFunction(std::string_view function_name) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto PopFunction(std::string_view function_name) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Same as PopFunction, but allows for popping multiple functions at once.
@@ -143,8 +147,8 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        PopFunctions(std::initializer_list<std::string_view> function_names) & noexcept(false)
-            -> bool;
+        PopFunctions(std::initializer_list<std::string_view> function_names) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Same as PopFunction, but allows for popping multiple functions at once.
@@ -153,8 +157,8 @@ namespace liboai {
          * @return True/False denoting whether the functions were popped successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto PopFunctions(std::vector<std::string> function_names) & noexcept(false)
-            -> bool;
+        LIBOAI_EXPORT auto PopFunctions(std::vector<std::string> function_names) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Same as PopFunction, but allows for popping multiple functions at once.
@@ -167,7 +171,8 @@ namespace liboai {
             std::enable_if_t<
                 std::conjunction_v<std::is_convertible<_Fnames, std::string_view>...>,
                 int> = 0>
-        [[nodiscard]] auto PopFunctions(_Fnames... function_names) & noexcept(false) -> bool {
+        [[nodiscard]] auto PopFunctions(_Fnames... function_names) & noexcept
+            -> liboai::Expected<bool> {
             return this->PopFunctions({ function_names... });
         }
 
@@ -180,8 +185,8 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        SetDescription(std::string_view target, std::string_view description) & noexcept(false)
-            -> bool;
+        SetDescription(std::string_view target, std::string_view description) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Pops a previously added function's description.
@@ -190,7 +195,8 @@ namespace liboai {
          * @return True/False denoting whether the description was popped successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto PopDescription(std::string_view target) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto PopDescription(std::string_view target) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Sets which set function parameters are required.
@@ -203,7 +209,7 @@ namespace liboai {
         LIBOAI_EXPORT auto SetRequired(
             std::string_view target,
             std::initializer_list<std::string_view> params
-        ) & noexcept(false) -> bool;
+        ) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Sets which set function parameters are required.
@@ -214,8 +220,8 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        SetRequired(std::string_view target, std::vector<std::string> params) & noexcept(false)
-            -> bool;
+        SetRequired(std::string_view target, std::vector<std::string> params) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Sets which set function parameters are required.
@@ -229,8 +235,8 @@ namespace liboai {
             std::enable_if_t<
                 std::conjunction_v<std::is_convertible<_Rp, std::string_view>...>,
                 int> = 0>
-        [[nodiscard]] auto SetRequired(std::string_view target, _Rp... params) & noexcept(false)
-            -> bool {
+        [[nodiscard]] auto SetRequired(std::string_view target, _Rp... params) & noexcept
+            -> liboai::Expected<bool> {
             return SetRequired(target, { params... });
         }
 
@@ -241,7 +247,8 @@ namespace liboai {
          * @return True/False denoting whether the required parameters were popped successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto PopRequired(std::string_view target) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto PopRequired(std::string_view target) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Appends a parameter to a previously set series of required function parameters.
@@ -255,7 +262,8 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        AppendRequired(std::string_view target, std::string_view param) & noexcept(false) -> bool;
+        AppendRequired(std::string_view target, std::string_view param) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Appends multiple parameters to a previously set series of required
@@ -272,7 +280,7 @@ namespace liboai {
         LIBOAI_EXPORT auto AppendRequired(
             std::string_view target,
             std::initializer_list<std::string_view> params
-        ) & noexcept(false) -> bool;
+        ) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Appends multiple parameters to a previously set series of required
@@ -287,8 +295,8 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        AppendRequired(std::string_view target, std::vector<std::string> params) & noexcept(false)
-            -> bool;
+        AppendRequired(std::string_view target, std::vector<std::string> params) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Appends multiple parameters to a previously set series of required
@@ -306,8 +314,8 @@ namespace liboai {
             std::enable_if_t<
                 std::conjunction_v<std::is_convertible<_Rp, std::string_view>...>,
                 int> = 0>
-        [[nodiscard]] auto AppendRequired(std::string_view target, _Rp... params) & noexcept(false)
-            -> bool {
+        [[nodiscard]] auto AppendRequired(std::string_view target, _Rp... params) & noexcept
+            -> liboai::Expected<bool> {
             return AppendRequired(target, { params... });
         }
 
@@ -320,8 +328,8 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        SetParameter(std::string_view target, FunctionParameter parameter) & noexcept(false)
-            -> bool;
+        SetParameter(std::string_view target, FunctionParameter parameter) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Adds a series of parameters to an added function.
@@ -334,7 +342,7 @@ namespace liboai {
         LIBOAI_EXPORT auto SetParameters(
             std::string_view target,
             std::initializer_list<FunctionParameter> parameters
-        ) & noexcept(false) -> bool;
+        ) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Adds a series of parameters to an added function.
@@ -344,10 +352,9 @@ namespace liboai {
          * @return True/False denoting whether the parameters were added successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto SetParameters(
-            std::string_view target,
-            std::vector<FunctionParameter> parameters
-        ) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto
+        SetParameters(std::string_view target, std::vector<FunctionParameter> parameters) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Adds a series of parameters to an added function.
@@ -359,8 +366,8 @@ namespace liboai {
         template <
             class... _Fp,
             std::enable_if_t<std::conjunction_v<std::is_same<_Fp, FunctionParameter>...>, int> = 0>
-        [[nodiscard]] auto
-        SetParameters(std::string_view target, _Fp... parameters) & noexcept(false) -> bool {
+        [[nodiscard]] auto SetParameters(std::string_view target, _Fp... parameters) & noexcept
+            -> liboai::Expected<bool> {
             return SetParameters(target, { parameters... });
         }
 
@@ -375,7 +382,8 @@ namespace liboai {
          * @return True/False denoting whether the parameters were popped successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto PopParameters(std::string_view target) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto PopParameters(std::string_view target) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Pops one or more of a function's set parameters.
@@ -388,7 +396,7 @@ namespace liboai {
         LIBOAI_EXPORT auto PopParameters(
             std::string_view target,
             std::initializer_list<std::string_view> param_names
-        ) & noexcept(false) -> bool;
+        ) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Pops one or more of a function's set parameters.
@@ -398,10 +406,9 @@ namespace liboai {
          * @return True/False denoting whether the parameters were popped successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto PopParameters(
-            std::string_view target,
-            std::vector<std::string> param_names
-        ) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto
+        PopParameters(std::string_view target, std::vector<std::string> param_names) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Pops one or more of a function's set parameters.
@@ -415,8 +422,8 @@ namespace liboai {
             std::enable_if_t<
                 std::conjunction_v<std::is_convertible<_Pname, std::string_view>...>,
                 int> = 0>
-        [[nodiscard]] auto
-        PopParameters(std::string_view target, _Pname... param_names) & noexcept(false) -> bool {
+        [[nodiscard]] auto PopParameters(std::string_view target, _Pname... param_names) & noexcept
+            -> liboai::Expected<bool> {
             return PopParameters(target, { param_names... });
         }
 
@@ -429,8 +436,8 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        AppendParameter(std::string_view target, FunctionParameter parameter) & noexcept(false)
-            -> bool;
+        AppendParameter(std::string_view target, FunctionParameter parameter) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Appends a series of parameters to a previously added function.
@@ -443,7 +450,7 @@ namespace liboai {
         LIBOAI_EXPORT auto AppendParameters(
             std::string_view target,
             std::initializer_list<FunctionParameter> parameters
-        ) & noexcept(false) -> bool;
+        ) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Appends a series of parameters to a previously added function.
@@ -456,7 +463,7 @@ namespace liboai {
         LIBOAI_EXPORT auto AppendParameters(
             std::string_view target,
             std::vector<FunctionParameter> parameters
-        ) & noexcept(false) -> bool;
+        ) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Appends a series of parameters to a previously added function.
@@ -468,8 +475,8 @@ namespace liboai {
         template <
             class... _Fp,
             std::enable_if_t<std::conjunction_v<std::is_same<_Fp, FunctionParameter>...>, int> = 0>
-        [[nodiscard]] auto
-        AppendParameters(std::string_view target, _Fp... parameters) & noexcept(false) -> bool {
+        [[nodiscard]] auto AppendParameters(std::string_view target, _Fp... parameters) & noexcept
+            -> liboai::Expected<bool> {
             return AppendParameters(target, { parameters... });
         }
 
@@ -480,8 +487,8 @@ namespace liboai {
 
     private:
         using index = std::size_t;
-        [[nodiscard]] auto GetFunctionIndex(std::string_view function_name) const& noexcept(false)
-            -> index;
+        [[nodiscard]] auto GetFunctionIndex(std::string_view function_name) const& noexcept
+            -> liboai::Expected<index>;
 
         nlohmann::json m_functions;
     };
@@ -545,8 +552,8 @@ namespace liboai {
          *         successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto ChangeFirstSystemMessage(std::string_view new_data) & noexcept(false)
-            -> bool;
+        LIBOAI_EXPORT auto ChangeFirstSystemMessage(std::string_view new_data) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Sets the system data for the conversation.
@@ -559,7 +566,8 @@ namespace liboai {
          * @return True/False denoting whether the system data was set successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto SetSystemData(std::string_view data) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto SetSystemData(std::string_view data) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Removes the set system data from the top of the conversation.
@@ -571,7 +579,7 @@ namespace liboai {
          * @return True/False denoting whether the system data was removed successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto PopSystemData() & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto PopSystemData() & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Adds user input to the conversation.
@@ -586,7 +594,7 @@ namespace liboai {
          * @return True/False denoting whether the user input was added successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto AddUserData(std::string_view data) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto AddUserData(std::string_view data) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Adds user input to the conversation.
@@ -604,8 +612,8 @@ namespace liboai {
          * @return True/False denoting whether the user input was added successfully.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto
-        AddUserData(std::string_view data, std::string_view name) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto AddUserData(std::string_view data, std::string_view name) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Removes the last added user data.
@@ -613,7 +621,7 @@ namespace liboai {
          * @return True/False denoting whether the user data was removed.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto PopUserData() & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto PopUserData() & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Gets the last response from the assistant.
@@ -621,7 +629,7 @@ namespace liboai {
          * This method gets the last response from the assistant. The response is
          * the assistant's response to the user's input.
          */
-        LIBOAI_EXPORT auto GetLastResponse() const& noexcept -> std::string;
+        LIBOAI_EXPORT auto GetLastResponse() const& noexcept -> Expected<std::string>;
 
         /**
          * @brief Returns whether the most recent response contains a function_call.
@@ -634,7 +642,7 @@ namespace liboai {
          *         function_call or not.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto LastResponseIsFunctionCall() const& noexcept -> bool;
+        LIBOAI_EXPORT auto LastResponseIsFunctionCall() const& noexcept -> Expected<bool>;
 
         /**
          * @brief Returns the name of the function_call in the most recent response.
@@ -642,7 +650,8 @@ namespace liboai {
          * This should only be called if LastResponseIsFunctionCall() returns true.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto GetLastFunctionCallName() const& noexcept(false) -> std::string;
+        LIBOAI_EXPORT auto GetLastFunctionCallName() const& noexcept
+            -> liboai::Expected<std::string>;
 
         /**
          * @brief Returns the arguments of the function_call in the most recent response.
@@ -651,7 +660,8 @@ namespace liboai {
          * LastResponseIsFunctionCall() returns true.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto GetLastFunctionCallArguments() const& noexcept(false) -> std::string;
+        LIBOAI_EXPORT auto GetLastFunctionCallArguments() const& noexcept
+            -> liboai::Expected<std::string>;
 
         /**
          * @brief Removes the last assistant response.
@@ -659,7 +669,7 @@ namespace liboai {
          * @return True/False denoting whether the last response was removed.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto PopLastResponse() & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto PopLastResponse() & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Updates the conversation given JSON data.
@@ -683,7 +693,7 @@ namespace liboai {
          * @return True/False denoting whether the conversation was updated.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto Update(std::string_view history) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto Update(std::string_view history) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Updates the conversation given a Response object.
@@ -703,7 +713,7 @@ namespace liboai {
          * @return True/False denoting whether the update was successful.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto Update(const Response& response) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto Update(const Response& response) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Exports the entire conversation to a JSON string.
@@ -715,7 +725,7 @@ namespace liboai {
          * @return The JSON string representing the conversation.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto Export() const& noexcept(false) -> std::string;
+        LIBOAI_EXPORT auto Export() const& noexcept -> liboai::Expected<std::string>;
 
         /**
          * @brief Imports a conversation from a JSON string.
@@ -727,7 +737,7 @@ namespace liboai {
          * @return True/False denoting whether the conversation was imported.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto Import(std::string_view json) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto Import(std::string_view json) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Appends stream data (SSEs) from streamed methods.
@@ -741,7 +751,8 @@ namespace liboai {
          * @param token Streamed token (data) to update the conversation with.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto AppendStreamData(std::string data) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto AppendStreamData(const std::string& data) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Appends stream data (SSEs) from streamed methods.
@@ -758,8 +769,8 @@ namespace liboai {
          */
         [[nodiscard]]
         LIBOAI_EXPORT auto
-        AppendStreamData(std::string data, std::string& delta, bool& completed) & noexcept(false)
-            -> bool;
+        AppendStreamData(const std::string& data, std::string& delta, bool& completed) & noexcept
+            -> Expected<bool>;
 
         /**
          * @brief Sets the functions to be used for the conversation.
@@ -770,19 +781,20 @@ namespace liboai {
          * @return True/False denoting whether the functions were set.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto SetFunctions(Functions functions) & noexcept(false) -> bool;
+        LIBOAI_EXPORT auto SetFunctions(const Functions& functions) & noexcept
+            -> liboai::Expected<bool>;
 
         /**
          * @brief Pops any previously set functions.
          */
-        LIBOAI_EXPORT auto PopFunctions() & noexcept(false) -> void;
+        LIBOAI_EXPORT auto PopFunctions() & noexcept -> void;
 
         /**
          * @brief Returns the raw JSON dump of the internal conversation object
          *        in string format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto GetRawConversation() const& noexcept -> std::string;
+        LIBOAI_EXPORT auto GetRawConversation() const& noexcept -> Expected<std::string>;
 
         /**
          * @brief Returns the JSON object of the internal conversation.
@@ -795,7 +807,7 @@ namespace liboai {
          *        in string format - if one exists.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto GetRawFunctions() const& noexcept -> std::string;
+        LIBOAI_EXPORT auto GetRawFunctions() const& noexcept -> Expected<std::string>;
 
         /**
          * @brief Returns the JSON object of the set functions.
@@ -823,9 +835,9 @@ namespace liboai {
     private:
         friend class ChatCompletion;
         friend class Azure;
-        [[nodiscard]] auto SplitStreamedData(std::string data) const noexcept(false)
-            -> std::vector<std::string>;
-        auto RemoveStrings(std::string& s, std::string_view p) const noexcept(false) -> void;
+        [[nodiscard]] auto SplitStreamedData(std::string data) const noexcept
+            -> liboai::Expected<std::vector<std::string>>;
+        auto RemoveStrings(std::string& s, std::string_view p) const noexcept -> void;
         auto EraseExtra() -> void;
         /**
          * @brief Split full stream data that read from remote server.
@@ -833,9 +845,10 @@ namespace liboai {
          * @return vector of string that contains the split data that will contains
          *         the last termination string(data: "DONE").
          */
-        [[nodiscard]] auto SplitFullStreamedData(std::string data) const noexcept(false)
-            -> std::vector<std::string>;
-        auto ParseStreamData(std::string data, std::string& delta, bool& completed) -> bool;
+        [[nodiscard]] auto SplitFullStreamedData(const std::string& data) const noexcept
+            -> liboai::Expected<std::vector<std::string>>;
+        auto ParseStreamData(std::string data, std::string& delta, bool& completed) noexcept
+            -> Expected<bool>;
 
         nlohmann::json m_conversation;
         std::optional<nlohmann::json> m_functions = std::nullopt;
@@ -916,7 +929,7 @@ namespace liboai {
             std::optional<float> frequency_penalty = std::nullopt,
             std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously creates a completion for the chat message.
@@ -978,7 +991,7 @@ namespace liboai {
             std::optional<float> frequency_penalty = std::nullopt,
             std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();

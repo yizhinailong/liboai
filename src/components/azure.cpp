@@ -5,6 +5,8 @@
  */
 #include "liboai/components/azure.hpp"
 
+#include "liboai/core/error.hpp"
+
 namespace liboai {
 
     auto Azure::create_completion(
@@ -26,7 +28,7 @@ namespace liboai {
         std::optional<uint16_t> best_of,
         std::optional<std::unordered_map<std::string, int8_t>> logit_bias,
         std::optional<std::string> user
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         JsonConstructor jcon;
         jcon.push_back("prompt", std::move(prompt));
         jcon.push_back("suffix", std::move(suffix));
@@ -47,8 +49,7 @@ namespace liboai {
         cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             ("https://" + resource_name + this->GetAzureRoot() + "/deployments/" + deployment_id),
             "/completions",
@@ -65,8 +66,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Azure::create_completion_async(
@@ -88,7 +87,7 @@ namespace liboai {
         std::optional<uint16_t> best_of,
         std::optional<std::unordered_map<std::string, int8_t>> logit_bias,
         std::optional<std::string> user
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &Azure::create_completion,
@@ -120,7 +119,7 @@ namespace liboai {
         const std::string& api_version,
         const std::string& input,
         std::optional<std::string> user
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         JsonConstructor jcon;
         jcon.push_back("input", input);
         jcon.push_back("user", std::move(user));
@@ -128,8 +127,7 @@ namespace liboai {
         cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             ("https://" + resource_name + this->GetAzureRoot() + "/deployments/" + deployment_id),
             "/embeddings",
@@ -141,8 +139,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Azure::create_embedding_async(
@@ -151,7 +147,7 @@ namespace liboai {
         const std::string& api_version,
         const std::string& input,
         std::optional<std::string> user
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &Azure::create_embedding,
@@ -179,7 +175,7 @@ namespace liboai {
         std::optional<float> frequency_penalty,
         std::optional<std::unordered_map<std::string, int8_t>> logit_bias,
         std::optional<std::string> user
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         JsonConstructor jcon;
         jcon.push_back("temperature", std::move(temperature));
         jcon.push_back("n", std::move(n));
@@ -225,8 +221,7 @@ namespace liboai {
         cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             ("https://" + resource_name + this->GetAzureRoot() + "/deployments/" + deployment_id),
             "/chat/completions",
@@ -244,8 +239,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Azure::create_chat_completion_async(
@@ -263,7 +256,7 @@ namespace liboai {
         std::optional<float> frequency_penalty,
         std::optional<std::unordered_map<std::string, int8_t>> logit_bias,
         std::optional<std::string> user
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &Azure::create_chat_completion,
@@ -291,7 +284,7 @@ namespace liboai {
         const std::string& prompt,
         std::optional<uint8_t> n,
         std::optional<std::string> size
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         JsonConstructor jcon;
         jcon.push_back("prompt", prompt);
         jcon.push_back("n", std::move(n));
@@ -300,8 +293,7 @@ namespace liboai {
         cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             ("https://" + resource_name + this->GetAzureRoot()),
             "/images/generations:submit",
@@ -313,8 +305,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Azure::request_image_generation_async(
@@ -323,7 +313,7 @@ namespace liboai {
         const std::string& prompt,
         std::optional<uint8_t> n,
         std::optional<std::string> size
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &Azure::request_image_generation,
@@ -340,12 +330,11 @@ namespace liboai {
         const std::string& resource_name,
         const std::string& api_version,
         const std::string& operation_id
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_GET,
             ("https://" + resource_name + this->GetAzureRoot()),
             "/operations/images/" + operation_id,
@@ -356,15 +345,13 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Azure::get_generated_image_async(
         const std::string& resource_name,
         const std::string& api_version,
         const std::string& operation_id
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &Azure::get_generated_image,
@@ -379,12 +366,11 @@ namespace liboai {
         const std::string& resource_name,
         const std::string& api_version,
         const std::string& operation_id
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_DELETE,
             ("https://" + resource_name + this->GetAzureRoot()),
             "/operations/images/" + operation_id,
@@ -395,15 +381,13 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Azure::delete_generated_image_async(
         const std::string& resource_name,
         const std::string& api_version,
         const std::string& operation_id
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &Azure::delete_generated_image,

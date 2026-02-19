@@ -3,16 +3,13 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
-  if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    try {
-      Response response = oai.Moderation->create(
-        "I want to kill them."
-      );
-      std::cout << response["results"][0]["flagged"].get<bool>() << std::endl;
+    OpenAI oai;
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        auto response = oai.Moderation->create("I want to kill them.");
+        if (response) {
+            std::cout << response.value()["results"][0]["flagged"].get<bool>() << std::endl;
+        } else {
+            std::cout << response.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }

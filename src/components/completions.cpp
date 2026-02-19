@@ -1,10 +1,13 @@
 /**
  * @file completions.cpp
  *
- * Implementation of Completions component for text completion API.
+ * Implementation of Completions component for text completion
+ * API.
 
  */
 #include "liboai/components/completions.hpp"
+
+#include "liboai/core/error.hpp"
 
 namespace liboai {
 
@@ -25,7 +28,7 @@ namespace liboai {
         std::optional<uint16_t> best_of,
         std::optional<std::unordered_map<std::string, int8_t>> logit_bias,
         std::optional<std::string> user
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         JsonConstructor jcon;
         jcon.push_back("model", model_id);
         jcon.push_back("prompt", std::move(prompt));
@@ -44,8 +47,7 @@ namespace liboai {
         jcon.push_back("logit_bias", std::move(logit_bias));
         jcon.push_back("user", std::move(user));
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
             "/completions",
@@ -61,8 +63,6 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Completions::create_async(
@@ -82,7 +82,7 @@ namespace liboai {
         std::optional<uint16_t> best_of,
         std::optional<std::unordered_map<std::string, int8_t>> logit_bias,
         std::optional<std::string> user
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
             &liboai::Completions::create,

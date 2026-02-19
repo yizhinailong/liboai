@@ -5,18 +5,18 @@
  */
 #include "liboai/components/moderations.hpp"
 
+#include "liboai/core/error.hpp"
+
 namespace liboai {
 
-    auto Moderations::create(
-        const std::string& input,
-        std::optional<std::string> model
-    ) const& noexcept(false) -> Response {
+    auto
+    Moderations::create(const std::string& input, std::optional<std::string> model) const& noexcept
+        -> Expected<Response> {
         JsonConstructor jcon;
         jcon.push_back("input", input);
         jcon.push_back("model", std::move(model));
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
             "/moderations",
@@ -27,14 +27,12 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Moderations::create_async(
         const std::string& input,
         std::optional<std::string> model
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(std::launch::async, &Moderations::create, this, input, model);
     }
 

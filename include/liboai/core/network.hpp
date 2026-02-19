@@ -24,8 +24,6 @@
 #include "liboai/core/response.hpp"
 
 namespace liboai {
-    // Forward declaration of adapter function defined in response.cpp
-    auto to_liboai_response(cpr::Response&& cpr_res) -> Response;
 
     class Network {
     public:
@@ -60,12 +58,15 @@ namespace liboai {
             const std::string& to,
             const std::string& from,
             const cpr::Header& authorization
-        ) noexcept(false) -> bool {
+        ) noexcept -> Expected<bool> {
             std::ofstream file(to, std::ios::binary);
             auto cpr_res = cpr::Download(file, cpr::Url{ from }, authorization);
             auto res = to_liboai_response(std::move(cpr_res));
 
-            return res.status_code == 200;
+            if (!res) {
+                return std::unexpected(res.error());
+            }
+            return res->status_code == 200;
         }
 
         [[nodiscard]]
@@ -74,7 +75,7 @@ namespace liboai {
             const std::string& from,
             const cpr::Header& authorization,
             cpr::Session& session
-        ) noexcept(false) -> bool {
+        ) noexcept -> Expected<bool> {
             std::ofstream file(to, std::ios::binary);
             session.SetUrl(cpr::Url{ from });
             session.SetHeader(authorization);
@@ -82,7 +83,10 @@ namespace liboai {
                 cpr::Download(file, cpr::Url{ session.GetFullRequestUrl() }, authorization);
             auto res = to_liboai_response(std::move(cpr_res));
 
-            return res.status_code == 200;
+            if (!res) {
+                return std::unexpected(res.error());
+            }
+            return res->status_code == 200;
         }
 
         /**
@@ -103,13 +107,16 @@ namespace liboai {
             const std::string& to,
             const std::string& from,
             cpr::Header authorization
-        ) noexcept(false) -> std::future<bool> {
-            return std::async(std::launch::async, [&]() -> bool {
+        ) noexcept -> FutureExpected<bool> {
+            return std::async(std::launch::async, [&]() -> Expected<bool> {
                 std::ofstream file(to, std::ios::binary);
                 auto cpr_res = cpr::Download(file, cpr::Url{ from }, std::move(authorization));
                 auto res = to_liboai_response(std::move(cpr_res));
 
-                return res.status_code == 200;
+                if (!res) {
+                    return std::unexpected(res.error());
+                }
+                return res->status_code == 200;
             });
         }
 
@@ -119,8 +126,8 @@ namespace liboai {
             const std::string& from,
             cpr::Header authorization,
             cpr::Session& session
-        ) noexcept(false) -> std::future<bool> {
-            return std::async(std::launch::async, [&]() -> bool {
+        ) noexcept -> FutureExpected<bool> {
+            return std::async(std::launch::async, [&]() -> Expected<bool> {
                 std::ofstream file(to, std::ios::binary);
                 session.SetUrl(cpr::Url{ from });
                 session.SetHeader(std::move(authorization));
@@ -131,7 +138,10 @@ namespace liboai {
                 );
                 auto res = to_liboai_response(std::move(cpr_res));
 
-                return res.status_code == 200;
+                if (!res) {
+                    return std::unexpected(res.error());
+                }
+                return res->status_code == 200;
             });
         }
 
@@ -155,7 +165,7 @@ namespace liboai {
             const std::string& content_type,
             std::optional<cpr::Header> headers = std::nullopt,
             Params&&... parameters
-        ) const -> Response {
+        ) const -> Expected<Response> {
             cpr::Header _headers = {
                 { "Content-Type", content_type }
             };

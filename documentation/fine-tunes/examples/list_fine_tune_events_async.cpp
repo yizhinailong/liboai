@@ -3,27 +3,24 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
-  if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    try {
-      // call async method; returns a future
-      auto fut = oai.FineTune->list_events_async(
-        "ft-AF1WoRqd3aJAHsqc9NY7iL8F"
-      );
+    OpenAI oai;
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        // call async method; returns a future
+        auto fut = oai.FineTune->list_events_async("ft-AF1WoRqd3aJAHsqc9NY7iL8F");
 
-      // do other work...
+        // do other work...
 
-      // check if the future is ready
-      fut.wait();
+        // check if the future is ready
+        fut.wait();
 
-      // get the contained response
-      auto response = fut.get();
+        // get the contained response
+        auto response = fut.get();
 
-      // print some response data
-      std::cout << response["data"] << std::endl;
+        // print some response data
+        if (response) {
+            std::cout << response.value()["data"] << std::endl;
+        } else {
+            std::cout << response.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }

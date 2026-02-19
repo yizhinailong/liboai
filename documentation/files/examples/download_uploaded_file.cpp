@@ -3,18 +3,18 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
-  if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    try {
-      if (oai.File->download("file-XjGxS3KTG0uNmNOK362iJua3", "C:/some/folder/file.jsonl")) {
-        std::cout << "File downloaded successfully!" << std::endl;
-      }
-      else {
-        std::cout << "File download failed!" << std::endl;
-      }
+    OpenAI oai;
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        auto result =
+            oai.File->download("file-XjGxS3KTG0uNmNOK362iJua3", "C:/some/folder/file.jsonl");
+        if (result) {
+            if (result.value()) {
+                std::cout << "File downloaded successfully!" << std::endl;
+            } else {
+                std::cout << "File download failed!" << std::endl;
+            }
+        } else {
+            std::cout << result.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }

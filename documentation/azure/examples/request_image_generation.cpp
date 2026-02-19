@@ -3,22 +3,22 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
+    OpenAI oai;
 
-  if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
-    try {
-      Response res = oai.Azure->request_image_generation(
-        "resource", "api_version",
-        "A snake in the grass!",
-        1,
-        "512x512"
-      );
+    if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
+        auto res = oai.Azure->request_image_generation(
+            "resource",
+            "api_version",
+            "A snake in the grass!",
+            1,
+            "512x512"
+        );
 
-      // output the response
-      std::cout << res["data"][0]["url"].get<std::string>() << std::endl;
+        // output the response
+        if (res) {
+            std::cout << res.value()["data"][0]["url"].get<std::string>() << std::endl;
+        } else {
+            std::cout << res.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }

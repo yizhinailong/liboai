@@ -11,6 +11,7 @@
 
 #include "liboai/components/chat.hpp"
 #include "liboai/core/authorization.hpp"
+#include "liboai/core/error.hpp"
 #include "liboai/core/response.hpp"
 
 namespace liboai {
@@ -34,7 +35,8 @@ namespace liboai {
          *
          * @param *resource_name The name of your Azure OpenAI Resource.
          * @param *deployment_id The deployment name you chose when you deployed the model.
-         * @param *api_version The API version to use for this operation. This follows the YYYY-MM-DD format.
+         * @param *api_version The API version to use for this operation. This follows the
+         * YYYY-MM-DD format.
          * @param Refer to liboai::Completions::create for more information on the remaining
          * parameters.
          *
@@ -60,7 +62,7 @@ namespace liboai {
             std::optional<uint16_t> best_of = std::nullopt,
             std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Given a prompt, the model will asynchronously return
@@ -69,7 +71,8 @@ namespace liboai {
          *
          * @param *resource_name The name of your Azure OpenAI Resource.
          * @param *deployment_id The deployment name you chose when you deployed the model.
-         * @param *api_version The API version to use for this operation. This follows the YYYY-MM-DD format.
+         * @param *api_version The API version to use for this operation. This follows the
+         * YYYY-MM-DD format.
          * @param Refer to liboai::Completions::create for more information on the remaining
          * parameters.
          *
@@ -95,14 +98,15 @@ namespace liboai {
             std::optional<uint16_t> best_of = std::nullopt,
             std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Creates an embedding vector representing the input text.
          *
          * @param *resource_name The name of your Azure OpenAI Resource.
          * @param *deployment_id The deployment name you chose when you deployed the model.
-         * @param *api_version The API version to use for this operation. This follows the YYYY-MM-DD format.
+         * @param *api_version The API version to use for this operation. This follows the
+         * YYYY-MM-DD format.
          * @param *input Input text to get embeddings for, encoded as a string. The number of input
          * tokens varies depending on what model you are using.
          * @param Refer to liboai::Embeddings::create for more information on the remaining
@@ -117,14 +121,15 @@ namespace liboai {
             const std::string& api_version,
             const std::string& input,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously creates an embedding vector representing the input text.
          *
          * @param *resource_name The name of your Azure OpenAI Resource.
          * @param *deployment_id The deployment name you chose when you deployed the model.
-         * @param *api_version The API version to use for this operation. This follows the YYYY-MM-DD format.
+         * @param *api_version The API version to use for this operation. This follows the
+         * YYYY-MM-DD format.
          * @param *input Input text to get embeddings for, encoded as a string. The number of input
          * tokens varies depending on what model you are using.
          * @param Refer to liboai::Embeddings::create for more information on the remaining
@@ -139,14 +144,15 @@ namespace liboai {
             const std::string& api_version,
             const std::string& input,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Creates a completion for the chat message.
          *
          * @param *resource_name The name of your Azure OpenAI Resource.
          * @param *deployment_id The deployment name you chose when you deployed the model.
-         * @param *api_version The API version to use for this operation. This follows the YYYY-MM-DD format.
+         * @param *api_version The API version to use for this operation. This follows the
+         * YYYY-MM-DD format.
          * @param *conversation A Conversation object containing the conversation data.
          * @param Refer to liboai::Chat::create for more information on the remaining parameters.
          *
@@ -168,14 +174,15 @@ namespace liboai {
             std::optional<float> frequency_penalty = std::nullopt,
             std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously creates a completion for the chat message.
          *
          * @param *resource_name The name of your Azure OpenAI Resource.
          * @param *deployment_id The deployment name you chose when you deployed the model.
-         * @param *api_version The API version to use for this operation. This follows the YYYY-MM-DD format.
+         * @param *api_version The API version to use for this operation. This follows the
+         * YYYY-MM-DD format.
          * @param *conversation A Conversation object containing the conversation data.
          * @param Refer to liboai::Chat::create for more information on the remaining parameters.
          *
@@ -197,14 +204,15 @@ namespace liboai {
             std::optional<float> frequency_penalty = std::nullopt,
             std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Generate a batch of images from a text caption.
          *        Image generation is currently only available with api-version=2023-06-01-preview.
          *
          * @param *resource_name The name of your Azure OpenAI Resource.
-         * @param *api_version The API version to use for this operation. This follows the YYYY-MM-DD format.
+         * @param *api_version The API version to use for this operation. This follows the
+         * YYYY-MM-DD format.
          * @param *prompt The text to create an image from.
          * @param n The number of images to create.
          * @param size The size of the image to create.
@@ -218,14 +226,15 @@ namespace liboai {
             const std::string& prompt,
             std::optional<uint8_t> n = std::nullopt,
             std::optional<std::string> size = std::nullopt
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously generate a batch of images from a text caption.
          *        Image generation is currently only available with api-version=2023-06-01-preview.
          *
          * @param *resource_name The name of your Azure OpenAI Resource.
-         * @param *api_version The API version to use for this operation. This follows the YYYY-MM-DD format.
+         * @param *api_version The API version to use for this operation. This follows the
+         * YYYY-MM-DD format.
          * @param *prompt The text to create an image from.
          * @param n The number of images to create.
          * @param size The size of the image to create.
@@ -239,13 +248,14 @@ namespace liboai {
             const std::string& prompt,
             std::optional<uint8_t> n = std::nullopt,
             std::optional<std::string> size = std::nullopt
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Retrieve the results (URL) of a previously called image generation operation.
          *
          * @param *resource_name The name of your Azure OpenAI Resource.
-         * @param *api_version The API version to use for this operation. This follows the YYYY-MM-DD format.
+         * @param *api_version The API version to use for this operation. This follows the
+         * YYYY-MM-DD format.
          * @param *operation_id The GUID that identifies the original image generation request.
          *
          * @return A liboai::Response object containing the image(s) data in JSON format.
@@ -255,14 +265,15 @@ namespace liboai {
             const std::string& resource_name,
             const std::string& api_version,
             const std::string& operation_id
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously retrieve the results (URL) of a previously called image generation
          * operation.
          *
          * @param *resource_name The name of your Azure OpenAI Resource.
-         * @param *api_version The API version to use for this operation. This follows the YYYY-MM-DD format.
+         * @param *api_version The API version to use for this operation. This follows the
+         * YYYY-MM-DD format.
          * @param *operation_id The GUID that identifies the original image generation request.
          *
          * @return A liboai::Response object containing the image(s) data in JSON format.
@@ -272,13 +283,14 @@ namespace liboai {
             const std::string& resource_name,
             const std::string& api_version,
             const std::string& operation_id
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Deletes the corresponding image from the Azure server.
          *
          * @param *resource_name The name of your Azure OpenAI Resource.
-         * @param *api_version The API version to use for this operation. This follows the YYYY-MM-DD format.
+         * @param *api_version The API version to use for this operation. This follows the
+         * YYYY-MM-DD format.
          * @param *operation_id The GUID that identifies the original image generation request.
          *
          * @return A liboai::Response object containing the image(s) data in JSON format.
@@ -288,13 +300,14 @@ namespace liboai {
             const std::string& resource_name,
             const std::string& api_version,
             const std::string& operation_id
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously deletes the corresponding image from the Azure server.
          *
          * @param *resource_name The name of your Azure OpenAI Resource.
-         * @param *api_version The API version to use for this operation. This follows the YYYY-MM-DD format.
+         * @param *api_version The API version to use for this operation. This follows the
+         * YYYY-MM-DD format.
          * @param *operation_id The GUID that identifies the original image generation request.
          *
          * @return A liboai::Response object containing the image(s) data in JSON format.
@@ -304,7 +317,7 @@ namespace liboai {
             const std::string& resource_name,
             const std::string& api_version,
             const std::string& operation_id
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();

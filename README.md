@@ -61,13 +61,17 @@ int main() {
   OpenAI oai;
   oai.auth.SetKeyEnv("OPENAI_API_KEY");
 	
-  Response res = oai.Image->create(
+  auto res = oai.Image->create(
     "A snake in the grass!",
     1,
     "256x256"
   );
 
-  std::cout << res["data"][0]["url"] << std::endl;
+  if (res) {
+    std::cout << res.value()["data"][0]["url"] << std::endl;
+  } else {
+    std::cout << res.error().message << std::endl;
+  }
 }
 ```
 
@@ -86,7 +90,7 @@ int main() {
 </tr>
 </table>
 
-<p><i>Keep in mind the above C++ example is a minimal example and is not an exception-safe snippet. Please see <a href="/documentation">the documentation</a> for more detailed and exception-safe code snippets.</i></p>
+<p><i>Keep in mind the above C++ example is a minimal example. Please see <a href="/documentation">the documentation</a> for more detailed code snippets showing proper error handling with std::expected.</i></p>
 
 <h1>Dependencies</h1>
 <p>For the library to work the way it does, it relies on two major dependencies. These dependencies can be found listed below.<p>

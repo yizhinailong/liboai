@@ -34,7 +34,7 @@ namespace liboai {
         std::string&& reason,
         long status_code,
         double elapsed
-    ) noexcept(false)
+    ) noexcept
         : status_code(status_code),
           elapsed(elapsed),
           status_line(std::move(status_line)),
@@ -42,25 +42,46 @@ namespace liboai {
           url(url),
           reason(std::move(reason)) {
         try {
-            if (!this->content.empty()) {
-                if (this->content[0] == '{') {
-                    this->raw_json = nlohmann::json::parse(this->content);
-                } else {
-                    this->raw_json = nlohmann::json();
-                }
-            } else {
-                this->raw_json = nlohmann::json();
+            if (!this->content.empty() && this->content[0] == '{') {
+                this->raw_json = nlohmann::json::parse(this->content);
             }
-        } catch (nlohmann::json::parse_error& e) {
-            throw liboai::exception::OpenAIException(
-                e.what(),
-                liboai::exception::EType::E_FAILURETOPARSE,
-                "liboai::Response::Response(std::string&&, std::string&&, ...)"
-            );
+        } catch (...) {
+            // Parse failure - leave raw_json empty, don't throw
+        }
+    }
+
+    auto Response::create(
+        std::string&& url,
+        std::string&& content,
+        std::string&& status_line,
+        std::string&& reason,
+        long status_code,
+        double elapsed
+    ) -> Expected<Response> {
+        // Check for JSON parse errors first
+        if (!content.empty() && content[0] == '{') {
+            try {
+                nlohmann::json::parse(content);
+            } catch (const nlohmann::json::parse_error& e) {
+                return std::unexpected(OpenAIError::parse_error(e.what()));
+            }
         }
 
-        // check the response for errors -- nothrow on success
-        this->CheckResponse();
+        Response resp(
+            std::move(url),
+            std::move(content),
+            std::move(status_line),
+            std::move(reason),
+            status_code,
+            elapsed
+        );
+
+        auto result = resp.CheckResponse();
+        if (!result) {
+            return std::unexpected(result.error());
+        }
+
+        return resp;
     }
 
     Response& Response::operator=(const Response& other) noexcept {
@@ -92,55 +113,48 @@ namespace liboai {
         return os;
     }
 
-    auto Response::CheckResponse() const noexcept(false) -> void {
+    auto Response::CheckResponse() const -> Expected<void> {
         if (this->status_code == 429) {
-            throw liboai::exception::OpenAIRateLimited(
-                !this->reason.empty() ? this->reason : "Rate limited",
-                liboai::exception::EType::E_RATELIMIT,
-                "liboai::Response::CheckResponse()"
+            return std::unexpected(
+                OpenAIError::rate_limited(
+                    !this->reason.empty() ? this->reason : "Rate limited",
+                    this->status_code,
+                    std::chrono::seconds(0)
+                )
             );
-        } else if (this->status_code == 0) {
-            throw liboai::exception::OpenAIException(
-                "A connection error occurred",
-                liboai::exception::EType::E_CONNECTIONERROR,
-                "liboai::Response::CheckResponse()"
-            );
-        } else if (this->status_code < 200 || this->status_code >= 300) {
+        }
+        if (this->status_code == 0) {
+            return std::unexpected(OpenAIError::connection_error("A connection error occurred"));
+        }
+        if (this->status_code < 200 || this->status_code >= 300) {
             if (this->raw_json.contains("error")) {
                 try {
-                    throw liboai::exception::OpenAIException(
-                        this->raw_json["error"]["message"].get<std::string>(),
-                        liboai::exception::EType::E_APIERROR,
-                        "liboai::Response::CheckResponse()"
+                    return std::unexpected(
+                        OpenAIError::api_error(
+                            this->raw_json["error"]["message"].get<std::string>(),
+                            this->status_code
+                        )
                     );
-                } catch (nlohmann::json::parse_error& e) {
-                    throw liboai::exception::OpenAIException(
-                        e.what(),
-                        liboai::exception::EType::E_FAILURETOPARSE,
-                        "liboai::Response::CheckResponse()"
-                    );
+                } catch (const nlohmann::json::parse_error& e) {
+                    return std::unexpected(OpenAIError::parse_error(e.what()));
                 }
-            } else {
-                throw liboai::exception::OpenAIException(
-                    !this->reason.empty() ? this->reason : "An unknown error occurred",
-                    liboai::exception::EType::E_BADREQUEST,
-                    "liboai::Response::CheckResponse()"
-                );
             }
-        }
-    }
-
-    auto to_liboai_response(cpr::Response&& cpr_res) -> Response {
-        // Map cpr error to exception if network error
-        if (cpr_res.error && cpr_res.status_code == 0) {
-            throw exception::OpenAIException(
-                cpr_res.error.message,
-                exception::EType::E_CONNECTIONERROR,
-                "liboai::to_liboai_response"
+            return std::unexpected(
+                OpenAIError::bad_request(
+                    !this->reason.empty() ? this->reason : "An unknown error occurred",
+                    this->status_code
+                )
             );
         }
+        return {};
+    }
 
-        return Response(
+    auto to_liboai_response(cpr::Response&& cpr_res) -> Expected<Response> {
+        if (cpr_res.error && cpr_res.status_code == 0) {
+            return std::unexpected(OpenAIError::curl_error(cpr_res.error.message));
+        }
+
+        return Response::create(
             std::string(cpr_res.url.str()),
             std::move(cpr_res.text),
             std::move(cpr_res.status_line),

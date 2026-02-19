@@ -3,28 +3,28 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
+    OpenAI oai;
 
-  if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
-    try {
-      auto fut = oai.Azure->delete_generated_image_async(
-        "resource", "api_version",
-        "f508bcf2-e651-4b4b-85a7-58ad77981ffa"
-      );
+    if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
+        auto fut = oai.Azure->delete_generated_image_async(
+            "resource",
+            "api_version",
+            "f508bcf2-e651-4b4b-85a7-58ad77981ffa"
+        );
 
-      // do other work
+        // do other work
 
-      // wait for the future to complete
-      fut.wait();
+        // wait for the future to complete
+        fut.wait();
 
-      // get the result
-      auto res = fut.get();
+        // get the result
+        auto res = fut.get();
 
-      // output the response
-      std::cout << res << std::endl;
+        // output the response
+        if (res) {
+            std::cout << res.value() << std::endl;
+        } else {
+            std::cout << res.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }

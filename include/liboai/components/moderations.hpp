@@ -14,6 +14,7 @@
  */
 
 #include "liboai/core/authorization.hpp"
+#include "liboai/core/error.hpp"
 #include "liboai/core/response.hpp"
 
 namespace liboai {
@@ -41,7 +42,7 @@ namespace liboai {
         LIBOAI_EXPORT auto create(
             const std::string& input,
             std::optional<std::string> model = std::nullopt
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously creates a new moderation and classifies
@@ -57,7 +58,7 @@ namespace liboai {
         LIBOAI_EXPORT auto create_async(
             const std::string& input,
             std::optional<std::string> model = std::nullopt
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();

@@ -3,35 +3,36 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
+    OpenAI oai;
 
-  Conversation convo;
-  convo.AddUserData("Hi, how are you?");
+    Conversation convo;
+    convo.AddUserData("Hi, how are you?");
 
-  if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
-    try {
-      // call async method; returns a future
-      auto fut = oai.Azure->create_chat_completion_async(
-        "resource", "deploymentID", "api_version",
-        convo
-      );
+    if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
+        // call async method; returns a future
+        auto fut =
+            oai.Azure
+                ->create_chat_completion_async("resource", "deploymentID", "api_version", convo);
 
-      // do other work...
+        // do other work...
 
-      // check if the future is ready
-      fut.wait();
+        // check if the future is ready
+        fut.wait();
 
-      // get the contained response
-      auto res = fut.get();
+        // get the contained response
+        auto res = fut.get();
 
-      // update the conversation with the response
-      convo.Update(res);
+        if (res) {
+            // update the conversation with the response
+            convo.Update(res.value());
 
-      // print the response from the API
-      std::cout << convo.GetLastResponse() << std::endl;
+            // print the response from the API
+            auto lastResponse = convo.GetLastResponse();
+            if (lastResponse) {
+                std::cout << lastResponse.value() << std::endl;
+            }
+        } else {
+            std::cout << res.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }

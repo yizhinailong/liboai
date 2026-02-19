@@ -3,16 +3,13 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
-  if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    try {
-      Response response = oai.FineTune->list_events(
-        "ft-AF1WoRqd3aJAHsqc9NY7iL8F"
-      );
-      std::cout << response["data"] << std::endl;
+    OpenAI oai;
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        auto response = oai.FineTune->list_events("ft-AF1WoRqd3aJAHsqc9NY7iL8F");
+        if (response) {
+            std::cout << response.value()["data"] << std::endl;
+        } else {
+            std::cout << response.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }

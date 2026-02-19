@@ -6,20 +6,21 @@
 
 #include "liboai/components/embeddings.hpp"
 
+#include "liboai/core/error.hpp"
+
 namespace liboai {
 
     auto Embeddings::create(
         const std::string& model_id,
         std::optional<std::string> input,
         std::optional<std::string> user
-    ) const& noexcept(false) -> Response {
+    ) const& noexcept -> Expected<Response> {
         JsonConstructor jcon;
         jcon.push_back("model", model_id);
         jcon.push_back("input", std::move(input));
         jcon.push_back("user", std::move(user));
 
-        Response res;
-        res = this->Request(
+        return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
             "/embeddings",
@@ -30,15 +31,13 @@ namespace liboai {
             this->m_auth.GetProxyAuth(),
             this->m_auth.GetMaxTimeout()
         );
-
-        return res;
     }
 
     auto Embeddings::create_async(
         const std::string& model_id,
         std::optional<std::string> input,
         std::optional<std::string> user
-    ) const& noexcept(false) -> FutureResponse {
+    ) const& noexcept -> FutureExpected<Response> {
         return std::async(std::launch::async, &Embeddings::create, this, model_id, input, user);
     }
 

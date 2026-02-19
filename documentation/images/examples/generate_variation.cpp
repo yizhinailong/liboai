@@ -3,17 +3,13 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
-  if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    try {
-      Response response = oai.Image->create_variation(
-        "C:/some/folder/otter.png"
-      );
-
-      std::cout << response["data"][0]["url"].get<std::string>() << std::endl;
+    OpenAI oai;
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        auto response = oai.Image->create_variation("C:/some/folder/otter.png");
+        if (response) {
+            std::cout << response.value()["data"][0]["url"].get<std::string>() << std::endl;
+        } else {
+            std::cout << response.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }

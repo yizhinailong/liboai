@@ -3,36 +3,36 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
+    OpenAI oai;
 
-  // create a conversation
-  Conversation convo;
+    // create a conversation
+    Conversation convo;
 
-  // add a message to the conversation
-  convo.AddUserData("What is the point of taxes?");
+    // add a message to the conversation
+    convo.AddUserData("What is the point of taxes?");
 
-  if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    try {
-      auto fut = oai.ChatCompletion->create_async(
-        "gpt-3.5-turbo", convo
-      );
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        auto fut = oai.ChatCompletion->create_async("gpt-3.5-turbo", convo);
 
-      // do other work...
+        // do other work...
 
-      // check if the future is ready
-      fut.wait();
+        // check if the future is ready
+        fut.wait();
 
-      // get the contained response
-      auto response = fut.get();
+        // get the contained response
+        auto response = fut.get();
 
-      // update our conversation with the response
-      convo.Update(response);
+        if (response) {
+            // update our conversation with the response
+            convo.Update(response.value());
 
-      // print the response
-      std::cout << convo.GetLastResponse() << std::endl;
+            // print the response
+            auto lastResponse = convo.GetLastResponse();
+            if (lastResponse) {
+                std::cout << lastResponse.value() << std::endl;
+            }
+        } else {
+            std::cout << response.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }

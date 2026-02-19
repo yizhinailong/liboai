@@ -14,6 +14,7 @@
  */
 
 #include "liboai/core/authorization.hpp"
+#include "liboai/core/error.hpp"
 #include "liboai/core/response.hpp"
 
 namespace liboai {
@@ -42,7 +43,7 @@ namespace liboai {
             const std::string& model_id,
             std::optional<std::string> input = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept(false) -> liboai::Response;
+        ) const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously creates an embedding vector representing the input text.
@@ -59,7 +60,7 @@ namespace liboai {
             const std::string& model_id,
             std::optional<std::string> input = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept(false) -> liboai::FutureResponse;
+        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();

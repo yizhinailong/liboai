@@ -6,15 +6,11 @@ int main() {
     OpenAI oai;
 
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-        try {
-            Response res = oai.Audio->transcribe(
-                "C:/some/folder/audio.mp3",
-                "whisper-1"
-            );
-            std::cout << res["text"].get<std::string>() << std::endl;
-        }
-        catch (const std::exception& e) {
-            std::cout << e.what() << std::endl;
+        auto res = oai.Audio->transcribe("C:/some/folder/audio.mp3", "whisper-1");
+        if (res) {
+            std::cout << res.value()["text"].get<std::string>() << std::endl;
+        } else {
+            std::cout << res.error().message << std::endl;
         }
     }
 }

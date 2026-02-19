@@ -3,29 +3,27 @@
 using namespace liboai;
 
 int main() {
-  OpenAI oai;
-  if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    try {
-      // call async method; returns a future
-      auto fut = oai.File->download_async(
-        "file-XjGxS3KTG0uNmNOK362iJua3", "C:/some/folder/file.jsonl"
-      );
+    OpenAI oai;
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        // call async method; returns a future
+        auto fut =
+            oai.File->download_async("file-XjGxS3KTG0uNmNOK362iJua3", "C:/some/folder/file.jsonl");
 
-      // do other work...
+        // do other work...
 
-      // check if the future is ready
-      fut.wait();
+        // check if the future is ready
+        fut.wait();
 
-      // check if downloaded successfully
-      if (fut.get()) {
-        std::cout << "File downloaded successfully!" << std::endl;
-      }
-      else {
-        std::cout << "File download failed!" << std::endl;
-      }
+        // check if downloaded successfully
+        auto result = fut.get();
+        if (result) {
+            if (result.value()) {
+                std::cout << "File downloaded successfully!" << std::endl;
+            } else {
+                std::cout << "File download failed!" << std::endl;
+            }
+        } else {
+            std::cout << result.error().message << std::endl;
+        }
     }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-  }
 }
