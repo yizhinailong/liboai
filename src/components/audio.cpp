@@ -9,7 +9,7 @@
 
 namespace liboai {
 
-    auto Audio::transcribe(
+    auto Audio::Transcribe(
         const std::filesystem::path& file,
         const std::string& model,
         std::optional<std::string> prompt,
@@ -56,7 +56,7 @@ namespace liboai {
         );
     }
 
-    auto Audio::transcribe_async(
+    auto Audio::TranscribeAsync(
         const std::filesystem::path& file,
         const std::string& model,
         const std::optional<std::string>& prompt,
@@ -66,7 +66,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &liboai::Audio::transcribe,
+            &liboai::Audio::Transcribe,
             this,
             file,
             model,
@@ -77,7 +77,7 @@ namespace liboai {
         );
     }
 
-    auto Audio::translate(
+    auto Audio::Translate(
         const std::filesystem::path& file,
         const std::string& model,
         std::optional<std::string> prompt,
@@ -120,7 +120,7 @@ namespace liboai {
         );
     }
 
-    auto Audio::translate_async(
+    auto Audio::TranslateAsync(
         const std::filesystem::path& file,
         const std::string& model,
         const std::optional<std::string>& prompt,
@@ -129,7 +129,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &liboai::Audio::translate,
+            &liboai::Audio::Translate,
             this,
             file,
             model,
@@ -139,7 +139,7 @@ namespace liboai {
         );
     }
 
-    auto Audio::speech(
+    auto Audio::Speech(
         const std::string& model,
         const std::string& voice,
         const std::string& input,
@@ -171,7 +171,7 @@ namespace liboai {
         );
     }
 
-    auto Audio::speech_async(
+    auto Audio::SpeechAsync(
         const std::string& model,
         const std::string& voice,
         const std::string& input,
@@ -180,7 +180,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &liboai::Audio::speech,
+            &liboai::Audio::Speech,
             this,
             model,
             voice,

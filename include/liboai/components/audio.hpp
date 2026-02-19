@@ -49,7 +49,7 @@ namespace liboai {
          * @return A liboai::Response object containing the data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto transcribe(
+        LIBOAI_EXPORT auto Transcribe(
             const std::filesystem::path& file,
             const std::string& model,
             std::optional<std::string> prompt = std::nullopt,
@@ -78,7 +78,7 @@ namespace liboai {
          * @return A liboai::Response future containing the data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto transcribe_async(
+        LIBOAI_EXPORT auto TranscribeAsync(
             const std::filesystem::path& file,
             const std::string& model,
             const std::optional<std::string>& prompt = std::nullopt,
@@ -105,7 +105,7 @@ namespace liboai {
          * @return A liboai::Response object containing the data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto translate(
+        LIBOAI_EXPORT auto Translate(
             const std::filesystem::path& file,
             const std::string& model,
             std::optional<std::string> prompt = std::nullopt,
@@ -131,7 +131,7 @@ namespace liboai {
          * @return A liboai::Response future containing the data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto translate_async(
+        LIBOAI_EXPORT auto TranslateAsync(
             const std::filesystem::path& file,
             const std::string& model,
             const std::optional<std::string>& prompt = std::nullopt,
@@ -167,7 +167,7 @@ namespace liboai {
          * @return A liboai::Response object containing the data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto speech(
+        LIBOAI_EXPORT auto Speech(
             const std::string& model,
             const std::string& voice,
             const std::string& input,
@@ -203,7 +203,7 @@ namespace liboai {
          * @return A liboai::Response object containing the data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto speech_async(
+        LIBOAI_EXPORT auto SpeechAsync(
             const std::string& model,
             const std::string& voice,
             const std::string& input,
