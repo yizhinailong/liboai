@@ -45,34 +45,52 @@ namespace liboai {
         std::optional<std::chrono::seconds> retry_after;
 
         static OpenAIError parse_error(std::string msg) {
-            return { ErrorCode::FailureToParse, std::move(msg), std::nullopt, std::nullopt };
+            return { .code = ErrorCode::FailureToParse,
+                     .message = std::move(msg),
+                     .http_status = std::nullopt,
+                     .retry_after = std::nullopt };
         }
 
         static OpenAIError bad_request(std::string msg, int status = 0) {
-            return { ErrorCode::BadRequest,
-                     std::move(msg),
-                     status > 0 ? std::optional(status) : std::nullopt,
-                     std::nullopt };
+            return { .code = ErrorCode::BadRequest,
+                     .message = std::move(msg),
+                     .http_status = status > 0 ? std::optional(status) : std::nullopt,
+                     .retry_after = std::nullopt };
         }
 
         static OpenAIError api_error(std::string msg, int status) {
-            return { ErrorCode::APIError, std::move(msg), status, std::nullopt };
+            return { .code = ErrorCode::APIError,
+                     .message = std::move(msg),
+                     .http_status = status,
+                     .retry_after = std::nullopt };
         }
 
         static OpenAIError rate_limited(std::string msg, int status, std::chrono::seconds retry) {
-            return { ErrorCode::RateLimited, std::move(msg), status, retry };
+            return { .code = ErrorCode::RateLimited,
+                     .message = std::move(msg),
+                     .http_status = status,
+                     .retry_after = retry };
         }
 
         static OpenAIError connection_error(std::string msg) {
-            return { ErrorCode::ConnectionError, std::move(msg), std::nullopt, std::nullopt };
+            return { .code = ErrorCode::ConnectionError,
+                     .message = std::move(msg),
+                     .http_status = std::nullopt,
+                     .retry_after = std::nullopt };
         }
 
         static OpenAIError file_error(std::string msg) {
-            return { ErrorCode::FileError, std::move(msg), std::nullopt, std::nullopt };
+            return { .code = ErrorCode::FileError,
+                     .message = std::move(msg),
+                     .http_status = std::nullopt,
+                     .retry_after = std::nullopt };
         }
 
         static OpenAIError curl_error(std::string msg) {
-            return { ErrorCode::CURLError, std::move(msg), std::nullopt, std::nullopt };
+            return { .code = ErrorCode::CURLError,
+                     .message = std::move(msg),
+                     .http_status = std::nullopt,
+                     .retry_after = std::nullopt };
         }
     };
 

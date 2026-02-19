@@ -81,10 +81,10 @@ namespace liboai {
         LIBOAI_EXPORT auto transcribe_async(
             const std::filesystem::path& file,
             const std::string& model,
-            std::optional<std::string> prompt = std::nullopt,
-            std::optional<std::string> response_format = std::nullopt,
+            const std::optional<std::string>& prompt = std::nullopt,
+            const std::optional<std::string>& response_format = std::nullopt,
             std::optional<float> temperature = std::nullopt,
-            std::optional<std::string> language = std::nullopt
+            const std::optional<std::string>& language = std::nullopt
         ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
@@ -134,8 +134,8 @@ namespace liboai {
         LIBOAI_EXPORT auto translate_async(
             const std::filesystem::path& file,
             const std::string& model,
-            std::optional<std::string> prompt = std::nullopt,
-            std::optional<std::string> response_format = std::nullopt,
+            const std::optional<std::string>& prompt = std::nullopt,
+            const std::optional<std::string>& response_format = std::nullopt,
             std::optional<float> temperature = std::nullopt
         ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
@@ -207,7 +207,7 @@ namespace liboai {
             const std::string& model,
             const std::string& voice,
             const std::string& input,
-            std::optional<std::string> response_format = std::nullopt,
+            const std::optional<std::string>& response_format = std::nullopt,
             std::optional<float> speed = std::nullopt
         ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
 

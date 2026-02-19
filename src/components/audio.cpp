@@ -59,10 +59,10 @@ namespace liboai {
     auto Audio::transcribe_async(
         const std::filesystem::path& file,
         const std::string& model,
-        std::optional<std::string> prompt,
-        std::optional<std::string> response_format,
+        const std::optional<std::string>& prompt,
+        const std::optional<std::string>& response_format,
         std::optional<float> temperature,
-        std::optional<std::string> language
+        const std::optional<std::string>& language
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
@@ -123,8 +123,8 @@ namespace liboai {
     auto Audio::translate_async(
         const std::filesystem::path& file,
         const std::string& model,
-        std::optional<std::string> prompt,
-        std::optional<std::string> response_format,
+        const std::optional<std::string>& prompt,
+        const std::optional<std::string>& response_format,
         std::optional<float> temperature
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
@@ -152,7 +152,7 @@ namespace liboai {
         jcon.push_back("input", input);
 
         if (response_format) {
-            jcon.push_back("response_format", std::move(response_format.value()));
+            jcon.push_back("response_format", response_format.value());
         }
         if (speed) {
             jcon.push_back("speed", speed.value());
@@ -175,7 +175,7 @@ namespace liboai {
         const std::string& model,
         const std::string& voice,
         const std::string& input,
-        std::optional<std::string> response_format,
+        const std::optional<std::string>& response_format,
         std::optional<float> speed
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
