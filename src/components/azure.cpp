@@ -9,7 +9,7 @@
 
 namespace liboai {
 
-    auto Azure::create_completion(
+    auto Azure::CreateCompletion(
         const std::string& resource_name,
         const std::string& deployment_id,
         const std::string& api_version,
@@ -68,7 +68,7 @@ namespace liboai {
         );
     }
 
-    auto Azure::create_completion_async(
+    auto Azure::CreateCompletionAsync(
         const std::string& resource_name,
         const std::string& deployment_id,
         const std::string& api_version,
@@ -90,7 +90,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &Azure::create_completion,
+            &Azure::CreateCompletion,
             this,
             resource_name,
             deployment_id,
@@ -113,7 +113,7 @@ namespace liboai {
         );
     }
 
-    auto Azure::create_embedding(
+    auto Azure::CreateEmbedding(
         const std::string& resource_name,
         const std::string& deployment_id,
         const std::string& api_version,
@@ -141,7 +141,7 @@ namespace liboai {
         );
     }
 
-    auto Azure::create_embedding_async(
+    auto Azure::CreateEmbeddingAsync(
         const std::string& resource_name,
         const std::string& deployment_id,
         const std::string& api_version,
@@ -150,7 +150,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &Azure::create_embedding,
+            &Azure::CreateEmbedding,
             this,
             resource_name,
             deployment_id,
@@ -160,7 +160,7 @@ namespace liboai {
         );
     }
 
-    auto Azure::create_chat_completion(
+    auto Azure::CreateChatCompletion(
         const std::string& resource_name,
         const std::string& deployment_id,
         const std::string& api_version,
@@ -241,7 +241,7 @@ namespace liboai {
         );
     }
 
-    auto Azure::create_chat_completion_async(
+    auto Azure::CreateChatCompletionAsync(
         const std::string& resource_name,
         const std::string& deployment_id,
         const std::string& api_version,
@@ -259,7 +259,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &Azure::create_chat_completion,
+            &Azure::CreateChatCompletion,
             this,
             resource_name,
             deployment_id,
@@ -278,7 +278,7 @@ namespace liboai {
         );
     }
 
-    auto Azure::request_image_generation(
+    auto Azure::RequestImageGeneration(
         const std::string& resource_name,
         const std::string& api_version,
         const std::string& prompt,
@@ -307,7 +307,7 @@ namespace liboai {
         );
     }
 
-    auto Azure::request_image_generation_async(
+    auto Azure::RequestImageGenerationAsync(
         const std::string& resource_name,
         const std::string& api_version,
         const std::string& prompt,
@@ -316,7 +316,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &Azure::request_image_generation,
+            &Azure::RequestImageGeneration,
             this,
             resource_name,
             api_version,
@@ -326,7 +326,7 @@ namespace liboai {
         );
     }
 
-    auto Azure::get_generated_image(
+    auto Azure::GetGeneratedImage(
         const std::string& resource_name,
         const std::string& api_version,
         const std::string& operation_id
@@ -347,14 +347,14 @@ namespace liboai {
         );
     }
 
-    auto Azure::get_generated_image_async(
+    auto Azure::GetGeneratedImageAsync(
         const std::string& resource_name,
         const std::string& api_version,
         const std::string& operation_id
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &Azure::get_generated_image,
+            &Azure::GetGeneratedImage,
             this,
             resource_name,
             api_version,
@@ -362,7 +362,7 @@ namespace liboai {
         );
     }
 
-    auto Azure::delete_generated_image(
+    auto Azure::DeleteGeneratedImage(
         const std::string& resource_name,
         const std::string& api_version,
         const std::string& operation_id
@@ -383,14 +383,14 @@ namespace liboai {
         );
     }
 
-    auto Azure::delete_generated_image_async(
+    auto Azure::DeleteGeneratedImageAsync(
         const std::string& resource_name,
         const std::string& api_version,
         const std::string& operation_id
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &Azure::delete_generated_image,
+            &Azure::DeleteGeneratedImage,
             this,
             resource_name,
             api_version,
