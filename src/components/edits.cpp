@@ -9,7 +9,7 @@
 
 namespace liboai {
 
-    auto Edits::create(
+    auto Edits::Create(
         const std::string& model_id,
         std::optional<std::string> input,
         std::optional<std::string> instruction,
@@ -38,7 +38,7 @@ namespace liboai {
         );
     }
 
-    auto Edits::create_async(
+    auto Edits::CreateAsync(
         const std::string& model_id,
         std::optional<std::string> input,
         std::optional<std::string> instruction,
@@ -48,7 +48,7 @@ namespace liboai {
     ) const& noexcept -> FutureExpected<Response> {
         return std::async(
             std::launch::async,
-            &Edits::create,
+            &Edits::Create,
             this,
             model_id,
             input,

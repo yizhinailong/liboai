@@ -50,7 +50,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create(
+        LIBOAI_EXPORT auto Create(
             const std::string& model_id,
             std::optional<std::string> input = std::nullopt,
             std::optional<std::string> instruction = std::nullopt,
@@ -82,7 +82,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create_async(
+        LIBOAI_EXPORT auto CreateAsync(
             const std::string& model_id,
             std::optional<std::string> input = std::nullopt,
             std::optional<std::string> instruction = std::nullopt,
