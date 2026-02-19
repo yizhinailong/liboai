@@ -10,7 +10,7 @@
 namespace liboai {
 
     auto
-    Moderations::create(const std::string& input, std::optional<std::string> model) const& noexcept
+    Moderations::Create(const std::string& input, std::optional<std::string> model) const& noexcept
         -> Expected<Response> {
         JsonConstructor jcon;
         jcon.push_back("input", input);
@@ -29,11 +29,11 @@ namespace liboai {
         );
     }
 
-    auto Moderations::create_async(
+    auto Moderations::CreateAsync(
         const std::string& input,
         std::optional<std::string> model
     ) const& noexcept -> FutureExpected<Response> {
-        return std::async(std::launch::async, &Moderations::create, this, input, model);
+        return std::async(std::launch::async, &Moderations::Create, this, input, model);
     }
 
 } // namespace liboai

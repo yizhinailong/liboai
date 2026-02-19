@@ -39,7 +39,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create(
+        LIBOAI_EXPORT auto Create(
             const std::string& input,
             std::optional<std::string> model = std::nullopt
         ) const& noexcept -> liboai::Expected<liboai::Response>;
@@ -55,7 +55,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto create_async(
+        LIBOAI_EXPORT auto CreateAsync(
             const std::string& input,
             std::optional<std::string> model = std::nullopt
         ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
