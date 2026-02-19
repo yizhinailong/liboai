@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
-        auto fut = oai.Image->create_variation_async("C:/some/folder/otter.png");
+        auto fut = oai.Image->CreateVariationAsync("C:/some/folder/otter.png");
 
         // do other work...
 

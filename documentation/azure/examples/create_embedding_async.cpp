@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
 
     if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
-        auto fut = oai.Azure->create_embedding_async(
+        auto fut = oai.Azure->CreateEmbeddingAsync(
             "resource",
             "deploymentID",
             "api_version",

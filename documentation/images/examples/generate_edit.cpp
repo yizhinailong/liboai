@@ -5,7 +5,7 @@ using namespace liboai;
 int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-        auto response = oai.Image->create_edit(
+        auto response = oai.Image->CreateEdit(
             "C:/some/folder/otter.png",
             "A cute baby sea otter wearing a beret",
             "C:/some/folder/mask.png"

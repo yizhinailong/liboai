@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
-        auto fut = oai.Audio->transcribe_async("C:/some/folder/file.mp3", "whisper-1");
+        auto fut = oai.Audio->TranscribeAsync("C:/some/folder/file.mp3", "whisper-1");
 
         // do other work...
 

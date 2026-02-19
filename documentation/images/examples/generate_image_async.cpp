@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
-        auto fut = oai.Image->create_async("a siamese cat!");
+        auto fut = oai.Image->CreateAsync("a siamese cat!");
 
         // do other work...
 

@@ -5,7 +5,7 @@ using namespace liboai;
 int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-        auto response = oai.FineTune->list();
+        auto response = oai.FineTune->List();
         if (response) {
             std::cout << response.value()["data"] << std::endl;
         } else {

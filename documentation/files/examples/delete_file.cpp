@@ -5,7 +5,7 @@ using namespace liboai;
 int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-        auto response = oai.File->remove("file-XjGxS3KTG0uNmNOK362iJua3");
+        auto response = oai.File->Remove("file-XjGxS3KTG0uNmNOK362iJua3");
         if (response) {
             std::cout << response.value()["deleted"].get<bool>() << std::endl;
         } else {

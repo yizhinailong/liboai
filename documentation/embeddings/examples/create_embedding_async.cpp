@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
-        auto fut = oai.Embedding->create_async(
+        auto fut = oai.Embedding->CreateAsync(
             "text-embedding-ada-002",
             "The food was delicious and the waiter..."
         );

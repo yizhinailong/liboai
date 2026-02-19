@@ -12,7 +12,7 @@ int main() {
     convo.AddUserData("Hello, how are you? What time is it for you?");
 
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-        auto response = oai.ChatCompletion->create("gpt-3.5-turbo", convo);
+        auto response = oai.ChatCompletion->Create("gpt-3.5-turbo", convo);
 
         if (response) {
             // update the conversation with the response

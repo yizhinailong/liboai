@@ -12,7 +12,7 @@ int main() {
     convo.AddUserData("What is the point of taxes?");
 
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-        auto response = oai.ChatCompletion->create("gpt-3.5-turbo", convo);
+        auto response = oai.ChatCompletion->Create("gpt-3.5-turbo", convo);
 
         if (response) {
             // update our conversation with the response

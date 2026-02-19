@@ -5,7 +5,7 @@ using namespace liboai;
 int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-        auto response = oai.Embedding->create(
+        auto response = oai.Embedding->Create(
             "text-embedding-ada-002",
             "The food was delicious and the waiter..."
         );

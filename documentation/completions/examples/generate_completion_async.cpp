@@ -7,7 +7,7 @@ int main() {
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
         auto fut =
-            oai.Completion->create_async("text-davinci-003", "Say this is a test", std::nullopt, 7);
+            oai.Completion->CreateAsync("text-davinci-003", "Say this is a test", std::nullopt, 7);
 
         // do other work...
 

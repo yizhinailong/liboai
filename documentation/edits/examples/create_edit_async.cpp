@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
-        auto fut = oai.Edit->create_async(
+        auto fut = oai.Edit->CreateAsync(
             "text-davinci-edit-001",
             "What day of the wek is it?",
             "Fix the spelling mistakes"

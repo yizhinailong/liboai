@@ -5,7 +5,7 @@ using namespace liboai;
 int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-        auto response = oai.Moderation->create("I want to kill them.");
+        auto response = oai.Moderation->Create("I want to kill them.");
         if (response) {
             std::cout << response.value()["results"][0]["flagged"].get<bool>() << std::endl;
         } else {

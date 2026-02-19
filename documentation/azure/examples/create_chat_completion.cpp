@@ -10,7 +10,7 @@ int main() {
 
     if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
         auto res =
-            oai.Azure->create_chat_completion("resource", "deploymentID", "api_version", convo);
+            oai.Azure->CreateChatCompletion("resource", "deploymentID", "api_version", convo);
 
         if (res) {
             // update the conversation with the response

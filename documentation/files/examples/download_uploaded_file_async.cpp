@@ -7,7 +7,7 @@ int main() {
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
         auto fut =
-            oai.File->download_async("file-XjGxS3KTG0uNmNOK362iJua3", "C:/some/folder/file.jsonl");
+            oai.File->DownloadAsync("file-XjGxS3KTG0uNmNOK362iJua3", "C:/some/folder/file.jsonl");
 
         // do other work...
 

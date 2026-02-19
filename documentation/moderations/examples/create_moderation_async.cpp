@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
-        auto fut = oai.Moderation->create_async("I want to kill them.");
+        auto fut = oai.Moderation->CreateAsync("I want to kill them.");
 
         // do other work...
 

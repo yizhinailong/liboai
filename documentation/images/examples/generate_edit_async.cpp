@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
-        auto fut = oai.Image->create_edit_async(
+        auto fut = oai.Image->CreateEditAsync(
             "C:/some/folder/otter.png",
             "A cute baby sea otter wearing a beret",
             "C:/some/folder/mask.png"

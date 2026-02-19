@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
-        auto fut = oai.FineTune->remove_async("curie:ft-acmeco-2021-03-03-21-44-20");
+        auto fut = oai.FineTune->RemoveAsync("curie:ft-acmeco-2021-03-03-21-44-20");
 
         // do other work...
 

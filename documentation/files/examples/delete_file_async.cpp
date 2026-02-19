@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
-        auto fut = oai.File->remove_async("file-XjGxS3KTG0uNmNOK362iJua3");
+        auto fut = oai.File->RemoveAsync("file-XjGxS3KTG0uNmNOK362iJua3");
 
         // do other work...
 

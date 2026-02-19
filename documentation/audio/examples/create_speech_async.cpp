@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
 
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-        auto fut = oai.Audio->speech_async(
+        auto fut = oai.Audio->SpeechAsync(
             "tts-1",
             "alloy",
             "Today is a wonderful day to build something people love!"

@@ -5,7 +5,7 @@ using namespace liboai;
 int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-        auto response = oai.Edit->create(
+        auto response = oai.Edit->Create(
             "text-davinci-edit-001",
             "What day of the wek is it?",
             "Fix the spelling mistakes"

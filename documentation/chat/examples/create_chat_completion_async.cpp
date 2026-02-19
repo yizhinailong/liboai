@@ -12,7 +12,7 @@ int main() {
     convo.AddUserData("What is the point of taxes?");
 
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-        auto fut = oai.ChatCompletion->create_async("gpt-3.5-turbo", convo);
+        auto fut = oai.ChatCompletion->CreateAsync("gpt-3.5-turbo", convo);
 
         // do other work...
 

@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
 
     if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
-        auto fut = oai.Azure->request_image_generation_async(
+        auto fut = oai.Azure->RequestImageGenerationAsync(
             "resource",
             "api_version",
             "A snake in the grass!",

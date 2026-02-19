@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
 
     if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
-        auto res = oai.Azure->get_generated_image(
+        auto res = oai.Azure->GetGeneratedImage(
             "resource",
             "api_version",
             "f508bcf2-e651-4b4b-85a7-58ad77981ffa"

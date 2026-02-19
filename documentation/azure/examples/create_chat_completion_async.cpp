@@ -12,7 +12,7 @@ int main() {
         // call async method; returns a future
         auto fut =
             oai.Azure
-                ->create_chat_completion_async("resource", "deploymentID", "api_version", convo);
+                ->CreateChatCompletionAsync("resource", "deploymentID", "api_version", convo);
 
         // do other work...
 

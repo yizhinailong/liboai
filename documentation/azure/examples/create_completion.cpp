@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
 
     if (oai.auth.SetAzureKeyEnv("AZURE_API_KEY")) {
-        auto res = oai.Azure->create_completion(
+        auto res = oai.Azure->CreateCompletion(
             "resource",
             "deploymentID",
             "api_version",

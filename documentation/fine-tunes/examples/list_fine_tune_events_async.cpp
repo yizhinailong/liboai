@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
-        auto fut = oai.FineTune->list_events_async("ft-AF1WoRqd3aJAHsqc9NY7iL8F");
+        auto fut = oai.FineTune->ListEventsAsync("ft-AF1WoRqd3aJAHsqc9NY7iL8F");
 
         // do other work...
 

@@ -6,7 +6,7 @@ int main() {
     OpenAI oai;
     if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
         // call async method; returns a future
-        auto fut = oai.File->create_async("C:/some/folder/file.jsonl", "fine-tune");
+        auto fut = oai.File->CreateAsync("C:/some/folder/file.jsonl", "fine-tune");
 
         // do other work...
 
