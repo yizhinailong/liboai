@@ -12,7 +12,7 @@
 
 namespace liboai {
 
-    auto Models::list() const& noexcept -> Expected<Response> {
+    auto Models::List() const& noexcept -> Expected<Response> {
         return this->Request(
             Method::HTTP_GET,
             this->GetOpenAIRoot(),
@@ -25,11 +25,11 @@ namespace liboai {
         );
     }
 
-    auto Models::list_async() const& noexcept -> FutureExpected<Response> {
-        return std::async(std::launch::async, &liboai::Models::list, this);
+    auto Models::ListAsync() const& noexcept -> FutureExpected<Response> {
+        return std::async(std::launch::async, &liboai::Models::List, this);
     }
 
-    auto Models::retrieve(const std::string& model) const& noexcept -> Expected<Response> {
+    auto Models::Retrieve(const std::string& model) const& noexcept -> Expected<Response> {
         return this->Request(
             Method::HTTP_GET,
             this->GetOpenAIRoot(),
@@ -42,9 +42,9 @@ namespace liboai {
         );
     }
 
-    auto Models::retrieve_async(const std::string& model) const& noexcept
+    auto Models::RetrieveAsync(const std::string& model) const& noexcept
         -> FutureExpected<Response> {
-        return std::async(std::launch::async, &liboai::Models::retrieve, this, model);
+        return std::async(std::launch::async, &liboai::Models::Retrieve, this, model);
     }
 
 } // namespace liboai

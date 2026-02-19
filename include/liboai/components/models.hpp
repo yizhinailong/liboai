@@ -33,7 +33,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto list() const& noexcept -> liboai::Expected<liboai::Response>;
+        LIBOAI_EXPORT auto List() const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously list all available models.
@@ -42,7 +42,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto list_async() const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        LIBOAI_EXPORT auto ListAsync() const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Retrieve a specific model's information.
@@ -53,7 +53,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto retrieve(const std::string& model) const& noexcept
+        LIBOAI_EXPORT auto Retrieve(const std::string& model) const& noexcept
             -> liboai::Expected<liboai::Response>;
 
         /**
@@ -65,7 +65,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto retrieve_async(const std::string& model) const& noexcept
+        LIBOAI_EXPORT auto RetrieveAsync(const std::string& model) const& noexcept
             -> liboai::FutureExpected<liboai::Response>;
 
     private:
