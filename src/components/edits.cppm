@@ -1,22 +1,31 @@
-#pragma once
+module;
+
+#include <expected>
+#include <future>
+#include <cpr/cpr.h>
+#include <cstdint>
+#include <optional>
+#include <string>
 
 /**
- * @file edits.h
- * Edits component class for OpenAI.
- * This class contains all the methods for the Edits component
- * of the OpenAI API. This class provides access to 'Edits'
- * endpoints on the OpenAI API and should be accessed via the
- * liboai.h header file through an instantiated liboai::OpenAI
- * object after setting necessary authentication information
- * through the liboai::Authorization::Authorizer() singleton
- * object.
+ * @file edits.cppm
+ *
+ * Edits component class for OpenAI. This class contains all the methods
+ * for the Edits component of the OpenAI API. This class provides access
+ * to 'Edits' endpoints on the OpenAI API and should be accessed via the
+ * liboai.h header file through an instantiated liboai::OpenAI object after
+ * setting necessary authentication information through the
+ * liboai::Authorization::Authorizer() singleton object.
  */
 
-#include "liboai/core/authorization.hpp"
-#include "liboai/core/error.hpp"
-#include "liboai/core/response.hpp"
+export module liboai:components.edits;
 
-namespace liboai {
+import :core.authorization;
+import :core.error;
+import :core.response;
+import :core.network;
+
+export namespace liboai {
     class Edits final : private Network {
     public:
         explicit Edits(const std::string& root) : Network(root) {}
@@ -50,7 +59,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto Create(
+        auto Create(
             const std::string& model_id,
             std::optional<std::string> input = std::nullopt,
             std::optional<std::string> instruction = std::nullopt,
@@ -82,7 +91,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto CreateAsync(
+        auto CreateAsync(
             const std::string& model_id,
             std::optional<std::string> input = std::nullopt,
             std::optional<std::string> instruction = std::nullopt,
@@ -94,4 +103,56 @@ namespace liboai {
     private:
         Authorization& m_auth = Authorization::Authorizer();
     };
+
+    // Implementation
+    auto Edits::Create(
+        const std::string& model_id,
+        std::optional<std::string> input,
+        std::optional<std::string> instruction,
+        std::optional<uint16_t> n,
+        std::optional<float> temperature,
+        std::optional<float> top_p
+    ) const& noexcept -> Expected<Response> {
+        JsonConstructor jcon;
+        jcon.push_back("model", model_id);
+        jcon.push_back("input", std::move(input));
+        jcon.push_back("instruction", std::move(instruction));
+        jcon.push_back("n", std::move(n));
+        jcon.push_back("temperature", std::move(temperature));
+        jcon.push_back("top_p", std::move(top_p));
+
+        return this->Request(
+            Method::HTTP_POST,
+            this->GetOpenAIRoot(),
+            "/edits",
+            "application/json",
+            this->m_auth.GetAuthorizationHeaders(),
+            cpr::Body{ jcon.dump() },
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
+        );
+    }
+
+    auto Edits::CreateAsync(
+        const std::string& model_id,
+        std::optional<std::string> input,
+        std::optional<std::string> instruction,
+        std::optional<uint16_t> n,
+        std::optional<float> temperature,
+        std::optional<float> top_p
+    ) const& noexcept -> FutureExpected<Response> {
+        return std::async(
+            std::launch::async,
+            &Edits::Create,
+            this,
+            model_id,
+            input,
+            instruction,
+            n,
+            temperature,
+            top_p
+        );
+    }
+
 } // namespace liboai

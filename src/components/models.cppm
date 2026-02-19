@@ -1,7 +1,11 @@
-#pragma once
+module;
+
+#include <expected>
+#include <future>
+#include <string>
 
 /**
- * @file models.h
+ * @file models.cppm
  *
  * Models component class for OpenAI. This class contains all the methods
  * for the Models component of the OpenAI API. This class provides access
@@ -11,11 +15,14 @@
  * liboai::Authorization::Authorizer() singleton object.
  */
 
-#include "liboai/core/authorization.hpp"
-#include "liboai/core/error.hpp"
-#include "liboai/core/response.hpp"
+export module liboai:components.models;
 
-namespace liboai {
+import :core.authorization;
+import :core.error;
+import :core.response;
+import :core.network;
+
+export namespace liboai {
     class Models final : private Network {
     public:
         explicit Models(const std::string& root) : Network(root) {}
@@ -33,7 +40,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto List() const& noexcept -> liboai::Expected<liboai::Response>;
+        auto List() const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously list all available models.
@@ -42,7 +49,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto ListAsync() const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        auto ListAsync() const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Retrieve a specific model's information.
@@ -53,7 +60,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto Retrieve(const std::string& model) const& noexcept
+        auto Retrieve(const std::string& model) const& noexcept
             -> liboai::Expected<liboai::Response>;
 
         /**
@@ -65,10 +72,47 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto RetrieveAsync(const std::string& model) const& noexcept
+        auto RetrieveAsync(const std::string& model) const& noexcept
             -> liboai::FutureExpected<liboai::Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();
     };
+
+    // Implementation
+    auto Models::List() const& noexcept -> Expected<Response> {
+        return this->Request(
+            Method::HTTP_GET,
+            this->GetOpenAIRoot(),
+            "/models",
+            "application/json",
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
+        );
+    }
+
+    auto Models::ListAsync() const& noexcept -> FutureExpected<Response> {
+        return std::async(std::launch::async, &liboai::Models::List, this);
+    }
+
+    auto Models::Retrieve(const std::string& model) const& noexcept -> Expected<Response> {
+        return this->Request(
+            Method::HTTP_GET,
+            this->GetOpenAIRoot(),
+            "/models/" + model,
+            "application/json",
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
+        );
+    }
+
+    auto Models::RetrieveAsync(const std::string& model) const& noexcept
+        -> FutureExpected<Response> {
+        return std::async(std::launch::async, &liboai::Models::Retrieve, this, model);
+    }
+
 } // namespace liboai

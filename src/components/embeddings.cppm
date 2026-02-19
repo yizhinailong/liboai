@@ -1,23 +1,29 @@
-#pragma once
+module;
+
+#include <expected>
+#include <future>
+#include <cpr/cpr.h>
+#include <string>
 
 /**
- * @file embeddings.hpp
- * @brief Embeddings component class for OpenAI.
+ * @file embeddings.cppm
  *
- * This class contains all the methods for the Embeddings component
- * of the OpenAI API. This class provides access to 'Embeddings'
- * endpoints on the OpenAI API and should be accessed via the
- * liboai.h header file through an instantiated liboai::OpenAI
- * object after setting necessary authentication information
- * through the liboai::Authorization::Authorizer() singleton
- * object.
+ * Embeddings component class for OpenAI. This class contains all the methods
+ * for the Embeddings component of the OpenAI API. This class provides access
+ * to 'Embeddings' endpoints on the OpenAI API and should be accessed via the
+ * liboai.h header file through an instantiated liboai::OpenAI object after
+ * setting necessary authentication information through the
+ * liboai::Authorization::Authorizer() singleton object.
  */
 
-#include "liboai/core/authorization.hpp"
-#include "liboai/core/error.hpp"
-#include "liboai/core/response.hpp"
+export module liboai:components.embeddings;
 
-namespace liboai {
+import :core.authorization;
+import :core.error;
+import :core.response;
+import :core.network;
+
+export namespace liboai {
     class Embeddings final : private Network {
     public:
         explicit Embeddings(const std::string& root) : Network(root) {}
@@ -39,7 +45,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto Create(
+        auto Create(
             const std::string& model_id,
             std::optional<std::string> input = std::nullopt,
             std::optional<std::string> user = std::nullopt
@@ -56,7 +62,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto CreateAsync(
+        auto CreateAsync(
             const std::string& model_id,
             std::optional<std::string> input = std::nullopt,
             std::optional<std::string> user = std::nullopt
@@ -65,4 +71,37 @@ namespace liboai {
     private:
         Authorization& m_auth = Authorization::Authorizer();
     };
+
+    // Implementation
+    auto Embeddings::Create(
+        const std::string& model_id,
+        std::optional<std::string> input,
+        std::optional<std::string> user
+    ) const& noexcept -> Expected<Response> {
+        JsonConstructor jcon;
+        jcon.push_back("model", model_id);
+        jcon.push_back("input", std::move(input));
+        jcon.push_back("user", std::move(user));
+
+        return this->Request(
+            Method::HTTP_POST,
+            this->GetOpenAIRoot(),
+            "/embeddings",
+            "application/json",
+            this->m_auth.GetAuthorizationHeaders(),
+            cpr::Body{ jcon.dump() },
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
+        );
+    }
+
+    auto Embeddings::CreateAsync(
+        const std::string& model_id,
+        std::optional<std::string> input,
+        std::optional<std::string> user
+    ) const& noexcept -> FutureExpected<Response> {
+        return std::async(std::launch::async, &Embeddings::Create, this, model_id, input, user);
+    }
+
 } // namespace liboai

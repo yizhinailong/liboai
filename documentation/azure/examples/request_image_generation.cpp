@@ -1,4 +1,4 @@
-#include "liboai/liboai.hpp"
+import liboai;
 
 using namespace liboai;
 

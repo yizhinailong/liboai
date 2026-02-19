@@ -1,21 +1,24 @@
-#pragma once
-
 /**
- * @file error.hpp
+ * @file error.cppm
  * @brief liboai error types for std::expected migration.
  *
- * This header provides ErrorCode enum, OpenAIError struct, and
+ * This module provides ErrorCode enum, OpenAIError struct, and
  * Expected<T> / FutureExpected<T> type aliases for migrating from
  * exception-based error handling to std::expected-based handling.
  */
 
+module;
+
 #include <chrono>
+#include <cstdint>
 #include <expected>
 #include <future>
 #include <optional>
 #include <string>
 
-namespace liboai {
+export module liboai:core.error;
+
+export namespace liboai {
 
     /**
      * @brief Error codes mapping to existing exception types.

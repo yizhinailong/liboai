@@ -1,7 +1,13 @@
-#pragma once
+module;
+
+#include <expected>
+#include <future>
+#include <cpr/cpr.h>
+#include <string>
+#include <filesystem>
 
 /**
- * @file files.h
+ * @file files.cppm
  *
  * Files component class for OpenAI.
  * This class contains all the methods for the Files component
@@ -13,11 +19,14 @@
  * object.
  */
 
-#include "liboai/core/authorization.hpp"
-#include "liboai/core/error.hpp"
-#include "liboai/core/response.hpp"
+export module liboai:components.files;
 
-namespace liboai {
+import :core.authorization;
+import :core.error;
+import :core.response;
+import :core.network;
+
+export namespace liboai {
     class Files final : private Network {
     public:
         explicit Files(const std::string& root) : Network(root) {}
@@ -35,7 +44,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto List() const& noexcept -> liboai::Expected<liboai::Response>;
+        auto List() const& noexcept -> liboai::Expected<liboai::Response>;
 
         /**
          * @brief Asynchronously returns a list of files that belong to the
@@ -45,7 +54,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto ListAsync() const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        auto ListAsync() const& noexcept -> liboai::FutureExpected<liboai::Response>;
 
         /**
          * @brief Upload a file that contains document(s) to be
@@ -60,7 +69,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto
+        auto
         Create(const std::filesystem::path& file, const std::string& purpose) const& noexcept
             -> liboai::Expected<liboai::Response>;
 
@@ -77,7 +86,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto
+        auto
         CreateAsync(const std::filesystem::path& file, const std::string& purpose) const& noexcept
             -> liboai::FutureExpected<liboai::Response>;
 
@@ -90,7 +99,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto Remove(const std::string& file_id) const& noexcept
+        auto Remove(const std::string& file_id) const& noexcept
             -> liboai::Expected<liboai::Response>;
 
         /**
@@ -102,7 +111,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto RemoveAsync(const std::string& file_id) const& noexcept
+        auto RemoveAsync(const std::string& file_id) const& noexcept
             -> liboai::FutureExpected<liboai::Response>;
 
         /**
@@ -114,7 +123,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto Retrieve(const std::string& file_id) const& noexcept
+        auto Retrieve(const std::string& file_id) const& noexcept
             -> liboai::Expected<liboai::Response>;
 
         /**
@@ -126,7 +135,7 @@ namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto RetrieveAsync(const std::string& file_id) const& noexcept
+        auto RetrieveAsync(const std::string& file_id) const& noexcept
             -> liboai::FutureExpected<liboai::Response>;
 
         /**
@@ -140,7 +149,7 @@ namespace liboai {
          *         successfully downloaded or not.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto
+        auto
         Download(const std::string& file_id, const std::string& save_to) const& noexcept
             -> liboai::Expected<bool>;
 
@@ -155,11 +164,117 @@ namespace liboai {
          *         successfully downloaded or not.
          */
         [[nodiscard]]
-        LIBOAI_EXPORT auto
+        auto
         DownloadAsync(const std::string& file_id, const std::string& save_to) const& noexcept
             -> liboai::FutureExpected<bool>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();
     };
+
+    // Implementation
+    auto Files::List() const& noexcept -> Expected<Response> {
+        return this->Request(
+            Method::HTTP_GET,
+            this->GetOpenAIRoot(),
+            "/files",
+            "application/json",
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
+        );
+    }
+
+    auto Files::ListAsync() const& noexcept -> FutureExpected<Response> {
+        return std::async(std::launch::async, &Files::List, this);
+    }
+
+    auto
+    Files::Create(const std::filesystem::path& file, const std::string& purpose) const& noexcept
+        -> Expected<Response> {
+        if (!this->Validate(file)) {
+            return std::unexpected(
+                OpenAIError::file_error(
+                    "File path provided is non-existent, is not a file, or is empty."
+                )
+            );
+        }
+
+        cpr::Multipart form = {
+            { "purpose",                            purpose },
+            {    "file", cpr::File{ file.generic_string() } }
+        };
+
+        return this->Request(
+            Method::HTTP_POST,
+            this->GetOpenAIRoot(),
+            "/files",
+            "multipart/form-data",
+            this->m_auth.GetAuthorizationHeaders(),
+            std::move(form),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
+        );
+    }
+
+    auto Files::CreateAsync(
+        const std::filesystem::path& file,
+        const std::string& purpose
+    ) const& noexcept -> FutureExpected<Response> {
+        return std::async(std::launch::async, &Files::Create, this, file, purpose);
+    }
+
+    auto Files::Remove(const std::string& file_id) const& noexcept -> Expected<Response> {
+        return this->Request(
+            Method::HTTP_DELETE,
+            this->GetOpenAIRoot(),
+            "/files/" + file_id,
+            "application/json",
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
+        );
+    }
+
+    auto Files::RemoveAsync(const std::string& file_id) const& noexcept
+        -> FutureExpected<Response> {
+        return std::async(std::launch::async, &Files::Remove, this, file_id);
+    }
+
+    auto Files::Retrieve(const std::string& file_id) const& noexcept -> Expected<Response> {
+        return this->Request(
+            Method::HTTP_GET,
+            this->GetOpenAIRoot(),
+            "/files/" + file_id,
+            "application/json",
+            this->m_auth.GetAuthorizationHeaders(),
+            this->m_auth.GetProxies(),
+            this->m_auth.GetProxyAuth(),
+            this->m_auth.GetMaxTimeout()
+        );
+    }
+
+    auto Files::RetrieveAsync(const std::string& file_id) const& noexcept
+        -> FutureExpected<Response> {
+        return std::async(std::launch::async, &Files::Retrieve, this, file_id);
+    }
+
+    auto Files::Download(const std::string& file_id, const std::string& save_to) const& noexcept
+        -> Expected<bool> {
+        return Network::Download(
+            save_to,
+            ("https://api.openai.com/v1/files/" + file_id + "/content"),
+            this->m_auth.GetAuthorizationHeaders()
+        );
+    }
+
+    auto
+    Files::DownloadAsync(const std::string& file_id, const std::string& save_to) const& noexcept
+        -> FutureExpected<bool> {
+        return std::async(std::launch::async, &Files::Download, this, file_id, save_to);
+    }
+
 } // namespace liboai

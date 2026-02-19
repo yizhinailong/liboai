@@ -1,10 +1,8 @@
-#pragma once
-
 /**
- * @file network.hpp
+ * @file network.cppm
  *
  * liboai network implementation.
- * This header file provides declarations for the abstracted liboai
+ * This module provides declarations for the abstracted liboai
  * Network implementation. Each component class will inherit from
  * this class to make use of the network functionality provided by
  * it.
@@ -15,15 +13,28 @@
  * information to successfully complete the request.
  */
 
+module;
+
+// Standard library headers
 #include <array>
+#include <cstdint>
+#include <expected>
+#include <filesystem>
+#include <fstream>
 #include <future>
 #include <optional>
+#include <string>
+#include <type_traits>
 
+// Third-party library headers
 #include <cpr/cpr.h>
 
-#include "liboai/core/response.hpp"
+export module liboai:core.network;
 
-namespace liboai {
+import :core.error;
+import :core.response;
+
+export namespace liboai {
 
     class Network {
     public:
@@ -234,4 +245,5 @@ namespace liboai {
         const std::string m_openai_root;
         const std::string m_azure_root = ".openai.azure.com/openai";
     };
+
 } // namespace liboai
