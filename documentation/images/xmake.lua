@@ -1,7 +1,0 @@
-example_target("images_download_generated_image", "examples/download_generated_image.cpp")
-example_target("images_generate_edit", "examples/generate_edit.cpp")
-example_target("images_generate_edit_async", "examples/generate_edit_async.cpp")
-example_target("images_generate_image", "examples/generate_image.cpp")
-example_target("images_generate_image_async", "examples/generate_image_async.cpp")
-example_target("images_generate_variation", "examples/generate_variation.cpp")
-example_target("images_generate_variation_async", "examples/generate_variation_async.cpp")

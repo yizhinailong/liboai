@@ -1,6 +1,0 @@
-example_target("audio_create_speech", "examples/create_speech.cpp")
-example_target("audio_create_speech_async", "examples/create_speech_async.cpp")
-example_target("audio_create_transcription", "examples/create_transcription.cpp")
-example_target("audio_create_transcription_async", "examples/create_transcription_async.cpp")
-example_target("audio_create_translation", "examples/create_translation.cpp")
-example_target("audio_create_translation_async", "examples/create_translation_async.cpp")
