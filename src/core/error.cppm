@@ -26,7 +26,7 @@ export namespace liboai {
      *
      * Values correspond to exception::EType enum values.
      */
-    enum class ErrorCode : std::uint32_t {
+    enum class ErrorCode : std::uint16_t {
         Success = 0,
         FailureToParse = 1001,
         BadRequest = 1002,
@@ -39,14 +39,14 @@ export namespace liboai {
 
     inline auto GetHttpStatus(ErrorCode code) -> int {
         static const std::unordered_map<ErrorCode, int> status_map = {
-            {ErrorCode::Success, 200},
-            {ErrorCode::FailureToParse, 0},
-            {ErrorCode::BadRequest, 400},
-            {ErrorCode::APIError, 500},
-            {ErrorCode::RateLimited, 429},
-            {ErrorCode::ConnectionError, 0},
-            {ErrorCode::FileError, 0},
-            {ErrorCode::CURLError, 0},
+            {         ErrorCode::Success, 200 },
+            {  ErrorCode::FailureToParse,   0 },
+            {      ErrorCode::BadRequest, 400 },
+            {        ErrorCode::APIError, 500 },
+            {     ErrorCode::RateLimited, 429 },
+            { ErrorCode::ConnectionError,   0 },
+            {       ErrorCode::FileError,   0 },
+            {       ErrorCode::CURLError,   0 },
         };
         auto it = status_map.find(code);
         return it != status_map.end() ? it->second : 0;
@@ -54,21 +54,21 @@ export namespace liboai {
 
     inline auto GetErrorMessage(ErrorCode code) -> std::string {
         static const std::unordered_map<ErrorCode, std::string> message_map = {
-            {ErrorCode::Success, "Success"},
-            {ErrorCode::FailureToParse, "Failed to parse response"},
-            {ErrorCode::BadRequest, "Bad request"},
-            {ErrorCode::APIError, "API error"},
-            {ErrorCode::RateLimited, "Rate limited"},
-            {ErrorCode::ConnectionError, "Connection error"},
-            {ErrorCode::FileError, "File error"},
-            {ErrorCode::CURLError, "CURL error"},
+            {         ErrorCode::Success,                  "Success" },
+            {  ErrorCode::FailureToParse, "Failed to parse response" },
+            {      ErrorCode::BadRequest,              "Bad request" },
+            {        ErrorCode::APIError,                "API error" },
+            {     ErrorCode::RateLimited,             "Rate limited" },
+            { ErrorCode::ConnectionError,         "Connection error" },
+            {       ErrorCode::FileError,               "File error" },
+            {       ErrorCode::CURLError,               "CURL error" },
         };
         auto it = message_map.find(code);
         return it != message_map.end() ? it->second : "Unknown error";
     }
 
-    inline auto ToInt(ErrorCode code) -> std::uint32_t {
-        return static_cast<std::uint32_t>(code);
+    inline auto ToInt(ErrorCode code) -> std::uint16_t {
+        return static_cast<std::uint16_t>(code);
     }
 
     inline auto IsSuccess(ErrorCode code) -> bool {
@@ -92,19 +92,28 @@ export namespace liboai {
      * information for API errors.
      */
     struct OpenAIError {
-        ErrorCode code;
+        ErrorCode code = ErrorCode::Success;
         std::string message;
         int http_status = 0;
         std::optional<std::chrono::seconds> retry_after;
 
         OpenAIError() = default;
 
-        OpenAIError(ErrorCode c, std::string msg, int status = 0,
-                    std::optional<std::chrono::seconds> retry = std::nullopt)
-            : code(c), message(std::move(msg)), http_status(status), retry_after(retry) {}
+        explicit OpenAIError(ErrorCode c)
+            : code(c),
+              message(GetErrorMessage(c)),
+              http_status(GetHttpStatus(c)),
+              retry_after(std::nullopt) {}
 
-        OpenAIError(ErrorCode c)
-            : code(c), message(GetErrorMessage(c)), http_status(GetHttpStatus(c)), retry_after(std::nullopt) {}
+        OpenAIError(
+            ErrorCode c,
+            std::string msg,
+            int status = 0,
+            std::optional<std::chrono::seconds> retry = std::nullopt
+        ) : code(c),
+            message(std::move(msg)),
+            http_status(status),
+            retry_after(retry) {}
 
         [[nodiscard]]
         auto HttpStatus() const noexcept -> int {
@@ -112,36 +121,36 @@ export namespace liboai {
         }
 
         [[nodiscard]]
-        auto CodeInt() const noexcept -> std::uint32_t {
+        auto CodeInt() const noexcept -> std::uint16_t {
             return ToInt(code);
         }
 
         static OpenAIError parse_error(std::string msg) {
-            return OpenAIError(ErrorCode::FailureToParse, std::move(msg));
+            return { ErrorCode::FailureToParse, std::move(msg) };
         }
 
         static OpenAIError bad_request(std::string msg, int status = 0) {
-            return OpenAIError(ErrorCode::BadRequest, std::move(msg), status);
+            return { ErrorCode::BadRequest, std::move(msg), status };
         }
 
         static OpenAIError api_error(std::string msg, int status) {
-            return OpenAIError(ErrorCode::APIError, std::move(msg), status);
+            return { ErrorCode::APIError, std::move(msg), status };
         }
 
         static OpenAIError rate_limited(std::string msg, int status, std::chrono::seconds retry) {
-            return OpenAIError(ErrorCode::RateLimited, std::move(msg), status, retry);
+            return { ErrorCode::RateLimited, std::move(msg), status, retry };
         }
 
         static OpenAIError connection_error(std::string msg) {
-            return OpenAIError(ErrorCode::ConnectionError, std::move(msg));
+            return { ErrorCode::ConnectionError, std::move(msg) };
         }
 
         static OpenAIError file_error(std::string msg) {
-            return OpenAIError(ErrorCode::FileError, std::move(msg));
+            return { ErrorCode::FileError, std::move(msg) };
         }
 
         static OpenAIError curl_error(std::string msg) {
-            return OpenAIError(ErrorCode::CURLError, std::move(msg));
+            return { ErrorCode::CURLError, std::move(msg) };
         }
     };
 
