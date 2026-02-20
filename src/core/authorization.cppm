@@ -12,20 +12,11 @@
 
 module;
 
-// Standard library
-#include <cstdlib>      // for std::getenv
-#include <cstdint>      // for int32_t
-#include <filesystem>
-#include <fstream>      // for std::ifstream
-#include <initializer_list>
-#include <map>
-#include <string>
-
-// Third party library
 #include <cpr/cpr.h>
 
 export module liboai:core.authorization;
 
+import std;
 import :core.network;
 import :core.response;
 
@@ -39,7 +30,6 @@ export namespace liboai {
         Authorization& operator=(Authorization&&) = delete;
         ~Authorization();
 
-    public: // member methods
         /**
          * @brief Singleton paradigm access method.
          *
