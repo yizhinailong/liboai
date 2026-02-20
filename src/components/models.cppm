@@ -37,7 +37,7 @@ export namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        auto List() const& noexcept -> liboai::Expected<liboai::Response>;
+        auto List() const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously list all available models.
@@ -46,7 +46,7 @@ export namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        auto ListAsync() const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        auto ListAsync() const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief Retrieve a specific model's information.
@@ -58,7 +58,7 @@ export namespace liboai {
          */
         [[nodiscard]]
         auto Retrieve(const std::string& model) const& noexcept
-            -> liboai::Expected<liboai::Response>;
+            -> liboai::Result<liboai::Response>;
 
         /**
          * @brief Asynchronously retrieve a specific model's information.
@@ -77,7 +77,7 @@ export namespace liboai {
     };
 
     // Implementation
-    auto Models::List() const& noexcept -> Expected<Response> {
+    auto Models::List() const& noexcept -> Result<Response> {
         return this->Request(
             Method::HTTP_GET,
             this->GetOpenAIRoot(),
@@ -94,7 +94,7 @@ export namespace liboai {
         return std::async(std::launch::async, &liboai::Models::List, this);
     }
 
-    auto Models::Retrieve(const std::string& model) const& noexcept -> Expected<Response> {
+    auto Models::Retrieve(const std::string& model) const& noexcept -> Result<Response> {
         return this->Request(
             Method::HTTP_GET,
             this->GetOpenAIRoot(),

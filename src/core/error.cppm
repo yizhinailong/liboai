@@ -102,13 +102,15 @@ export namespace liboai {
      *
      * Used as the return type for non-throwing API methods.
      */
-    template <typename T> using Expected = std::expected<T, OpenAIError>;
+    template <typename T>
+    using Result = std::expected<T, OpenAIError>;
 
     /**
      * @brief Type alias for async std::expected returns.
      *
      * Used as the return type for async non-throwing API methods.
      */
-    template <typename T> using FutureExpected = std::future<Expected<T>>;
+    template <typename T>
+    using FutureExpected = std::future<Result<T>>;
 
 } // namespace liboai

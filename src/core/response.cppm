@@ -39,12 +39,14 @@ using std::unexpected;
 export namespace liboai {
 
     // SFINAE trait templates
-    template <typename T, typename = void> struct has_value_type : std::false_type {};
+    template <typename T, typename = void>
+    struct has_value_type : std::false_type {};
 
     template <typename T>
     struct has_value_type<T, std::void_t<typename T::value_type>> : std::true_type {};
 
-    template <typename T> inline constexpr const bool has_value_type_v = has_value_type<T>::value;
+    template <typename T>
+    inline constexpr const bool has_value_type_v = has_value_type<T>::value;
 
     class JsonConstructor final {
     public:
@@ -54,7 +56,8 @@ export namespace liboai {
 
         JsonConstructor(JsonConstructor&& old) noexcept : m_json(std::move(old.m_json)) {}
 
-        template <class _Ty> void push_back(std::string_view key, const _Ty& value) {
+        template <class _Ty>
+        void push_back(std::string_view key, const _Ty& value) {
             if constexpr (std::is_same_v<
                               _Ty,
                               std::optional<std::function<bool(std::string, intptr_t)>>>) {
@@ -120,7 +123,7 @@ export namespace liboai {
             std::string&& reason,
             long status_code,
             double elapsed
-        ) -> Expected<Response>;
+        ) -> Result<Response>;
 
         Response& operator=(const liboai::Response& other) noexcept;
         Response& operator=(liboai::Response&& old) noexcept;
@@ -156,11 +159,11 @@ export namespace liboai {
          * Used internally to check the response for errors.
          * Returns std::expected<void, OpenAIError>.
          */
-        auto CheckResponse() const -> Expected<void>;
+        auto CheckResponse() const -> Result<void>;
     };
 
     [[nodiscard]]
-    auto to_liboai_response(cpr::Response&& cpr_res) -> Expected<Response>;
+    auto to_liboai_response(cpr::Response&& cpr_res) -> Result<Response>;
 
     using FutureResponse = std::future<liboai::Response>;
 
@@ -213,7 +216,7 @@ export namespace liboai {
         std::string&& reason,
         long status_code,
         double elapsed
-    ) -> Expected<Response> {
+    ) -> Result<Response> {
         // Check for JSON parse errors first
         if (!content.empty() && content[0] == '{') {
             try {
@@ -269,7 +272,7 @@ export namespace liboai {
         return os;
     }
 
-    inline auto Response::CheckResponse() const -> Expected<void> {
+    inline auto Response::CheckResponse() const -> Result<void> {
         if (this->status_code == 429) {
             return std::unexpected(
                 OpenAIError::rate_limited(
@@ -305,7 +308,7 @@ export namespace liboai {
         return {};
     }
 
-    inline auto to_liboai_response(cpr::Response&& cpr_res) -> Expected<Response> {
+    inline auto to_liboai_response(cpr::Response&& cpr_res) -> Result<Response> {
         if (cpr_res.error && cpr_res.status_code == 0) {
             return std::unexpected(OpenAIError::curl_error(cpr_res.error.message));
         }

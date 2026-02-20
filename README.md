@@ -3,30 +3,25 @@
 </p>
 
 <br>
-<h1>DISCLAIMER</h1>
-<p>
-	This repository is no longer actively maintained. Please refer to maintained forks of this repository such as <a href="https://github.com/jasonduncan/liboai">this</a> one.
-</p>
-
-<hr>
 <h1>Introduction</h1>
-<p><code>liboai</code> is a simple, <b>unofficial</b> C++17 library for the OpenAI API. It allows developers to access OpenAI endpoints through a simple collection of methods and classes. The library can most effectively be thought of as a <b>spiritual port</b> of OpenAI's Python library, simply called <code>openai</code>, due to its similar structure - with few exceptions.
+<p><code>liboai</code> is a simple, <b>unofficial</b> C++23 library for the OpenAI API. It allows developers to access OpenAI endpoints through a simple collection of methods and classes. The library can most effectively be thought of as a <b>spiritual port</b> of OpenAI's Python library, simply called <code>openai</code>, due to its similar structure - with few exceptions.
 
 <h3>Features</h3>
 
-- [x] [ChatGPT](https://github.com/D7EAD/liboai/tree/main/documentation/chat)
-- [X] [Audio](https://github.com/D7EAD/liboai/tree/main/documentation/audio)
-- [X] [Azure](https://github.com/D7EAD/liboai/tree/main/documentation/azure)
+- [x] [ChatGPT](https://github.com/yizhinailong/liboai/tree/main/examples/chat)
+- [X] [Audio](https://github.com/yizhinailong/liboai/tree/main/examples/audio)
+- [X] [Azure](https://github.com/yizhinailong/liboai/tree/main/examples/azure)
 - [X] [Functions](https://platform.openai.com/docs/api-reference/chat/create)
-- [x] [Image DALL·E](https://github.com/D7EAD/liboai/tree/main/documentation/images)
-- [x] [Models](https://github.com/D7EAD/liboai/tree/main/documentation/models)
-- [x] [Completions](https://github.com/D7EAD/liboai/tree/main/documentation/completions) 
-- [x] [Edit](https://github.com/D7EAD/liboai/tree/main/documentation/edits) 
-- [x] [Embeddings](https://github.com/D7EAD/liboai/tree/main/documentation/embeddings) 
-- [x] [Files](https://github.com/D7EAD/liboai/tree/main/documentation/files) 
-- [x] [Fine-tunes](https://github.com/D7EAD/liboai/tree/main/documentation/fine-tunes) 
-- [x] [Moderation](https://github.com/D7EAD/liboai/tree/main/documentation/moderations)
+- [x] [Image DALL·E](https://github.com/yizhinailong/liboai/tree/main/examples/images)
+- [x] [Models](https://github.com/yizhinailong/liboai/tree/main/examples/models)
+- [x] [Completions](https://github.com/yizhinailong/liboai/tree/main/examples/completions) 
+- [x] [Edit](https://github.com/yizhinailong/liboai/tree/main/examples/edits) 
+- [x] [Embeddings](https://github.com/yizhinailong/liboai/tree/main/examples/embeddings) 
+- [x] [Files](https://github.com/yizhinailong/liboai/tree/main/examples/files) 
+- [x] [Fine-tunes](https://github.com/yizhinailong/liboai/tree/main/examples/fine-tunes) 
+- [x] [Moderation](https://github.com/yizhinailong/liboai/tree/main/examples/moderations)
 - [X] Asynchronous Support
+- [X] C++23 Modules
 
 <h1>Usage</h1>
 See below for just how similar in style <code>liboai</code> and its Python alternative are when generating an image using DALL-E.</p>
@@ -35,16 +30,17 @@ See below for just how similar in style <code>liboai</code> and its Python alter
 <br>
 
 ```py
-import openai
+from openai import OpenAI
 import os
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
-response = openai.Image.create(
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+response = client.images.generate(
+    model="dall-e-3",
     prompt="A snake in the grass!",
     n=1,
-    size="256x256"
+    size="1024x1024"
 )
-print(response["data"][0]["url"])
+print(response.data[0].url)
 ```
 </details>
 
@@ -53,22 +49,21 @@ print(response["data"][0]["url"])
 <br>
 
 ```cpp
-#include "liboai/liboai.hpp"
+import liboai;
+import std;
 
-using namespace liboai;
-
-int main() {
-  OpenAI oai;
+auto main() -> int {
+  liboai::OpenAI oai;
   oai.auth.SetKeyEnv("OPENAI_API_KEY");
 	
-  auto res = oai.Image->create(
+  auto res = oai.Image->Create(
     "A snake in the grass!",
     1,
-    "256x256"
+    "1024x1024"
   );
 
   if (res) {
-    std::cout << res.value()["data"][0]["url"] << std::endl;
+    std::cout << res.value()["data"][0]["url"].get<std::string>() << std::endl;
   } else {
     std::cout << res.error().message << std::endl;
   }
@@ -90,20 +85,41 @@ int main() {
 </tr>
 </table>
 
-<p><i>Keep in mind the above C++ example is a minimal example. Please see <a href="/documentation">the documentation</a> for more detailed code snippets showing proper error handling with std::expected.</i></p>
+<p><i>Keep in mind the above C++ example is a minimal example. Please see <a href="/examples">the examples</a> for more detailed code snippets showing proper error handling with std::expected.</i></p>
+
+<h1>Requirements</h1>
+
+- **C++23** compatible compiler (Clang 16+, GCC 14+, MSVC 19.35+)
+- **xmake** build system
 
 <h1>Dependencies</h1>
 <p>For the library to work the way it does, it relies on two major dependencies. These dependencies can be found listed below.<p>
 
-- <a href="https://github.com/nlohmann/json">nlohmann-json</a>
-- <a href="https://curl.se/">cURL</a>
+- <a href="https://github.com/nlohmann/json">nlohmann-json</a> - JSON parsing
+- <a href="https://github.com/libcpr/cpr">cpr</a> - HTTP requests (C++ Requests)
 
-*If building the library using the provided solution, it is recommended to install these dependencies using <b>vcpkg</b>.*
+*Dependencies are managed automatically by xmake.*
+
+<h1>Building</h1>
+
+```bash
+# Build library only
+xmake
+
+# Build with examples (default)
+xmake -DBUILD_EXAMPLES=ON
+
+# Build in release mode
+xmake -r
+```
 
 <h1>Documentation</h1>
-<p>For detailed documentation and additional code examples, see the library's documentation <a href="/documentation">here</a>.
+<p>For detailed documentation and additional code examples, see the library's examples <a href="/examples">here</a>.
 
 <h1>Contributing</h1>
 <p>Artificial intelligence is an exciting and quickly-changing field. 
 
-If you'd like to partake in further placing the power of AI in the hands of everyday people, please consider contributing by submitting new code and features via a **Pull Request**. If you have any issues using the library, or just want to suggest new features, feel free to contact me directly using the info on my <a href="https://github.com/D7EAD">profile</a> or open an **Issue**.
+If you'd like to partake in further placing the power of AI in the hands of everyday people, please consider contributing by submitting new code and features via a **Pull Request**. If you have any issues using the library, or just want to suggest new features, feel free to open an **Issue**.
+
+<h1>License</h1>
+<p>This project is licensed under the MIT License - see the LICENSE file for details.

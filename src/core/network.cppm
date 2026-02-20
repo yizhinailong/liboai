@@ -68,7 +68,7 @@ export namespace liboai {
             const std::string& to,
             const std::string& from,
             const cpr::Header& authorization
-        ) noexcept -> Expected<bool> {
+        ) noexcept -> Result<bool> {
             std::ofstream file(to, std::ios::binary);
             auto cpr_res = cpr::Download(file, cpr::Url{ from }, authorization);
             auto res = to_liboai_response(std::move(cpr_res));
@@ -85,7 +85,7 @@ export namespace liboai {
             const std::string& from,
             const cpr::Header& authorization,
             cpr::Session& session
-        ) noexcept -> Expected<bool> {
+        ) noexcept -> Result<bool> {
             std::ofstream file(to, std::ios::binary);
             session.SetUrl(cpr::Url{ from });
             session.SetHeader(authorization);
@@ -118,7 +118,7 @@ export namespace liboai {
             const std::string& from,
             cpr::Header authorization
         ) noexcept -> FutureExpected<bool> {
-            return std::async(std::launch::async, [&]() -> Expected<bool> {
+            return std::async(std::launch::async, [&]() -> Result<bool> {
                 std::ofstream file(to, std::ios::binary);
                 auto cpr_res = cpr::Download(file, cpr::Url{ from }, std::move(authorization));
                 auto res = to_liboai_response(std::move(cpr_res));
@@ -137,7 +137,7 @@ export namespace liboai {
             cpr::Header authorization,
             cpr::Session& session
         ) noexcept -> FutureExpected<bool> {
-            return std::async(std::launch::async, [&]() -> Expected<bool> {
+            return std::async(std::launch::async, [&]() -> Result<bool> {
                 std::ofstream file(to, std::ios::binary);
                 session.SetUrl(cpr::Url{ from });
                 session.SetHeader(authorization);
@@ -175,7 +175,7 @@ export namespace liboai {
             const std::string& content_type,
             std::optional<cpr::Header> headers = std::nullopt,
             Params&&... parameters
-        ) const -> Expected<Response> {
+        ) const -> Result<Response> {
             cpr::Header _headers = {
                 { "Content-Type", content_type }
             };
@@ -236,9 +236,15 @@ export namespace liboai {
             return false;
         }
 
-        [[nodiscard]] const std::string& GetOpenAIRoot() const noexcept { return m_openai_root; }
+        [[nodiscard]]
+        const std::string& GetOpenAIRoot() const noexcept {
+            return m_openai_root;
+        }
 
-        [[nodiscard]] const std::string& GetAzureRoot() const noexcept { return m_azure_root; }
+        [[nodiscard]]
+        const std::string& GetAzureRoot() const noexcept {
+            return m_azure_root;
+        }
 
     private:
         const std::string m_openai_root;
