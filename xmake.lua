@@ -26,5 +26,5 @@ end)
 
 
 if get_config("build_examples") then
-    includes("documentation")
+    includes("examples")
 end
