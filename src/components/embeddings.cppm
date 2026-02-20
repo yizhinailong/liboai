@@ -47,7 +47,7 @@ export namespace liboai {
             const std::string& model_id,
             std::optional<std::string> input = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously creates an embedding vector representing the input text.
@@ -64,7 +64,7 @@ export namespace liboai {
             const std::string& model_id,
             std::optional<std::string> input = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();
@@ -75,7 +75,7 @@ export namespace liboai {
         const std::string& model_id,
         std::optional<std::string> input,
         std::optional<std::string> user
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         JsonConstructor jcon;
         jcon.push_back("model", model_id);
         jcon.push_back("input", std::move(input));

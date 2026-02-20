@@ -78,7 +78,7 @@ export namespace liboai {
             std::optional<std::string> classification_positive_class = std::nullopt,
             std::optional<std::vector<float>> classification_betas = std::nullopt,
             std::optional<std::string> suffix = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously creates a job that fine-tunes a specified model
@@ -124,7 +124,7 @@ export namespace liboai {
             std::optional<std::string> classification_positive_class = std::nullopt,
             std::optional<std::vector<float>> classification_betas = std::nullopt,
             std::optional<std::string> suffix = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief List your organization's fine-tuning jobs.
@@ -133,7 +133,7 @@ export namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        auto List() const& noexcept -> liboai::Expected<liboai::Response>;
+        auto List() const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously list your organization's fine-tuning jobs.
@@ -142,7 +142,7 @@ export namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        auto ListAsync() const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        auto ListAsync() const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief Returns information about a specific file.
@@ -154,7 +154,7 @@ export namespace liboai {
          */
         [[nodiscard]]
         auto Retrieve(const std::string& fine_tune_id) const& noexcept
-            -> liboai::Expected<liboai::Response>;
+            -> Result<Response>;
 
         /**
          * @brief Asynchronously returns information about a specific file.
@@ -166,7 +166,7 @@ export namespace liboai {
          */
         [[nodiscard]]
         auto RetrieveAsync(const std::string& fine_tune_id) const& noexcept
-            -> liboai::FutureExpected<liboai::Response>;
+            -> FutureExpected<Response>;
 
         /**
          * @brief Immediately cancel a fine-tune job.
@@ -178,7 +178,7 @@ export namespace liboai {
          */
         [[nodiscard]]
         auto Cancel(const std::string& fine_tune_id) const& noexcept
-            -> liboai::Expected<liboai::Response>;
+            -> Result<Response>;
 
         /**
          * @brief Immediately cancel a fine-tune job asynchronously.
@@ -190,7 +190,7 @@ export namespace liboai {
          */
         [[nodiscard]]
         auto CancelAsync(const std::string& fine_tune_id) const& noexcept
-            -> liboai::FutureExpected<liboai::Response>;
+            -> FutureExpected<Response>;
 
         /**
          * @brief Get fine-grained status updates for a fine-tune job.
@@ -208,7 +208,7 @@ export namespace liboai {
         auto ListEvents(
             const std::string& fine_tune_id,
             std::optional<StreamCallback> stream = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously get fine-grained status updates for a
@@ -227,7 +227,7 @@ export namespace liboai {
         auto ListEventsAsync(
             const std::string& fine_tune_id,
             std::optional<StreamCallback> stream = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief Delete a fine-tuned model. You must have the Owner role in
@@ -239,7 +239,7 @@ export namespace liboai {
          *         JSON format.
          */
         [[nodiscard]]
-        auto Remove(const std::string& model) const& noexcept -> liboai::Expected<liboai::Response>;
+        auto Remove(const std::string& model) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously deletes a fine-tuned model. You must have the
@@ -252,7 +252,7 @@ export namespace liboai {
          */
         [[nodiscard]]
         auto RemoveAsync(const std::string& model) const& noexcept
-            -> liboai::FutureExpected<liboai::Response>;
+            -> FutureExpected<Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();
@@ -272,7 +272,7 @@ export namespace liboai {
         std::optional<std::string> classification_positive_class,
         std::optional<std::vector<float>> classification_betas,
         std::optional<std::string> suffix
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         JsonConstructor jcon;
         jcon.push_back("training_file", training_file);
         jcon.push_back("validation_file", std::move(validation_file));
@@ -333,7 +333,7 @@ export namespace liboai {
         );
     }
 
-    auto FineTunes::List() const& noexcept -> Expected<Response> {
+    auto FineTunes::List() const& noexcept -> Result<Response> {
         return this->Request(
             Method::HTTP_GET,
             this->GetOpenAIRoot(),
@@ -351,7 +351,7 @@ export namespace liboai {
     }
 
     auto FineTunes::Retrieve(const std::string& fine_tune_id) const& noexcept
-        -> Expected<Response> {
+        -> Result<Response> {
         return this->Request(
             Method::HTTP_GET,
             this->GetOpenAIRoot(),
@@ -369,7 +369,7 @@ export namespace liboai {
         return std::async(std::launch::async, &liboai::FineTunes::Retrieve, this, fine_tune_id);
     }
 
-    auto FineTunes::Cancel(const std::string& fine_tune_id) const& noexcept -> Expected<Response> {
+    auto FineTunes::Cancel(const std::string& fine_tune_id) const& noexcept -> Result<Response> {
         return this->Request(
             Method::HTTP_POST,
             this->GetOpenAIRoot(),
@@ -390,7 +390,7 @@ export namespace liboai {
     auto FineTunes::ListEvents(
         const std::string& fine_tune_id,
         std::optional<StreamCallback> stream
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         cpr::Parameters params;
         stream ? params.Add({ "stream", "true" }) : void();
 
@@ -425,7 +425,7 @@ export namespace liboai {
         );
     }
 
-    auto FineTunes::Remove(const std::string& model) const& noexcept -> Expected<Response> {
+    auto FineTunes::Remove(const std::string& model) const& noexcept -> Result<Response> {
         return this->Request(
             Method::HTTP_DELETE,
             this->GetOpenAIRoot(),

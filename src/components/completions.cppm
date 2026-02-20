@@ -102,7 +102,7 @@ export namespace liboai {
             std::optional<uint16_t> best_of = std::nullopt,
             std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Given a prompt, the model will return one or more
@@ -176,7 +176,7 @@ export namespace liboai {
             std::optional<uint16_t> best_of = std::nullopt,
             std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();
@@ -200,7 +200,7 @@ export namespace liboai {
         std::optional<uint16_t> best_of,
         std::optional<std::unordered_map<std::string, int8_t>> logit_bias,
         std::optional<std::string> user
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         JsonConstructor jcon;
         jcon.push_back("model", model_id);
         jcon.push_back("prompt", std::move(prompt));

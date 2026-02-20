@@ -62,7 +62,7 @@ export namespace liboai {
             std::optional<uint16_t> n = std::nullopt,
             std::optional<float> temperature = std::nullopt,
             std::optional<float> top_p = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously creates a new edit for the
@@ -94,7 +94,7 @@ export namespace liboai {
             std::optional<uint16_t> n = std::nullopt,
             std::optional<float> temperature = std::nullopt,
             std::optional<float> top_p = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();
@@ -108,7 +108,7 @@ export namespace liboai {
         std::optional<uint16_t> n,
         std::optional<float> temperature,
         std::optional<float> top_p
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         JsonConstructor jcon;
         jcon.push_back("model", model_id);
         jcon.push_back("input", std::move(input));

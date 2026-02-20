@@ -59,7 +59,7 @@ export namespace liboai {
             std::optional<std::string> response_format = std::nullopt,
             std::optional<float> temperature = std::nullopt,
             std::optional<std::string> language = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously transcribes audio into the input language.
@@ -88,7 +88,7 @@ export namespace liboai {
             const std::optional<std::string>& response_format = std::nullopt,
             std::optional<float> temperature = std::nullopt,
             const std::optional<std::string>& language = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief Translates audio into English.
@@ -114,7 +114,7 @@ export namespace liboai {
             std::optional<std::string> prompt = std::nullopt,
             std::optional<std::string> response_format = std::nullopt,
             std::optional<float> temperature = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously translates audio into English.
@@ -140,7 +140,7 @@ export namespace liboai {
             const std::optional<std::string>& prompt = std::nullopt,
             const std::optional<std::string>& response_format = std::nullopt,
             std::optional<float> temperature = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief Turn text into lifelike spoken audio.
@@ -176,7 +176,7 @@ export namespace liboai {
             const std::string& input,
             std::optional<std::string> response_format = std::nullopt,
             std::optional<float> speed = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously turn text into lifelike spoken audio.
@@ -212,7 +212,7 @@ export namespace liboai {
             const std::string& input,
             const std::optional<std::string>& response_format = std::nullopt,
             std::optional<float> speed = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();
@@ -226,7 +226,7 @@ export namespace liboai {
         std::optional<std::string> response_format,
         std::optional<float> temperature,
         std::optional<std::string> language
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         if (!this->Validate(file)) {
             return std::unexpected(
                 OpenAIError::file_error(
@@ -293,7 +293,7 @@ export namespace liboai {
         std::optional<std::string> prompt,
         std::optional<std::string> response_format,
         std::optional<float> temperature
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         if (!this->Validate(file)) {
             return std::unexpected(
                 OpenAIError::file_error(
@@ -355,7 +355,7 @@ export namespace liboai {
         const std::string& input,
         std::optional<std::string> response_format,
         std::optional<float> speed
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         JsonConstructor jcon;
         jcon.push_back("model", model);
         jcon.push_back("voice", voice);

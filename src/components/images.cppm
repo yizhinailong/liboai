@@ -50,7 +50,7 @@ export namespace liboai {
             std::optional<std::string> size = std::nullopt,
             std::optional<std::string> response_format = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Images component method to asynchronously create an image from provided text.
@@ -70,7 +70,7 @@ export namespace liboai {
             std::optional<std::string> size = std::nullopt,
             std::optional<std::string> response_format = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief Images component method to produce an edited image from a provided
@@ -95,7 +95,7 @@ export namespace liboai {
             std::optional<std::string> size = std::nullopt,
             std::optional<std::string> response_format = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Images component method to asynchronously produce an edited image
@@ -120,7 +120,7 @@ export namespace liboai {
             std::optional<std::string> size = std::nullopt,
             std::optional<std::string> response_format = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief Images component method to produce a variation of a supplied image.
@@ -140,7 +140,7 @@ export namespace liboai {
             std::optional<std::string> size = std::nullopt,
             std::optional<std::string> response_format = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Images component method to asynchronously produce a variation
@@ -161,7 +161,7 @@ export namespace liboai {
             std::optional<std::string> size = std::nullopt,
             std::optional<std::string> response_format = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();
@@ -174,7 +174,7 @@ export namespace liboai {
         std::optional<std::string> size,
         std::optional<std::string> response_format,
         std::optional<std::string> user
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         JsonConstructor jcon;
         jcon.push_back("prompt", prompt);
         jcon.push_back("n", std::move(n));
@@ -222,7 +222,7 @@ export namespace liboai {
         std::optional<std::string> size,
         std::optional<std::string> response_format,
         std::optional<std::string> user
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         if (!this->Validate(image)) {
             return std::unexpected(
                 OpenAIError::file_error(
@@ -301,7 +301,7 @@ export namespace liboai {
         std::optional<std::string> size,
         std::optional<std::string> response_format,
         std::optional<std::string> user
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         if (!this->Validate(image)) {
             return std::unexpected(
                 OpenAIError::file_error(

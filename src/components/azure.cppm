@@ -71,7 +71,7 @@ export namespace liboai {
             std::optional<uint16_t> best_of = std::nullopt,
             std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Given a prompt, the model will asynchronously return
@@ -107,7 +107,7 @@ export namespace liboai {
             std::optional<uint16_t> best_of = std::nullopt,
             std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief Creates an embedding vector representing the input text.
@@ -130,7 +130,7 @@ export namespace liboai {
             const std::string& api_version,
             const std::string& input,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously creates an embedding vector representing the input text.
@@ -153,7 +153,7 @@ export namespace liboai {
             const std::string& api_version,
             const std::string& input,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief Creates a completion for the chat message.
@@ -183,7 +183,7 @@ export namespace liboai {
             std::optional<float> frequency_penalty = std::nullopt,
             std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously creates a completion for the chat message.
@@ -213,7 +213,7 @@ export namespace liboai {
             std::optional<float> frequency_penalty = std::nullopt,
             std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
             std::optional<std::string> user = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief Generate a batch of images from a text caption.
@@ -235,7 +235,7 @@ export namespace liboai {
             const std::string& prompt,
             std::optional<uint8_t> n = std::nullopt,
             std::optional<std::string> size = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously generate a batch of images from a text caption.
@@ -257,7 +257,7 @@ export namespace liboai {
             const std::string& prompt,
             std::optional<uint8_t> n = std::nullopt,
             std::optional<std::string> size = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief Retrieve the results (URL) of a previously called image generation operation.
@@ -274,7 +274,7 @@ export namespace liboai {
             const std::string& resource_name,
             const std::string& api_version,
             const std::string& operation_id
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously retrieve the results (URL) of a previously called image generation
@@ -292,7 +292,7 @@ export namespace liboai {
             const std::string& resource_name,
             const std::string& api_version,
             const std::string& operation_id
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
         /**
          * @brief Deletes the corresponding image from the Azure server.
@@ -309,7 +309,7 @@ export namespace liboai {
             const std::string& resource_name,
             const std::string& api_version,
             const std::string& operation_id
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously deletes the corresponding image from the Azure server.
@@ -326,7 +326,7 @@ export namespace liboai {
             const std::string& resource_name,
             const std::string& api_version,
             const std::string& operation_id
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();
@@ -353,7 +353,7 @@ export namespace liboai {
         std::optional<uint16_t> best_of,
         std::optional<std::unordered_map<std::string, int8_t>> logit_bias,
         std::optional<std::string> user
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         JsonConstructor jcon;
         jcon.push_back("prompt", std::move(prompt));
         jcon.push_back("suffix", std::move(suffix));
@@ -444,7 +444,7 @@ export namespace liboai {
         const std::string& api_version,
         const std::string& input,
         std::optional<std::string> user
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         JsonConstructor jcon;
         jcon.push_back("input", input);
         jcon.push_back("user", std::move(user));
@@ -500,7 +500,7 @@ export namespace liboai {
         std::optional<float> frequency_penalty,
         std::optional<std::unordered_map<std::string, int8_t>> logit_bias,
         std::optional<std::string> user
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         JsonConstructor jcon;
         jcon.push_back("temperature", std::move(temperature));
         jcon.push_back("n", std::move(n));
@@ -609,7 +609,7 @@ export namespace liboai {
         const std::string& prompt,
         std::optional<uint8_t> n,
         std::optional<std::string> size
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         JsonConstructor jcon;
         jcon.push_back("prompt", prompt);
         jcon.push_back("n", std::move(n));
@@ -655,7 +655,7 @@ export namespace liboai {
         const std::string& resource_name,
         const std::string& api_version,
         const std::string& operation_id
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         cpr::Parameters params;
         params.Add({ "api-version", api_version });
 
@@ -691,7 +691,7 @@ export namespace liboai {
         const std::string& resource_name,
         const std::string& api_version,
         const std::string& operation_id
-    ) const& noexcept -> Expected<Response> {
+    ) const& noexcept -> Result<Response> {
         cpr::Parameters params;
         params.Add({ "api-version", api_version });
 

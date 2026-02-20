@@ -70,7 +70,7 @@ export namespace liboai {
          */
         [[nodiscard]]
         auto RetrieveAsync(const std::string& model) const& noexcept
-            -> liboai::FutureExpected<liboai::Response>;
+            -> FutureExpected<Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();

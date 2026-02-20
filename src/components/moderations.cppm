@@ -46,7 +46,7 @@ export namespace liboai {
         auto Create(
             const std::string& input,
             std::optional<std::string> model = std::nullopt
-        ) const& noexcept -> liboai::Expected<liboai::Response>;
+        ) const& noexcept -> Result<Response>;
 
         /**
          * @brief Asynchronously creates a new moderation and classifies
@@ -62,7 +62,7 @@ export namespace liboai {
         auto CreateAsync(
             const std::string& input,
             std::optional<std::string> model = std::nullopt
-        ) const& noexcept -> liboai::FutureExpected<liboai::Response>;
+        ) const& noexcept -> FutureExpected<Response>;
 
     private:
         Authorization& m_auth = Authorization::Authorizer();
@@ -71,7 +71,7 @@ export namespace liboai {
     // Implementation
     auto
     Moderations::Create(const std::string& input, std::optional<std::string> model) const& noexcept
-        -> Expected<Response> {
+        -> Result<Response> {
         JsonConstructor jcon;
         jcon.push_back("input", input);
         jcon.push_back("model", std::move(model));
