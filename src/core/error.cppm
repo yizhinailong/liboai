@@ -25,7 +25,7 @@ export namespace liboai {
      *
      * Values correspond to exception::EType enum values.
      */
-    enum class ErrorCode : uint8_t {
+    enum class ErrorCode : std::uint8_t {
         FailureToParse = 0,  // E_FAILURETOPARSE
         BadRequest = 1,      // E_BADREQUEST
         APIError = 2,        // E_APIERROR
