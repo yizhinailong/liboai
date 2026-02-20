@@ -1,11 +1,5 @@
 module;
 
-#include <expected>
-#include <filesystem>
-#include <future>
-#include <optional>
-#include <string>
-
 #include <cpr/cpr.h>
 
 /**
@@ -21,6 +15,7 @@ module;
 
 export module liboai:components.audio;
 
+import std;
 import :core.authorization;
 import :core.error;
 import :core.response;
@@ -34,7 +29,6 @@ export namespace liboai {
         ~Audio() = default;
         Audio(const Audio&) = delete;
         Audio(Audio&&) = delete;
-
         Audio& operator=(const Audio&) = delete;
         Audio& operator=(Audio&&) = delete;
 
