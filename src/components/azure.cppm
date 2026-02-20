@@ -1,15 +1,8 @@
 module;
 
-#include <expected>
-#include <future>
 #include <cpr/cpr.h>
+
 #include <nlohmann/json.hpp>
-#include <string>
-#include <optional>
-#include <functional>
-#include <vector>
-#include <cstdint>
-#include <unordered_map>
 
 /**
  * @file azure.cppm
@@ -23,6 +16,7 @@ module;
 
 export module liboai:components.azure;
 
+import std;
 import :core.authorization;
 import :core.error;
 import :core.response;
