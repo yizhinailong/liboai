@@ -1,9 +1,6 @@
 module;
 
-#include <expected>
-#include <future>
 #include <cpr/cpr.h>
-#include <string>
 
 /**
  * @file embeddings.cppm
@@ -18,6 +15,7 @@ module;
 
 export module liboai:components.embeddings;
 
+import std;
 import :core.authorization;
 import :core.error;
 import :core.response;

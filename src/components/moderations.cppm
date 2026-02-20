@@ -1,10 +1,6 @@
 module;
 
-#include <expected>
-#include <future>
 #include <cpr/cpr.h>
-#include <optional>
-#include <string>
 
 /**
  * @file moderations.cppm
@@ -19,6 +15,7 @@ module;
 
 export module liboai:components.moderations;
 
+import std;
 import :core.authorization;
 import :core.error;
 import :core.response;

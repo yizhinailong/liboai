@@ -1,17 +1,6 @@
 module;
 
-#include <expected>
-#include <future>
 #include <cpr/cpr.h>
-#include <cstdint>
-#include <functional>
-#include <limits>
-#include <optional>
-#include <ostream>
-#include <string>
-#include <type_traits>
-#include <unordered_map>
-#include <vector>
 
 #include <nlohmann/json.hpp>
 
@@ -28,6 +17,7 @@ module;
 
 export module liboai:components.chat;
 
+import std;
 import :core.authorization;
 import :core.error;
 import :core.response;
@@ -102,8 +92,7 @@ export namespace liboai {
          * @return True/False denoting whether the function was added successfully.
          */
         [[nodiscard]]
-        auto AddFunction(std::string_view function_name) & noexcept
-            -> liboai::Expected<bool>;
+        auto AddFunction(std::string_view function_name) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Same as AddFunction, but allows for adding multiple functions at once.
@@ -112,8 +101,7 @@ export namespace liboai {
          * @return True/False denoting whether the functions were added successfully.
          */
         [[nodiscard]]
-        auto
-        AddFunctions(std::initializer_list<std::string_view> function_names) & noexcept
+        auto AddFunctions(std::initializer_list<std::string_view> function_names) & noexcept
             -> liboai::Expected<bool>;
 
         /**
@@ -152,8 +140,7 @@ export namespace liboai {
          * @return True/False denoting whether the function was popped successfully.
          */
         [[nodiscard]]
-        auto PopFunction(std::string_view function_name) & noexcept
-            -> liboai::Expected<bool>;
+        auto PopFunction(std::string_view function_name) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Same as PopFunction, but allows for popping multiple functions at once.
@@ -162,8 +149,7 @@ export namespace liboai {
          * @return True/False denoting whether the functions were popped successfully.
          */
         [[nodiscard]]
-        auto
-        PopFunctions(std::initializer_list<std::string_view> function_names) & noexcept
+        auto PopFunctions(std::initializer_list<std::string_view> function_names) & noexcept
             -> liboai::Expected<bool>;
 
         /**
@@ -200,8 +186,7 @@ export namespace liboai {
          * @return True/False denoting whether the description was set successfully.
          */
         [[nodiscard]]
-        auto
-        SetDescription(std::string_view target, std::string_view description) & noexcept
+        auto SetDescription(std::string_view target, std::string_view description) & noexcept
             -> liboai::Expected<bool>;
 
         /**
@@ -211,8 +196,7 @@ export namespace liboai {
          * @return True/False denoting whether the description was popped successfully.
          */
         [[nodiscard]]
-        auto PopDescription(std::string_view target) & noexcept
-            -> liboai::Expected<bool>;
+        auto PopDescription(std::string_view target) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Sets which set function parameters are required.
@@ -235,8 +219,7 @@ export namespace liboai {
          * @return True/False denoting whether the required parameters were set successfully.
          */
         [[nodiscard]]
-        auto
-        SetRequired(std::string_view target, std::vector<std::string> params) & noexcept
+        auto SetRequired(std::string_view target, std::vector<std::string> params) & noexcept
             -> liboai::Expected<bool>;
 
         /**
@@ -263,8 +246,7 @@ export namespace liboai {
          * @return True/False denoting whether the required parameters were popped successfully.
          */
         [[nodiscard]]
-        auto PopRequired(std::string_view target) & noexcept
-            -> liboai::Expected<bool>;
+        auto PopRequired(std::string_view target) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Appends a parameter to a previously set series of required function parameters.
@@ -277,8 +259,7 @@ export namespace liboai {
          * @return True/False denoting whether the required parameter was appended successfully.
          */
         [[nodiscard]]
-        auto
-        AppendRequired(std::string_view target, std::string_view param) & noexcept
+        auto AppendRequired(std::string_view target, std::string_view param) & noexcept
             -> liboai::Expected<bool>;
 
         /**
@@ -310,8 +291,7 @@ export namespace liboai {
          * @return True/False denoting whether the required parameter was appended successfully.
          */
         [[nodiscard]]
-        auto
-        AppendRequired(std::string_view target, std::vector<std::string> params) & noexcept
+        auto AppendRequired(std::string_view target, std::vector<std::string> params) & noexcept
             -> liboai::Expected<bool>;
 
         /**
@@ -343,8 +323,7 @@ export namespace liboai {
          * @return True/False denoting whether the parameter was added successfully.
          */
         [[nodiscard]]
-        auto
-        SetParameter(std::string_view target, FunctionParameter parameter) & noexcept
+        auto SetParameter(std::string_view target, FunctionParameter parameter) & noexcept
             -> liboai::Expected<bool>;
 
         /**
@@ -398,8 +377,7 @@ export namespace liboai {
          * @return True/False denoting whether the parameters were popped successfully.
          */
         [[nodiscard]]
-        auto PopParameters(std::string_view target) & noexcept
-            -> liboai::Expected<bool>;
+        auto PopParameters(std::string_view target) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Pops one or more of a function's set parameters.
@@ -422,8 +400,7 @@ export namespace liboai {
          * @return True/False denoting whether the parameters were popped successfully.
          */
         [[nodiscard]]
-        auto
-        PopParameters(std::string_view target, std::vector<std::string> param_names) & noexcept
+        auto PopParameters(std::string_view target, std::vector<std::string> param_names) & noexcept
             -> liboai::Expected<bool>;
 
         /**
@@ -451,8 +428,7 @@ export namespace liboai {
          * @return True/False denoting whether the parameter was appended successfully.
          */
         [[nodiscard]]
-        auto
-        AppendParameter(std::string_view target, FunctionParameter parameter) & noexcept
+        auto AppendParameter(std::string_view target, FunctionParameter parameter) & noexcept
             -> liboai::Expected<bool>;
 
         /**
@@ -582,8 +558,7 @@ export namespace liboai {
          * @return True/False denoting whether the system data was set successfully.
          */
         [[nodiscard]]
-        auto SetSystemData(std::string_view data) & noexcept
-            -> liboai::Expected<bool>;
+        auto SetSystemData(std::string_view data) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Removes the set system data from the top of the conversation.
@@ -666,8 +641,7 @@ export namespace liboai {
          * This should only be called if LastResponseIsFunctionCall() returns true.
          */
         [[nodiscard]]
-        auto GetLastFunctionCallName() const& noexcept
-            -> liboai::Expected<std::string>;
+        auto GetLastFunctionCallName() const& noexcept -> liboai::Expected<std::string>;
 
         /**
          * @brief Returns the arguments of the function_call in the most recent response.
@@ -676,8 +650,7 @@ export namespace liboai {
          * LastResponseIsFunctionCall() returns true.
          */
         [[nodiscard]]
-        auto GetLastFunctionCallArguments() const& noexcept
-            -> liboai::Expected<std::string>;
+        auto GetLastFunctionCallArguments() const& noexcept -> liboai::Expected<std::string>;
 
         /**
          * @brief Removes the last assistant response.
@@ -767,8 +740,7 @@ export namespace liboai {
          * @param token Streamed token (data) to update the conversation with.
          */
         [[nodiscard]]
-        auto AppendStreamData(const std::string& data) & noexcept
-            -> liboai::Expected<bool>;
+        auto AppendStreamData(const std::string& data) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Appends stream data (SSEs) from streamed methods.
@@ -797,8 +769,7 @@ export namespace liboai {
          * @return True/False denoting whether the functions were set.
          */
         [[nodiscard]]
-        auto SetFunctions(const Functions& functions) & noexcept
-            -> liboai::Expected<bool>;
+        auto SetFunctions(const Functions& functions) & noexcept -> liboai::Expected<bool>;
 
         /**
          * @brief Pops any previously set functions.

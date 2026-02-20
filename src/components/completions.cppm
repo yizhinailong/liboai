@@ -1,15 +1,6 @@
 module;
 
-#include <expected>
-#include <future>
 #include <cpr/cpr.h>
-
-#include <cstdint>
-#include <functional>
-#include <optional>
-#include <string>
-#include <unordered_map>
-#include <vector>
 
 /**
  * @file completions.cppm
@@ -24,6 +15,7 @@ module;
 
 export module liboai:components.completions;
 
+import std;
 import :core.authorization;
 import :core.error;
 import :core.response;

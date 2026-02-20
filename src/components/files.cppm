@@ -1,10 +1,6 @@
 module;
 
-#include <expected>
-#include <future>
 #include <cpr/cpr.h>
-#include <string>
-#include <filesystem>
 
 /**
  * @file files.cppm
@@ -21,6 +17,7 @@ module;
 
 export module liboai:components.files;
 
+import std;
 import :core.authorization;
 import :core.error;
 import :core.response;
@@ -69,8 +66,7 @@ export namespace liboai {
          *         data in JSON format.
          */
         [[nodiscard]]
-        auto
-        Create(const std::filesystem::path& file, const std::string& purpose) const& noexcept
+        auto Create(const std::filesystem::path& file, const std::string& purpose) const& noexcept
             -> liboai::Expected<liboai::Response>;
 
         /**
@@ -149,8 +145,7 @@ export namespace liboai {
          *         successfully downloaded or not.
          */
         [[nodiscard]]
-        auto
-        Download(const std::string& file_id, const std::string& save_to) const& noexcept
+        auto Download(const std::string& file_id, const std::string& save_to) const& noexcept
             -> liboai::Expected<bool>;
 
         /**
@@ -164,8 +159,7 @@ export namespace liboai {
          *         successfully downloaded or not.
          */
         [[nodiscard]]
-        auto
-        DownloadAsync(const std::string& file_id, const std::string& save_to) const& noexcept
+        auto DownloadAsync(const std::string& file_id, const std::string& save_to) const& noexcept
             -> liboai::FutureExpected<bool>;
 
     private:
