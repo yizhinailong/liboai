@@ -3,8 +3,8 @@ target("embeddings_create_embedding", function()
     set_default(false)
     set_languages("c++23")
     set_toolchains("clang")
-    set_policy("build.c++.modules", true)
-    set_policy("build.c++.modules.reuse", true)
+    
+    
     add_files("examples/create_embedding.cpp")
     add_packages("nlohmann_json", "cpr")
     add_deps("oai")
@@ -15,8 +15,8 @@ target("embeddings_create_embedding_async", function()
     set_default(false)
     set_languages("c++23")
     set_toolchains("clang")
-    set_policy("build.c++.modules", true)
-    set_policy("build.c++.modules.reuse", true)
+    
+    
     add_files("examples/create_embedding_async.cpp")
     add_packages("nlohmann_json", "cpr")
     add_deps("oai")

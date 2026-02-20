@@ -3,8 +3,8 @@ target("models_list_models", function()
     set_default(false)
     set_languages("c++23")
     set_toolchains("clang")
-    set_policy("build.c++.modules", true)
-    set_policy("build.c++.modules.reuse", true)
+    
+    
     add_files("examples/list_models.cpp")
     add_packages("nlohmann_json", "cpr")
     add_deps("oai")
@@ -15,8 +15,8 @@ target("models_list_models_async", function()
     set_default(false)
     set_languages("c++23")
     set_toolchains("clang")
-    set_policy("build.c++.modules", true)
-    set_policy("build.c++.modules.reuse", true)
+    
+    
     add_files("examples/list_models_async.cpp")
     add_packages("nlohmann_json", "cpr")
     add_deps("oai")
@@ -27,8 +27,8 @@ target("models_retrieve_model", function()
     set_default(false)
     set_languages("c++23")
     set_toolchains("clang")
-    set_policy("build.c++.modules", true)
-    set_policy("build.c++.modules.reuse", true)
+    
+    
     add_files("examples/retrieve_model.cpp")
     add_packages("nlohmann_json", "cpr")
     add_deps("oai")
@@ -39,8 +39,8 @@ target("models_retrieve_model_async", function()
     set_default(false)
     set_languages("c++23")
     set_toolchains("clang")
-    set_policy("build.c++.modules", true)
-    set_policy("build.c++.modules.reuse", true)
+    
+    
     add_files("examples/retrieve_model_async.cpp")
     add_packages("nlohmann_json", "cpr")
     add_deps("oai")
