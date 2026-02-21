@@ -1,47 +1,43 @@
 <h1>Making Use of <code>liboai</code></h1>
-<p>In order to integrate the power of artificial intelligence and <code>liboai</code> into your codebase, you have a couple of options.</p>
+<p>To integrate <code>liboai</code> into your project, build the library with xmake and link against it as a static library.</p>
 
-<h3>Integrate via source code</h3>
-<p>As <code>liboai</code> implements a cURL wrapper internally and uses a pure C++ JSON solution, <code>liboai</code>'s header and implementation files can be added to an existing C++17 project and compiled alongside it. However, in order to do so, the project must have the following elements:</p>
+<h3>Building the Library</h3>
+<p><code>liboai</code> uses C++23 modules and xmake for dependency management. Build the library with a single command:</p>
 
-* cURL available and <b>linked</b> to the project.
-* nlohmann-json available.
-* Compiling to C++17.
+```bash
+xmake
+```
 
-<p>Assuming your existing codebase has the above in mind, you can safely add <code>liboai</code>'s header and implementation files to your existing project and compile.</p>
+<p>This produces a static library (<code>liboai.a</code> on Linux/macOS, <code>liboai.lib</code> on Windows) in the build directory. Dependencies (nlohmann_json and cpr) are fetched automatically by xmake.</p>
 
-<p>It's as easy as that!</p>
+<h3>Requirements</h3>
+<p>Your project must meet these requirements:</p>
 
-<h3>Integrate via a static/dynamic library</h3>
-<p>Another means of integrating <code>liboai</code> into an existing C++17 project is as a static or dynamic library. This is slightly more complicated than simply including the source code of the library into your existing project, but can certainly be done in few steps.</p>
+* C++23 compatible compiler (Clang 16+)
+* xmake build system
 
-<p>Static and dynamic libraries take many forms:</p>
+<h3>Integration Steps</h3>
+<p>To use <code>liboai</code> in an existing C++23 project:</p>
 
-* <b>Windows</b>
-  * Dynamic-Link Library (.dll)
-  * Static Library (.lib)
-* <b>Linux</b>
-  * Shared Object (.so)
-  * Static Library (.a)
-* <b>MacOS</b>
-  * Dynamic Library (.dylib)
-  * Static Library (.a)
+  1. Build <code>liboai</code> with <code>xmake</code> as shown above.
+  2. Link your project against the generated static library (<code>liboai.a</code> or <code>liboai.lib</code>).
+  3. Import the module in your code with <code>import liboai;</code>.
 
-<p>However, their underlying concepts remain the same.</p>
+<p>Example usage in consuming code:</p>
 
-<h3>Turning <code>liboai</code> into a library</h3>
-<p>The process of compiling <code>liboai</code> into a static or dynamic library is not as hard as it may seem. Simply, using your IDE of choice, perform the following:
+```cpp
+import liboai;
+import std;
 
-  1. Ensure cURL and nlohmann-json are installed.
-  2. Create a new C++ project.
-  3. Import the <code>liboai</code> source code (.cpp and .hpp files).
-  4. *Link your project to the cURL library.
-  5. *Make sure you are targeting C++17.
-  6. *Compile as a static or dynamic library.
+auto main() -> int {
+  liboai::OpenAI oai;
+  oai.auth.SetKeyEnv("OPENAI_API_KEY");
   
-<p>Now, in the project you'd like to integrate <code>liboai</code> into:
-  
-  1. Include the <code>liboai</code> header files (.hpp files).
-  2. *Link to the output static or dynamic library you compiled in the above steps.
-  
-*NOTE: how you do these steps depends on your choice of development environment. They can either be done in an IDE or a compiler on the command line.
+  auto res = oai.Image->Create("A cat playing piano", 1, "1024x1024");
+  if (res) {
+    std::cout << res.value()["data"][0]["url"].get<std::string>() << std::endl;
+  }
+}
+```
+
+<p>See the main <a href="/README.md">README.md</a> and <a href="/examples">examples</a> for complete usage patterns.</p>

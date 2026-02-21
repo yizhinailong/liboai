@@ -1,5 +1,5 @@
 <h1>Chat</h1>
-<p>The <code>ChatCompletion</code> class is defined in <code>chat.hpp</code> at <code>liboai::ChatCompletion</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
+<p>The <code>ChatCompletion</code> class is exported from the <code>liboai</code> module at <code>liboai::ChatCompletion</code>, and its interface can ideally be accessed through a <code>liboai::OpenAI</code> object.
 
 This class and its associated <code>liboai::OpenAI</code> interface allow access to the <a href="https://beta.openai.com/docs/api-reference/chat">Chat</a> endpoint of the OpenAI API; this endpoint's functionality can be found below.</p>
 - Given a chat conversation, the model will return a chat completion response.
@@ -14,46 +14,48 @@ This class and its associated <code>liboai::OpenAI</code> interface allow access
 > endpoint.
 
 <h2>Methods</h2>
-<p>This document covers the method(s) located in <code>chat.hpp</code>. You can find their function signature(s) below.</p>
+<p>This document covers the method(s) exported from the <code>liboai</code> module. You can find their function signature(s) below.</p>
 
 <h3>Create a Chat Completion</h3>
-<p>Creates a completion for the ongoing conversation. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Creates a completion for the ongoing conversation. Returns a <code>Result&lt;liboai::Response&gt;</code> containing response data or error information.</p>
 
 ```cpp
-liboai::Response create(
+Result<Response> Create(
   const std::string& model,
-  const Conversation& conversation,
+  Conversation& conversation,
+  std::optional<std::string> function_call = std::nullopt,
   std::optional<float> temperature = std::nullopt,
   std::optional<float> top_p = std::nullopt,
   std::optional<uint16_t> n = std::nullopt,
-  std::optional<std::function<bool(std::string, intptr_t)>> stream = std::nullopt,
+  std::optional<ChatStreamCallback> stream = std::nullopt,
   std::optional<std::vector<std::string>> stop = std::nullopt,
   std::optional<uint16_t> max_tokens = std::nullopt,
   std::optional<float> presence_penalty = std::nullopt,
   std::optional<float> frequency_penalty = std::nullopt,
   std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
   std::optional<std::string> user = std::nullopt
-) const & noexcept(false);
+) const& noexcept;
 ```
 
 <h3>Create a Chat Completion (async)</h3>
-<p>Asynchronously creates a completion for the ongoing conversation. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously creates a completion for the ongoing conversation. Returns a <code>FutureExpected&lt;Response&gt;</code> containing future response data or error information.</p>
 
 ```cpp
-liboai::FutureResponse create_async(
+FutureExpected<Response> CreateAsync(
   const std::string& model,
-  const Conversation& conversation,
+  Conversation& conversation,
+  std::optional<std::string> function_call = std::nullopt,
   std::optional<float> temperature = std::nullopt,
   std::optional<float> top_p = std::nullopt,
   std::optional<uint16_t> n = std::nullopt,
-  std::optional<std::function<bool(std::string, intptr_t)>> stream = std::nullopt,
+  std::optional<ChatStreamCallback> stream = std::nullopt,
   std::optional<std::vector<std::string>> stop = std::nullopt,
   std::optional<uint16_t> max_tokens = std::nullopt,
   std::optional<float> presence_penalty = std::nullopt,
   std::optional<float> frequency_penalty = std::nullopt,
   std::optional<std::unordered_map<std::string, int8_t>> logit_bias = std::nullopt,
   std::optional<std::string> user = std::nullopt
-) const& noexcept(false);
+) const& noexcept;
 ```
 
 <p>All function parameters marked <code>optional</code> are not required and are resolved on OpenAI's end if not supplied.</p>

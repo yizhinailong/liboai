@@ -9,10 +9,10 @@ This class and its associated <code>liboai::OpenAI</code> interface allow access
 <p>This document covers the method(s) located in <code>embeddings.hpp</code>. You can find their function signature(s) below.</p>
 
 <h3>Create an Embedding</h3>
-<p>Creates an embedding vector representing the input text. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Creates an embedding vector representing the input text. Returns a <code>std::expected<liboai::Response, liboai::Error></code> containing response data or an error.</p>
 
 ```cpp
-liboai::Response create(
+std::expected<liboai::Response, liboai::Error> Create(
   const std::string& model_id,
   std::optional<std::string> input = std::nullopt,
   std::optional<std::string> user = std::nullopt
@@ -20,10 +20,10 @@ liboai::Response create(
 ```
 
 <h3>Create an Embedding (async)</h3>
-<p>Asynchronously creates an embedding vector representing the input text. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously creates an embedding vector representing the input text. Returns a <code>std::future<std::expected<liboai::Response, liboai::Error>></code> containing future response data.</p>
 
 ```cpp
-liboai::FutureResponse create_async(
+std::future<std::expected<liboai::Response, liboai::Error>> CreateAsync(
   const std::string& model_id,
   std::optional<std::string> input = std::nullopt,
   std::optional<std::string> user = std::nullopt

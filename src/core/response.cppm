@@ -38,15 +38,11 @@ using std::unexpected;
 
 export namespace liboai {
 
-    // SFINAE trait templates
-    template <typename T, typename = void>
-    struct has_value_type : std::false_type {};
-
+    // C++20/23 concept for std::optional with value_type (not lvalue reference)
     template <typename T>
-    struct has_value_type<T, std::void_t<typename T::value_type>> : std::true_type {};
-
-    template <typename T>
-    inline constexpr const bool has_value_type_v = has_value_type<T>::value;
+    concept StdOptional = !std::is_lvalue_reference_v<T> && requires {
+        typename T::value_type;
+    } && std::same_as<T, std::optional<typename T::value_type>>;
 
     class JsonConstructor final {
     public:
@@ -73,16 +69,10 @@ export namespace liboai {
             }
         }
 
-        template <
-            class _Ty,
-            std::enable_if_t<
-                std::conjunction_v<
-                    has_value_type<_Ty>,
-                    std::is_same<_Ty, std::optional<typename _Ty::value_type>>>,
-                int> = 0>
+        template <StdOptional _Ty>
         void push_back(std::string_view key, _Ty&& value) {
             if (value) {
-                this->m_json[key.data()] = std::forward<typename _Ty::value_type>(value.value());
+                this->m_json[key.data()] = std::forward<typename std::remove_cvref_t<_Ty>::value_type>(value.value());
             }
         }
 

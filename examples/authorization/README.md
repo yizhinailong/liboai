@@ -1,7 +1,7 @@
 <h1>Authorization</h1>
 <p>The <code>Authorization</code> class is defined in <code>authorization.hpp</code> at <code>liboai::Authorization</code>. This class is responsible for sharing all set authorization information with all component classes in <code>liboai</code>.
 
-All authorization information should be set prior to the calling of any component methods such as <code>Images</code>, <code>Embeddings</code>, and so on. Failure to do so will result in a <code>liboai::OpenAIException</code> due to authorization failure on OpenAI's end.</p>
+All authorization information should be set prior to the calling of any component methods such as <code>Images</code>, <code>Embeddings</code>, and so on. Failure to do so will result in an error being returned from API calls via <code>std::expected</code>.</p>
 
 <br>
 <h2>Methods</h2>

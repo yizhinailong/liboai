@@ -9,37 +9,57 @@ This class and its associated <code>liboai::OpenAI</code> interface allow access
 <p>This document covers the method(s) located in <code>models.hpp</code>. You can find their function signature(s) below.</p>
 
 <h3>List Models</h3>
-<p>Lists the currently available models, and provides basic information about each one such as the owner and availability. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Lists the currently available models, and provides basic information about each one such as the owner and availability. Returns a <code>std::expected&lt;liboai::Response, liboai::OpenAIError&gt;</code> containing response data or error.</p>
 
 ```cpp
-liboai::Response list() const & noexcept(false);
+std::expected<liboai::Response, liboai::OpenAIError> List() const & noexcept(false);
 ```
 
 <h3>List Models (async)</h3>
-<p>Asynchronously lists the currently available models, and provides basic information about each one such as the owner and availability. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously lists the currently available models, and provides basic information about each one such as the owner and availability. Returns a <code>std::expected&lt;liboai::FutureResponse, liboai::OpenAIError&gt;</code> containing future response data or error.</p>
 
 ```cpp
-liboai::FutureResponse list_async() const & noexcept(false);
+std::expected<liboai::FutureResponse, liboai::OpenAIError> ListAsync() const & noexcept(false);
 ```
 
 <h3>Retrieve Model</h3>
-<p>Retrieves a model instance, providing basic information about the model such as the owner and permissioning. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Retrieves a model instance, providing basic information about the model such as the owner and permissioning. Returns a <code>std::expected&lt;liboai::Response, liboai::OpenAIError&gt;</code> containing response data or error.</p>
 
 ```cpp
-liboai::Response retrieve(
+std::expected<liboai::Response, liboai::OpenAIError> Retrieve(
   const std::string& model
 ) const & noexcept(false);
 ```
 
 <h3>Retrieve Model (async)</h3>
-<p>Asynchronously retrieves a model instance, providing basic information about the model such as the owner and permissioning. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously retrieves a model instance, providing basic information about the model such as the owner and permissioning. Returns a <code>std::expected&lt;liboai::FutureResponse, liboai::OpenAIError&gt;</code> containing future response data or error.</p>
 
 ```cpp
-liboai::FutureResponse retrieve_async(
+std::expected<liboai::FutureResponse, liboai::OpenAIError> RetrieveAsync(
   const std::string& model
 ) const & noexcept(false);
 ```
 
 <br>
 <h2>Example Usage</h2>
-<p>For example usage of the above function(s), please refer to the <a href="./examples">examples</a> folder.
+
+```cpp
+import std;
+import liboai;
+
+using namespace liboai;
+
+int main() {
+    OpenAI oai;
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        auto response = oai.Model->List();
+        if (response) {
+            std::cout << response.value()["data"] << std::endl;
+        } else {
+            std::cout << response.error().message << std::endl;
+        }
+    }
+}
+```
+
+<p>For more example usage of the above function(s), please refer to the <a href="./examples">examples</a> folder.

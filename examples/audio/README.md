@@ -10,10 +10,10 @@ This class and its associated <code>liboai::OpenAI</code> interface allow access
 <p>This document covers the method(s) located in <code>audio.hpp</code>. You can find their function signature(s) below.</p>
 
 <h3>Create a Transcription</h3>
-<p>Transcribes audio into the input language. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Transcribes audio into the input language. Returns a <code>std::expected&lt;liboai::Response, liboai::OpenAIError&gt;</code> containing response data or an error.</p>
 
 ```cpp
-liboai::Response transcribe(
+std::expected<liboai::Response, liboai::OpenAIError> Transcribe(
   const std::filesystem::path& file,
   const std::string& model,
   std::optional<std::string> prompt = std::nullopt,
@@ -24,10 +24,10 @@ liboai::Response transcribe(
 ```
 
 <h3>Create a Transcription (async)</h3>
-<p>Asynchronously transcribes audio into the input language. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously transcribes audio into the input language. Returns a <code>std::future&lt;std::expected&lt;liboai::Response, liboai::OpenAIError&gt;&gt;</code> containing future response data.</p>
 
 ```cpp
-liboai::FutureResponse transcribe_async(
+std::future<std::expected<liboai::Response, liboai::OpenAIError>> TranscribeAsync(
   const std::filesystem::path& file,
   const std::string& model,
   std::optional<std::string> prompt = std::nullopt,
@@ -38,10 +38,10 @@ liboai::FutureResponse transcribe_async(
 ```
 
 <h3>Create a Translation</h3>
-<p>Translates audio into English. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Translates audio into English. Returns a <code>std::expected&lt;liboai::Response, liboai::OpenAIError&gt;</code> containing response data or an error.</p>
 
 ```cpp
-liboai::Response translate(
+std::expected<liboai::Response, liboai::OpenAIError> Translate(
   const std::filesystem::path& file,
   const std::string& model,
   std::optional<std::string> prompt = std::nullopt,
@@ -51,10 +51,10 @@ liboai::Response translate(
 ```
 
 <h3>Create a Translation (async)</h3>
-<p>Asynchronously translates audio into English. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously translates audio into English. Returns a <code>std::future&lt;std::expected&lt;liboai::Response, liboai::OpenAIError&gt;&gt;</code> containing future response data.</p>
 
 ```cpp
-liboai::FutureResponse translate_async(
+std::future<std::expected<liboai::Response, liboai::OpenAIError>> TranslateAsync(
   const std::filesystem::path& file,
   const std::string& model,
   std::optional<std::string> prompt = std::nullopt,
@@ -64,10 +64,10 @@ liboai::FutureResponse translate_async(
 ```
 
 <h3>Text to Speech</h3>
-<p>Turn text into lifelike spoken audio. Returns a <code>liboai::Response</code> containing response data. The audio data is in the <code>content</code> field of the <code>liboai::Response</code></p>
+<p>Turn text into lifelike spoken audio. Returns a <code>std::expected&lt;liboai::Response, liboai::OpenAIError&gt;</code> containing response data or an error. The audio data is in the <code>content</code> field of the <code>liboai::Response</code></p>
 
 ```cpp
-liboai::Response speech(
+std::expected<liboai::Response, liboai::OpenAIError> Speech(
   const std::string& model,
   const std::string& voice,
   const std::string& input,
@@ -77,10 +77,10 @@ liboai::Response speech(
 ```
 
 <h3>Text to Speech (async)</h3>
-<p>Asynchronously turn text into lifelike spoken audio. Returns a <code>liboai::FutureResponse</code> containing response data. The audio data is in the <code>content</code> field of the <code>liboai::Response</code></p>
+<p>Asynchronously turn text into lifelike spoken audio. Returns a <code>std::future&lt;std::expected&lt;liboai::Response, liboai::OpenAIError&gt;&gt;</code> containing future response data. The audio data is in the <code>content</code> field of the <code>liboai::Response</code></p>
 
 ```cpp
-liboai::FutureResponse speech_async(
+std::future<std::expected<liboai::Response, liboai::OpenAIError>> SpeechAsync(
   const std::string& model,
   const std::string& voice,
   const std::string& input,

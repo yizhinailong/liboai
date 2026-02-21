@@ -9,90 +9,90 @@ This class and its associated <code>liboai::OpenAI</code> interface allow access
 <p>This document covers the method(s) located in <code>files.hpp</code>. You can find their function signature(s) below.</p>
 
 <h3>List Files</h3>
-<p>Gets a list of files that belong to the user's organization. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Gets a list of files that belong to the user's organization. Returns a <code>std::expected&lt;liboai::Response, liboai::Error&gt;</code> containing response data or an error.</p>
 
 ```cpp
-liboai::Response list() const & noexcept(false);
+std::expected<liboai::Response, liboai::Error> List() const & noexcept(false);
 ```
 
 <h3>List Files (async)</h3>
-<p>Asynchronously gets a list of files that belong to the user's organization. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously gets a list of files that belong to the user's organization. Returns a <code>std::future&lt;std::expected&lt;liboai::Response, liboai::Error&gt;&gt;</code> containing future response data.</p>
 
 ```cpp
-liboai::FutureResponse list_async() const & noexcept(false);
+std::future<std::expected<liboai::Response, liboai::Error>> ListAsync() const & noexcept(false);
 ```
 
 <h3>Upload File</h3>
-<p>Upload a file that contains document(s) to be used across various endpoints/features. Currently, the size of all the files uploaded by one organization can be up to 1 GB. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Upload a file that contains document(s) to be used across various endpoints/features. Currently, the size of all the files uploaded by one organization can be up to 1 GB. Returns a <code>std::expected&lt;liboai::Response, liboai::Error&gt;</code> containing response data or an error.</p>
 
 ```cpp
-liboai::Response create(
+std::expected<liboai::Response, liboai::Error> Create(
   const std::filesystem::path& file,
   const std::string& purpose
 ) const & noexcept(false);
 ```
 
 <h3>Upload File (async)</h3>
-<p>Asynchronously upload a file that contains document(s) to be used across various endpoints/features. Currently, the size of all the files uploaded by one organization can be up to 1 GB. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously upload a file that contains document(s) to be used across various endpoints/features. Currently, the size of all the files uploaded by one organization can be up to 1 GB. Returns a <code>std::future&lt;std::expected&lt;liboai::Response, liboai::Error&gt;&gt;</code> containing future response data.</p>
 
 ```cpp
-liboai::FutureResponse create_async(
+std::future<std::expected<liboai::Response, liboai::Error>> CreateAsync(
   const std::filesystem::path& file,
   const std::string& purpose
 ) const & noexcept(false);
 ```
 
 <h3>Delete a File</h3>
-<p>Deletes a file. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Deletes a file. Returns a <code>std::expected&lt;liboai::Response, liboai::Error&gt;</code> containing response data or an error.</p>
 
 ```cpp
-liboai::Response remove(
+std::expected<liboai::Response, liboai::Error> Remove(
   const std::string& file_id
 ) const & noexcept(false);
 ```
 
 <h3>Delete a File (async)</h3>
-<p>Asynchronously deletes a file. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously deletes a file. Returns a <code>std::future&lt;std::expected&lt;liboai::Response, liboai::Error&gt;&gt;</code> containing future response data.</p>
 
 ```cpp
-liboai::FutureResponse remove_async(
+std::future<std::expected<liboai::Response, liboai::Error>> RemoveAsync(
   const std::string& file_id
 ) const & noexcept(false);
 ```
 
 <h3>Retrieve File</h3>
-<p>Returns information about a specific file. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Returns information about a specific file. Returns a <code>std::expected&lt;liboai::Response, liboai::Error&gt;</code> containing response data or an error.</p>
 
 ```cpp
-liboai::Response retrieve(
+std::expected<liboai::Response, liboai::Error> Retrieve(
   const std::string& file_id
 ) const & noexcept(false);
 ```
 
 <h3>Retrieve File (async)</h3>
-<p>Asynchronously returns information about a specific file. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously returns information about a specific file. Returns a <code>std::future&lt;std::expected&lt;liboai::Response, liboai::Error&gt;&gt;</code> containing future response data.</p>
 
 ```cpp
-liboai::FutureResponse retrieve_async(
+std::future<std::expected<liboai::Response, liboai::Error>> RetrieveAsync(
   const std::string& file_id
 ) const & noexcept(false);
 ```
 
 <h3>Retrieve File Content (Download)</h3>
-<p>Returns the contents of the specified file and downloads it to the provided path. Returns a <code>bool</code> indicating failure or success.</p>
+<p>Returns the contents of the specified file and downloads it to the provided path. Returns a <code>std::expected&lt;bool, liboai::Error&gt;</code> indicating failure or success.</p>
 
 ```cpp
-bool download(
+std::expected<bool, liboai::Error> Download(
   const std::string& file_id,
   const std::string& save_to
 ) const & noexcept(false);
 ```
 
 <h3>Retrieve File Content (Download) (async)</h3>
-<p>Asynchronously returns the contents of the specified file and downloads it to the provided path. Returns a future <code>bool</code> indicating failure or success.</p>
+<p>Asynchronously returns the contents of the specified file and downloads it to the provided path. Returns a <code>std::future&lt;std::expected&lt;bool, liboai::Error&gt;&gt;</code> indicating failure or success.</p>
 
 ```cpp
-std::future<bool> download_async(
+std::future<std::expected<bool, liboai::Error>> DownloadAsync(
   const std::string& file_id,
   const std::string& save_to
 ) const & noexcept(false);

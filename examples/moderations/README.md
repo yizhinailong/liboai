@@ -9,20 +9,20 @@ This class and its associated <code>liboai::OpenAI</code> interface allow access
 <p>This document covers the method(s) located in <code>moderations.hpp</code>. You can find their function signature(s) below.</p>
 
 <h3>Create a Moderation</h3>
-<p>Classifies if text violates OpenAI's Content Policy. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Classifies if text violates OpenAI's Content Policy. Returns a <code>std::expected&lt;liboai::Response, liboai::Error&gt;</code> containing response data or an error.</p>
 
 ```cpp
-liboai::Response create(
+auto Create(
   const std::string& input,
   std::optional<std::string> model = std::nullopt
 ) const & noexcept(false);
 ```
 
 <h3>Create a Moderation (async)</h3>
-<p>Asynchronously classifies if text violates OpenAI's Content Policy. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously classifies if text violates OpenAI's Content Policy. Returns a <code>std::future&lt;std::expected&lt;liboai::Response, liboai::Error&gt;&gt;</code> containing future response data.</p>
 
 ```cpp
-liboai::FutureResponse create_async(
+auto CreateAsync(
   const std::string& input,
   std::optional<std::string> model = std::nullopt
 ) const & noexcept(false);
@@ -32,4 +32,58 @@ liboai::FutureResponse create_async(
 
 <br>
 <h2>Example Usage</h2>
-<p>For example usage of the above function(s), please refer to the <a href="./examples">examples</a> folder.
+
+<h3>Synchronous</h3>
+
+```cpp
+import std;
+import liboai;
+
+using namespace liboai;
+
+int main() {
+    OpenAI oai;
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        auto response = oai.Moderation->Create("I want to kill them.");
+        if (response) {
+            std::cout << response.value()["results"][0]["flagged"].get<bool>() << std::endl;
+        } else {
+            std::cout << response.error().message << std::endl;
+        }
+    }
+}
+```
+
+<h3>Asynchronous</h3>
+
+```cpp
+import std;
+import liboai;
+
+using namespace liboai;
+
+int main() {
+    OpenAI oai;
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        // call async method; returns a future
+        auto fut = oai.Moderation->CreateAsync("I want to kill them.");
+
+        // do other work...
+
+        // check if the future is ready
+        fut.wait();
+
+        // get the contained response
+        auto response = fut.get();
+
+        // print some response data
+        if (response) {
+            std::cout << response.value()["results"][0]["flagged"].get<bool>() << std::endl;
+        } else {
+            std::cout << response.error().message << std::endl;
+        }
+    }
+}
+```
+
+<p>For additional example usage, please refer to the <a href="./examples">examples</a> folder.

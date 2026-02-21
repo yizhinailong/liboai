@@ -2,7 +2,7 @@
 <p>Both above and below, you can find resources and documentation for each component of the library.</p>
 
 <h3>Basic Usage</h3>
-<p>In order to understand how to use each component of the library, it would be ideal to first understand the basic structure of the library as a whole. When using <code>liboai</code> in a project, you <b>should</b> only include one header file, <code>liboai.hpp</code>. This header provides an interface to all other components of the library such as <code>Images</code>, <code>Completions</code>, etc.
+<p>In order to understand how to use each component of the library, it would be ideal to first understand the basic structure of the library as a whole. When using <code>liboai</code> in a project, you <b>should</b> import the module, <code>liboai</code>. This module provides an interface to all other components of the library such as <code>Images</code>, <code>Completions</code>, etc.
 
 See below for both a correct and incorrect example.</p>
 <table>
@@ -14,7 +14,8 @@ See below for both a correct and incorrect example.</p>
 <td>
 
 ```cpp
-#include "liboai/liboai.hpp"
+import std;
+import liboai;
 
 int main() {
   ...
@@ -25,8 +26,8 @@ int main() {
 <td>
 
 ```cpp
-#include "fine_tunes.h"
-#include "models.h"
+import fine_tunes;
+import models;
 // etc...
 
 int main() {
@@ -39,7 +40,7 @@ int main() {
 </table>
 
 <br>
-<p>Once we have properly included the necessary header file to use the library--and assuming symbols are linked properly--we can make use of the class in <code>liboai.hpp</code> to get started. At some point in our source code, we will have to choose when to define a <code>liboai::OpenAI</code> object to access component interfaces. Each component interface stored in this object offers methods associated with it, so, for instance, interface <code>Image</code> will have a method <code>create(...)</code> to generate an image from text. Each non-async method returns a <code>liboai::Response</code> containing response information whereas async methods return a <code>liboai::FutureResponse</code>. However, before we start using these methods, we must first set our authorization information--otherwise it will not work!
+<p>Once we have properly imported the necessary modules to use the library--and assuming symbols are linked properly--we can make use of the class in <code>liboai</code> to get started. At some point in our source code, we will have to choose when to define a <code>liboai::OpenAI</code> object to access component interfaces. Each component interface stored in this object offers methods associated with it, so, for instance, interface <code>Image</code> will have a method <code>Create(...)</code> to generate an image from text. Each method returns a <code>std::expected</code> containing either response data or an error. However, before we start using these methods, we must first set our authorization information--otherwise it will not work!
 
 <code>liboai::OpenAI</code> also houses another important member, the authorization member, which is used to set authorization information (such as the API key and organization IDs) before we call the API methods. For more information on additional members found in <code>liboai::Authorization</code>, refer to the <a href="./authorization">authorization</a> folder above.
 
@@ -53,7 +54,8 @@ See below for both a correct and incorrect control flow when generating an image
 <td>
 
 ```cpp
-#include "liboai/liboai.hpp"
+import std;
+import liboai;
 
 using namespace liboai;
 
@@ -64,9 +66,12 @@ int main() {
   // This is recommended as hard-coding API keys is
   // insecure.
   if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    Response response = oai.Image->create(
-      "a siamese cat!"
-    );
+    auto response = oai.Image->Create("a siamese cat!");
+    if (response) {
+      std::cout << response.value()["data"][0]["url"].get<std::string>() << std::endl;
+    } else {
+      std::cout << response.error().message << std::endl;
+    }
   }
   
   ...
@@ -77,7 +82,8 @@ int main() {
 <td>
 
 ```cpp
-#include "liboai/liboai.hpp"
+import std;
+import liboai;
 
 using namespace liboai;
 
@@ -85,10 +91,13 @@ int main() {
   OpenAI oai;
 	
   // Failure to set authorization info!
-  // Will fail, exception will be thrown!
-  Response response = oai.Image->create(
-    "a siamese cat!"
-  );
+  // Will fail, error returned!
+  auto response = oai.Image->Create("a siamese cat!");
+  if (response) {
+    std::cout << response.value()["data"][0]["url"].get<std::string>() << std::endl;
+  } else {
+    std::cout << response.error().message << std::endl;
+  }
   
   ...
 }
@@ -99,29 +108,28 @@ int main() {
 </table>
 
 <br>
-<p>As you can see above, authentication-set related functions return booleans to indicate success and failure, whereas component methods will throw an exception, <code>OpenAIException</code> or <code>OpenAIRateLimited</code>, to indicate their success or failure; these should be checked for accordingly. Below you can find an exception-safe version of the above correct snippet.</p>
+<p>As you can see above, authentication-set related functions return booleans to indicate success and failure, whereas component methods return <code>std::expected</code> to indicate their success or failure; these should be checked for accordingly. Below you can find a proper error-handling version of the above correct snippet.</p>
 <table>
 <tr>
-<th>Correct, exception-safe</th>
+<th>Correct, with error handling</th>
 </tr>
 <tr>
 <td>
 
 ```cpp
-#include "liboai/liboai.hpp"
+import std;
+import liboai;
 
 using namespace liboai;
 
 int main() {
   OpenAI oai;
   if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    try {
-      Response response = oai.Image->create(
-        "a siamese cat!"
-      );
-    }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
+    auto response = oai.Image->Create("a siamese cat!");
+    if (response) {
+      std::cout << response.value()["data"][0]["url"].get<std::string>() << std::endl;
+    } else {
+      std::cout << response.error().message << std::endl;
     }
     
     ...
@@ -134,7 +142,7 @@ int main() {
 </table>
 
 <br>
-<p>Now, once we have made a call using a component interface, we most certainly want to get the information out of it. To do this, using our knowledge of the format of the API responses, we can extract the information, such as the resulting image's URL, using JSON indexing on the <code>liboai::Response</code> object. See below for an example where we print the generated image's URL.</p>
+<p>Now, once we have made a call using a component interface, we most certainly want to get the information out of it. To do this, using our knowledge of the format of the API responses, we can extract the information, such as the resulting image's URL, using JSON indexing on the response object. See below for an example where we print the generated image's URL.</p>
 <table>
 <tr>
 <th>Accessing JSON Response Data</th>
@@ -143,21 +151,19 @@ int main() {
 <td>
 
 ```cpp
-#include "liboai/liboai.hpp"
+import std;
+import liboai;
 
 using namespace liboai;
 
 int main() {
   OpenAI oai;
   if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    try {
-      Response response = oai.Image->create(
-        "a siamese cat!"
-      );
-      std::cout << response["data"][0]["url"].get<std::string>() << std::endl;
-    }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
+    auto response = oai.Image->Create("a siamese cat!");
+    if (response) {
+      std::cout << response.value()["data"][0]["url"].get<std::string>() << std::endl;
+    } else {
+      std::cout << response.error().message << std::endl;
     }
   }
 }
@@ -176,25 +182,23 @@ int main() {
 <td>
 
 ```cpp
-#include "liboai/liboai.hpp"
+import std;
+import liboai;
 
 using namespace liboai;
 
 int main() {
   OpenAI oai;
   if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
-    try {
-      Response response = oai.Image->create(
-        "a siamese cat!"
-      );
+    auto response = oai.Image->Create("a siamese cat!");
+    if (response) {
       Network::Download(
         "C:/some/folder/file.png",                     // to
-        response["data"][0]["url"].get<std::string>(), // from
+        response.value()["data"][0]["url"].get<std::string>(), // from
 	oai.auth.GetAuthorizationHeaders()
       );
-    }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
+    } else {
+      std::cout << response.error().message << std::endl;
     }
   }
 }

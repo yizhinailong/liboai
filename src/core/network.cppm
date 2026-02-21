@@ -162,11 +162,8 @@ export namespace liboai {
             HTTP_DELETE // DELETE
         };
 
-        template <
-            class... Params,
-            std::enable_if_t<
-                std::conjunction_v<std::negation<std::is_lvalue_reference<Params>>...>,
-                int> = 0>
+        template <class... Params>
+        requires (... && !std::is_lvalue_reference_v<Params>)
         [[nodiscard]]
         auto Request(
             const Method& http_method,

@@ -9,10 +9,10 @@ This class and its associated <code>liboai::OpenAI</code> interface allow access
 <p>This document covers the method(s) located in <code>images.hpp</code>. You can find their function signature(s) below.</p>
 
 <h3>Create an Image</h3>
-<p>Creates an image given a prompt. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Creates an image given a prompt. Returns a <code>std::expected&lt;liboai::Response, liboai::OpenAIError&gt;</code> containing response data or error.</p>
 
 ```cpp
-liboai::Response create(
+std::expected<liboai::Response, liboai::OpenAIError> Create(
   const std::string& prompt,
   std::optional<uint8_t> n = std::nullopt,
   std::optional<std::string> size = std::nullopt,
@@ -22,10 +22,10 @@ liboai::Response create(
 ```
 
 <h3>Create an Image (async)</h3>
-<p>Asynchronously creates an image given a prompt. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously creates an image given a prompt. Returns a <code>std::expected&lt;liboai::FutureResponse, liboai::OpenAIError&gt;</code> containing future response data or error.</p>
 
 ```cpp
-liboai::FutureResponse create_async(
+std::expected<liboai::FutureResponse, liboai::OpenAIError> CreateAsync(
   const std::string& prompt,
   std::optional<uint8_t> n = std::nullopt,
   std::optional<std::string> size = std::nullopt,
@@ -35,10 +35,10 @@ liboai::FutureResponse create_async(
 ```
 
 <h3>Create Image Edit</h3>
-<p>Creates an edited or extended image given an original image and a prompt. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Creates an edited or extended image given an original image and a prompt. Returns a <code>std::expected&lt;liboai::Response, liboai::OpenAIError&gt;</code> containing response data or error.</p>
 
 ```cpp
-liboai::Response create_edit(
+std::expected<liboai::Response, liboai::OpenAIError> CreateEdit(
   const std::filesystem::path& image,
   const std::string& prompt,
   std::optional<std::filesystem::path> mask = std::nullopt,
@@ -50,10 +50,10 @@ liboai::Response create_edit(
 ```
 
 <h3>Create Image Edit (async)</h3>
-<p>Asynchronously creates an edited or extended image given an original image and a prompt. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously creates an edited or extended image given an original image and a prompt. Returns a <code>std::expected&lt;liboai::FutureResponse, liboai::OpenAIError&gt;</code> containing future response data or error.</p>
 
 ```cpp
-liboai::FutureResponse create_edit_async(
+std::expected<liboai::FutureResponse, liboai::OpenAIError> CreateEditAsync(
   const std::filesystem::path& image,
   const std::string& prompt,
   std::optional<std::filesystem::path> mask = std::nullopt,
@@ -65,10 +65,10 @@ liboai::FutureResponse create_edit_async(
 ```
 
 <h3>Create Image Variation</h3>
-<p>Creates a variation of a given image. Returns a <code>liboai::Response</code> containing response data.</p>
+<p>Creates a variation of a given image. Returns a <code>std::expected&lt;liboai::Response, liboai::OpenAIError&gt;</code> containing response data or error.</p>
 
 ```cpp
-liboai::Response create_variation(
+std::expected<liboai::Response, liboai::OpenAIError> CreateVariation(
   const std::filesystem::path& image,
   std::optional<uint8_t> n = std::nullopt,
   std::optional<std::string> size = std::nullopt,
@@ -78,10 +78,10 @@ liboai::Response create_variation(
 ```
 
 <h3>Create Image Variation (async)</h3>
-<p>Asynchronously creates a variation of a given image. Returns a <code>liboai::FutureResponse</code> containing future response data.</p>
+<p>Asynchronously creates a variation of a given image. Returns a <code>std::expected&lt;liboai::FutureResponse, liboai::OpenAIError&gt;</code> containing future response data or error.</p>
 
 ```cpp
-liboai::FutureResponse create_variation_async(
+std::expected<liboai::FutureResponse, liboai::OpenAIError> CreateVariationAsync(
   const std::filesystem::path& image,
   std::optional<uint8_t> n = std::nullopt,
   std::optional<std::string> size = std::nullopt,
@@ -94,4 +94,24 @@ liboai::FutureResponse create_variation_async(
 
 <br>
 <h2>Example Usage</h2>
-<p>For example usage of the above function(s), please refer to the <a href="./examples">examples</a> folder.
+
+```cpp
+import std;
+import liboai;
+
+using namespace liboai;
+
+int main() {
+    OpenAI oai;
+    if (oai.auth.SetKeyEnv("OPENAI_API_KEY")) {
+        auto response = oai.Image->Create("a siamese cat!");
+        if (response) {
+            std::cout << response.value()["data"][0]["url"].get<std::string>() << std::endl;
+        } else {
+            std::cout << response.error().message << std::endl;
+        }
+    }
+}
+```
+
+<p>For more example usage of the above function(s), please refer to the <a href="./examples">examples</a> folder.

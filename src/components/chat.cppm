@@ -35,11 +35,8 @@ export namespace liboai {
         Functions(const Functions& other);
         Functions(Functions&& old) noexcept;
 
-        template <
-            class... _Fname,
-            std::enable_if_t<
-                std::conjunction_v<std::is_convertible<_Fname, std::string_view>...>,
-                int> = 0>
+        template <class... _Fname>
+        requires (... && std::convertible_to<_Fname, std::string_view>)
         Functions(_Fname... function_names) {
             auto result = this->AddFunctions(function_names...);
         }

@@ -89,7 +89,7 @@ auto main() -> int {
 
 <h1>Requirements</h1>
 
-- **C++23** compatible compiler (Clang 16+, GCC 14+, MSVC 19.35+)
+- **C++23** compatible compiler (Clang 16+)
 - **xmake** build system
 
 <h1>Dependencies</h1>
