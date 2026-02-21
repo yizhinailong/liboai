@@ -14,7 +14,7 @@ option_end()
 target("oai", function()
     set_kind("static")
     set_languages("c++23")
-    set_toolchains("clang")
+    -- Toolchain can be selected via xmake f --toolchain=clang|--toolchain=msvc|--toolchain=clang-cl
     set_policy("build.c++.modules", true)
     set_policy("build.c++.modules.std", true)
     set_policy("build.c++.modules.reuse", true)
