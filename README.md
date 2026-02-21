@@ -134,6 +134,39 @@ xmake --toolchain=clang-cl
 
 *Dependencies are managed automatically by xmake.*
 
+<h3>File Paths</h3>
+
+The library uses `std::filesystem` internally and supports both Windows-style (`C:\path\to\file`) and Unix-style (`/path/to/file`) paths. For maximum portability, use forward slashes or `std::filesystem::path`:
+
+```cpp
+// Portable - works on all platforms
+std::filesystem::path myPath = "data/file.jsonl";
+
+// Also works on all platforms (forward slashes)
+oai.File->Create("data/file.jsonl", "fine-tune");
+```
+
+<h3>TLS/HTTPS Certificates</h3>
+
+The library uses [cpr](https://github.com/libcpr/cpr) (libcurl) for HTTPS requests. Certificate verification behavior depends on the platform:
+
+| Platform | Certificate Store | Notes |
+|----------|------------------|-------|
+| **Windows** | Windows Certificate Store (Schannel) | Uses system certificates automatically |
+| **macOS** | System Keychain | Uses system certificates automatically |
+| **Linux** | File-based (`/etc/ssl/certs`) | Requires `ca-certificates` package |
+
+**Troubleshooting SSL certificate errors on Linux:**
+
+```bash
+# Debian/Ubuntu
+sudo apt-get install ca-certificates
+sudo update-ca-certificates
+
+# Set custom CA bundle (if needed)
+export CURL_CA_BUNDLE=/path/to/ca-bundle.crt
+```
+
 <h1>Building</h1>
 
 ```bash
