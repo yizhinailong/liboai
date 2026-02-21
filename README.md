@@ -104,6 +104,21 @@ This library uses C++23 standard library modules (`import std;`) and requires a 
 | **Linux** | Clang | LLVM 16+ | Preferred for C++23 modules support |
 | **Linux** | GCC | 13+ | Limited `import std;` support, Clang recommended |
 
+<h4>macOS Setup</h4>
+
+The default Apple Clang does not support `import std;`. Install LLVM via Homebrew:
+
+```bash
+brew install llvm
+```
+
+Then build with the Homebrew LLVM toolchain:
+
+```bash
+xmake f --toolchain=clang --sdk=$(brew --prefix llvm) -c -y
+xmake -v
+```
+
 Build with a specific toolchain:
 ```bash
 xmake --toolchain=clang
