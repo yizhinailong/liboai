@@ -180,6 +180,31 @@ xmake -DBUILD_EXAMPLES=ON
 xmake -r
 ```
 
+<h3>Installation</h3>
+
+Install the library to a specific prefix:
+
+```bash
+xmake install -o /path/to/install/prefix
+```
+
+This installs:
+- `lib/liboai.a` - static library
+- `modules/` - C++23 module interface files
+
+To use the installed library in another xmake project:
+
+```lua
+add_requires("nlohmann_json", "cpr")
+
+target("myapp")
+    set_kind("binary")
+    set_languages("c++23")
+    add_files("src/*.cpp")
+    add_links("/path/to/install/prefix/lib/liboai.a")
+    add_includedirs("/path/to/install/prefix/modules", {public = true})
+```
+
 <h1>Documentation</h1>
 <p>For detailed documentation and additional code examples, see the library's examples <a href="/examples">here</a>.
 
