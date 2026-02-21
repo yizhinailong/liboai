@@ -89,8 +89,27 @@ auto main() -> int {
 
 <h1>Requirements</h1>
 
-- **C++23** compatible compiler (Clang 16+)
+- **C++23** compatible compiler with `import std;` support
 - **xmake** build system
+
+<h3>Platform Support</h3>
+
+This library uses C++23 standard library modules (`import std;`) and requires a compiler with full support.
+
+| Platform | Toolchain | Minimum Version | Notes |
+|----------|-----------|-----------------|-------|
+| **Windows** | MSVC | VS 2022 17.5+ | `import std;` supported via `/std:c++20` + `/experimental:module` |
+| **Windows** | clang-cl | LLVM 16+ | MSVC ABI compatibility, recommended for cross-platform builds |
+| **macOS** | Clang | LLVM 16+ | Install via Homebrew: `brew install llvm` |
+| **Linux** | Clang | LLVM 16+ | Preferred for C++23 modules support |
+| **Linux** | GCC | 13+ | Limited `import std;` support, Clang recommended |
+
+Build with a specific toolchain:
+```bash
+xmake --toolchain=clang
+xmake --toolchain=msvc
+xmake --toolchain=clang-cl
+```
 
 <h1>Dependencies</h1>
 <p>For the library to work the way it does, it relies on two major dependencies. These dependencies can be found listed below.<p>
