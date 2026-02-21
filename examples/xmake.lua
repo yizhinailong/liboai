@@ -6,7 +6,7 @@ function example_target(name, source)
         set_kind("binary")
         set_default(false)
         set_languages("c++23")
-        set_toolchains("clang")
+        -- Toolchain inherited from root xmake.lua or set via --toolchain=
         add_files(source)
         add_packages("nlohmann_json", "cpr")
         add_deps("oai")
